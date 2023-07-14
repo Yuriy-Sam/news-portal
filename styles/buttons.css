@@ -1,0 +1,28 @@
+.btn {
+  @apply px-6 py-3 block text-center relative font-bold  rounded border-none overflow-hidden;
+}
+.btn_lg {
+  @apply px-10 py-3 border-primary border-2 border-solid;
+}
+
+.btn_secondary {
+  @apply border-primary bg-primary text-slate-50;
+}
+.btn_primary {
+  @apply overflow-hidden;
+}
+.btn__nav__item {
+  @apply px-6 py-3 rounded relative;
+}
+.btn_primary::after,
+.btn_secondary::after {
+  @apply content-[''] absolute w-9 h-20 bg-white -top-3 -left-10 opacity-30 rotate-12 transition-all ease-in-out duration-75;
+}
+/* .btn__nav__item:hover::after, */
+.btn_primary:hover::after {
+  @apply left-[105%] transition-all ease-in-out duration-700;
+}
+/* .btn__nav__item:hover, */
+.btn_primary:hover {
+  @apply bg-primary text-white;
+}

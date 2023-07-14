@@ -1,0 +1,33 @@
+.sidebar {
+  @apply relative w-[120px] h-screen pb-10 px-2 py-4;
+}
+.sidebar__logo {
+  @apply text-xl font-bold text-center;
+}
+.sidebar__wrapper {
+  @apply border-r-2 top-0 left-0 border-primary-300 w-[120px] fixed h-screen px-4 py-6;
+}
+.sidebar span {
+  @apply hidden;
+}
+.sidebar__nav {
+  @apply h-full flex flex-col items-center justify-between pt-10 pb-6;
+}
+.sidebar__nav ul {
+  @apply flex flex-col items-center gap-3;
+}
+/* .sidebar__nav__item {
+  @apply px-6 py-3 rounded relative;
+}
+.sidebar__nav__item::after {
+  @apply content-[''] absolute w-9 h-20 bg-white -top-3 -left-7 opacity-30 rotate-12 transition-all ease-in-out duration-75;
+}
+.sidebar__nav__item:hover::after {
+  @apply left-full transition-all ease-in-out duration-700;
+}
+.sidebar__nav__item:hover {
+  @apply bg-primary;
+}
+.sidebar__nav__item img {
+  @apply fill-red-600;
+} */

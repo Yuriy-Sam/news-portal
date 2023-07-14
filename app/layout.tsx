@@ -1,9 +1,14 @@
-import { Footer, Header } from "@/components";
+import { Footer, Header, Sidebar } from "@/components";
 import "@/styles/globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Mulish } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
+const mulish = Mulish({
+  weight: ["400", "600", "700", "800"],
+  style: ["normal"],
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,10 +22,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Header />
-        {children}
-        <Footer />
+      <body className={`${mulish.className} flex justify-between`}>
+        {/* <Header /> */}
+        <Sidebar />
+        <div className="w-full ml-5">
+          <Header />
+          {children}
+          {/* <Footer /> */}
+        </div>
       </body>
     </html>
   );

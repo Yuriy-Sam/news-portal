@@ -3,5 +3,11 @@
 @tailwind utilities;
 
 body {
-  background: #23639b;
+  /* background: #23639b; */
+  min-height: 100vh;
+}
+@layer components {
+  @import "./buttons";
+  /* @import "components/dropdown"; */
+  /* @import "components/form"; */
 }
