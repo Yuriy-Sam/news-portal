@@ -1,15 +1,18 @@
 .btn {
-  @apply px-6 py-3 block text-center relative font-bold  rounded border-none overflow-hidden;
+  @apply px-6 py-3 inline-flex justify-center items-center text-center relative border-primary  border-2 font-bold  rounded border-none overflow-hidden;
 }
 .btn_lg {
-  @apply px-10 py-3 border-primary border-2 border-solid;
+  @apply px-10 py-3;
 }
 
 .btn_secondary {
-  @apply border-primary bg-primary text-slate-50;
+  @apply border-solid bg-primary text-slate-50;
 }
 .btn_primary {
   @apply overflow-hidden;
+}
+.btn_active {
+  @apply bg-primary text-white;
 }
 .btn__nav__item {
   @apply px-6 py-3 rounded relative;
@@ -25,4 +28,7 @@
 /* .btn__nav__item:hover, */
 .btn_primary:hover {
   @apply bg-primary text-white;
+}
+.btn_secondary:hover {
+  @apply bg-white text-primary;
 }

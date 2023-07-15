@@ -1,11 +1,11 @@
 .sidebar {
-  @apply relative w-[120px] h-screen pb-10 px-2 py-4;
+  @apply relative w-[160px] h-screen pb-10 px-4 py-10;
 }
 .sidebar__logo {
   @apply text-xl font-bold text-center;
 }
 .sidebar__wrapper {
-  @apply border-r-2 top-0 left-0 border-primary-300 w-[120px] fixed h-screen px-4 py-6;
+  @apply fixed  top-0 left-0 border-r-2 border-primary-200 h-screen px-4 py-10;
 }
 .sidebar span {
   @apply hidden;

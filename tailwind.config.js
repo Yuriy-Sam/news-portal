@@ -18,6 +18,7 @@ module.exports = {
           500: "#999999",
           400: "#b2b2b2",
           300: "#cccccc",
+          200: "#e0e0e0",
         },
       },
       keyframes: {
@@ -31,10 +32,16 @@ module.exports = {
       animation: {
         "btn-anim": "btn-anim 5s linear infinite",
       },
-      // backgroundImage: {
-      //   pattern: "url('/pattern.png')",
-      //   "hero-bg": "url('/hero-bg.png')",
-      // },
+      gridTemplateColumns: {
+        // 4: "repeat(4, 120px)",
+      },
+      gridTemplateRows: {
+        // Simple 8 row grid
+        3: "repeat(3, 150px)",
+
+        // Complex site-specific row configuration
+        // 'layout': '200px minmax(900px, 1fr) 100px',
+      },
     },
   },
   plugins: [],

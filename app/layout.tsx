@@ -1,4 +1,4 @@
-import { Footer, Header, Sidebar } from "@/components";
+import { Footer, Header, ProfileSidebar, Sidebar } from "@/components";
 import "@/styles/globals.css";
 import type { Metadata } from "next";
 import { Inter, Mulish } from "next/font/google";
@@ -25,11 +25,12 @@ export default function RootLayout({
       <body className={`${mulish.className} flex justify-between`}>
         {/* <Header /> */}
         <Sidebar />
-        <div className="w-full ml-5">
+        <div className="w-full py-7 mx-10 ">
           <Header />
           {children}
           {/* <Footer /> */}
         </div>
+        <ProfileSidebar />
       </body>
     </html>
   );

@@ -1,5 +1,11 @@
-import { Header } from "@/components";
+import { CustomButton, Header, Main } from "@/components";
 
 export default function Home() {
-  return <>{/* <main className="w-full block">Main</main>; */}</>;
+  return (
+    <>
+      <main className="w-full block">
+        <Main />
+      </main>
+    </>
+  );
 }
