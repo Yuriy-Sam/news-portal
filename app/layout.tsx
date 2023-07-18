@@ -25,7 +25,7 @@ export default function RootLayout({
       <body className={`${mulish.className} flex justify-between`}>
         {/* <Header /> */}
         <Sidebar />
-        <div className="w-full py-7 mx-10 ">
+        <div className="w-full py-7 mx-10 lg:mx-7 max-w-[1100px]">
           <Header />
           {children}
           {/* <Footer /> */}

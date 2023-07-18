@@ -1,5 +1,5 @@
 .btn {
-  @apply px-6 py-3 inline-flex justify-center items-center text-center relative border-primary  border-2 font-bold  rounded border-none overflow-hidden;
+  @apply px-6 py-3 inline-flex justify-center items-center text-center relative border-primary-200  border-2 font-bold  rounded border-none overflow-hidden;
 }
 .btn_lg {
   @apply px-10 py-3;

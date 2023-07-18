@@ -1,8 +1,8 @@
 "use client";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 
 type CustomButtonProps = {
   link?: string;
@@ -47,21 +47,47 @@ const CustomButton = ({
           href={link}
           className={`btn ${containerStyles} ${
             pathname === link ? activeStyles || "btn_active" : null
-          }`}
+          } `}
         >
           <p>{text}</p>
           {image ? (
-            !active ? (
+            //  (
+            //   <>
+            //     <Image
+            //       className={"hidden" + active ? `hidden` : ""}
+            //       priority
+            //       src={"/icons/" + image}
+            //       // src={"/icons/" + active ? "light/" + image : image}
+            //       alt={image}
+            //       width={imageSize}
+            //       height={imageSize}
+            //     />
+
+            //     <Image
+            //       className={"hidden" + !active ? `hidden` : ""}
+            //       priority
+            //       src={"/icons/light/" + image}
+            //       alt={image}
+            //       width={imageSize}
+            //       height={imageSize}
+            //     />
+            //   </>
+            // )
+            active ? (
               <Image
-                src={"/icons/" + image}
-                // src={"/icons/" + active ? "light/" + image : image}
+                className={"hidden" + !active ? `hidden` : ""}
+                priority
+                src={"/icons/active/" + image}
                 alt={image}
                 width={imageSize}
                 height={imageSize}
               />
             ) : (
               <Image
-                src={"/icons/light/" + image}
+                // className={"hidden" + active ? `hidden` : ""}
+                priority
+                src={"/icons/" + image}
+                // src={"/icons/" + active ? "light/" + image : image}
                 alt={image}
                 width={imageSize}
                 height={imageSize}
@@ -92,7 +118,7 @@ const CustomButton = ({
               />
             ) : (
               <Image
-                src={"/icons/light/" + image}
+                src={"/icons/active/" + image}
                 alt={image}
                 width={imageSize}
                 height={imageSize}
@@ -105,4 +131,4 @@ const CustomButton = ({
   );
 };
 
-export default CustomButton;
+export default memo(CustomButton);

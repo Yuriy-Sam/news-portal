@@ -5,6 +5,7 @@ import CustomForm from "./CustomForm";
 import Sidebar from "./Sidebar";
 import CustomButton from "./CustomButton";
 import Main from "./Main";
+import MainTopics from "./MainTopics";
 import Post from "./Post";
 import ProfileSidebar from "./ProfileSidebar";
 
@@ -18,4 +19,5 @@ export {
   Main,
   ProfileSidebar,
   Post,
+  MainTopics,
 };

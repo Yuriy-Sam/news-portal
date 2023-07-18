@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import "@/styles/sidebar.css";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import Link from "next/link";
 import CustomButton from "./CustomButton";
 import { usePathname } from "next/navigation";
@@ -85,6 +85,8 @@ const NavLink = ({ item }: NavLinkProps) => {
 };
 
 const Sidebar = () => {
+  console.log("Sidebar");
+
   const renderNavLinks = (arr: Array<NavLinkType>) => {
     return arr.map((item) => {
       return <NavLink key={item.prompt} item={item} />;
@@ -93,7 +95,11 @@ const Sidebar = () => {
   return (
     <aside className="sidebar">
       <div className="sidebar__wrapper">
-        <div className="sidebar__logo">YusNews</div>
+        <div className="sidebar__logo">
+          Yus
+          <br />
+          News
+        </div>
         <nav className="sidebar__nav">
           <ul>{renderNavLinks(navLinksArr.slice(0, -2))}</ul>
           <ul>{renderNavLinks(navLinksArr.slice(-2))}</ul>

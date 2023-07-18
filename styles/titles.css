@@ -2,5 +2,5 @@
   @apply text-3xl font-bold;
 }
 .title_md {
-  @apply text-lg font-bold leading-6 mb-4;
+  @apply font-bold leading-5 mb-4;
 }

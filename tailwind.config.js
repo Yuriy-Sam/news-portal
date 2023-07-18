@@ -37,10 +37,19 @@ module.exports = {
       },
       gridTemplateRows: {
         // Simple 8 row grid
-        3: "repeat(3, 150px)",
-
+        // 3: "repeat(3, minmax(300px, 500px) )",
         // Complex site-specific row configuration
         // 'layout': '200px minmax(900px, 1fr) 100px',
+      },
+      screens: {
+        "2xl": { max: "1535px" },
+        xl: { max: "1279px" },
+
+        lg: { max: "1023px" },
+
+        md: { max: "767px" },
+
+        sm: { max: "639px" },
       },
     },
   },
