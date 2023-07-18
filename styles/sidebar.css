@@ -1,5 +1,5 @@
 .sidebar {
-  @apply relative w-[160px] h-screen pb-10 px-4 py-10 lg:hidden;
+  @apply relative w-[160px] h-screen pb-10 px-4 py-10;
 }
 .sidebar__logo {
   @apply text-xl font-bold text-center;

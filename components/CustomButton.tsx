@@ -49,7 +49,6 @@ const CustomButton = ({
             pathname === link ? activeStyles || "btn_active" : null
           } `}
         >
-          <p>{text}</p>
           {image ? (
             //  (
             //   <>
@@ -94,7 +93,7 @@ const CustomButton = ({
               />
             )
           ) : null}
-
+          <p>{text}</p>
           {prompt && <span>{prompt}</span>}
         </Link>
       ) : (
@@ -106,7 +105,6 @@ const CustomButton = ({
           onMouseLeave={() => setActive(false)}
           onClick={handleClick}
         >
-          <p>{text || ""}</p>
           {image ? (
             !active ? (
               <Image
@@ -125,6 +123,7 @@ const CustomButton = ({
               />
             )
           ) : null}
+          <p>{text || ""}</p>
         </button>
       )}
     </>
