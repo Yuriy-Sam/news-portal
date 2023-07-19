@@ -1,15 +1,24 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ReactNode } from "react";
 import "@/styles/sidebar.css";
 import Image from "next/legacy/image";
 import Link from "next/link";
 import CustomButton from "./CustomButton";
 import { usePathname } from "next/navigation";
+import {
+  CategoryIcon,
+  ExitIcon,
+  HamburgerIcon,
+  HomeIcon,
+  IconProps,
+  SettingIcon,
+  WriteIcon,
+} from "./SVGIcons";
 
 type NavLinkType = {
   link: string;
   prompt: string;
-  image: string;
+  Icon: React.ComponentType<IconProps>;
 };
 type NavLinkProps = {
   key: string;
@@ -24,27 +33,27 @@ const navLinksArr: Array<NavLinkType> = [
   {
     prompt: "Home",
     link: "/",
-    image: "home.svg",
+    Icon: HomeIcon,
   },
   {
     prompt: "Categories",
     link: "/categories",
-    image: "category.svg",
+    Icon: CategoryIcon,
   },
   {
     prompt: "Create post",
     link: "/create-post",
-    image: "write.svg",
+    Icon: WriteIcon,
   },
   {
     prompt: "Settings",
     link: "/settings",
-    image: "setting.svg",
+    Icon: SettingIcon,
   },
   {
     prompt: "Exit",
     link: "/login",
-    image: "exit.svg",
+    Icon: ExitIcon,
   },
 ];
 const NavLink = ({ item, show }: NavLinkProps) => {
@@ -53,10 +62,12 @@ const NavLink = ({ item, show }: NavLinkProps) => {
       key={item.prompt}
       text={show ? item.prompt : undefined}
       link={item.link}
-      containerStyles="btn_primary  w-full items-center justify-start lg:gap-2"
+      curentIconColor="#000"
+      activeIconColor="#fff"
+      containerStyles="btn_primary  w-full items-center justify-start lg:gap-4"
       activeStyles="btn_active"
-      image={item.image}
-      imageSize={show ? 25 : 30}
+      Icon={item.Icon}
+      imageSize={show ? 30 : 25}
     />
   );
 };
@@ -79,15 +90,17 @@ const Sidebar = () => {
     });
   };
   return (
-    <aside className="  h-screen w-[160px] lg:w-0 ">
+    <aside className="  h-screen w-[160px] lg:w-0  ">
       <CustomButton
         containerStyles=" btn_primary border-primary p-0 absolute top-0 left-7 mt-7 z-50"
-        image="hamburger.svg"
+        Icon={HamburgerIcon}
+        curentIconColor="#000"
+        activeIconColor="#fff"
         imageSize={50}
         handleClick={() => setShow(!show)}
       />
       <div
-        className={` z-50 fixed transition-all   top-0 left-0 border-r-2 bg-white border-primary-200 h-screen px-4 py-10 lg:-left-full ${
+        className={` z-50 fixed transition-all   top-0 left-0 border-r-2 bg-white border-primary-200 h-screen px-4 py-10 lg:-left-full lg:px-7 ${
           show ? "lg:left-0" : "lg:-left-full"
         }`}
       >

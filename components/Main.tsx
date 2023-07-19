@@ -7,6 +7,7 @@ import Link from "next/link";
 import { posts } from "@/data/posts";
 import { PostType } from "@/types";
 import { format, formatDistance, formatRelative, subDays } from "date-fns";
+import { BookmarkIcon, ShareIcon } from "./SVGIcons";
 
 const Main = () => {
   const image =
@@ -88,15 +89,18 @@ const MainPost = ({ post }: MainPostProp) => {
           <div className="">
             <CustomButton
               containerStyles="btn_secondary border-none bg-none after:hidden py-1 px-2"
-              // className="border-white  border-2"
               activeStyles="border-white "
-              image={"bookmark.svg"}
+              Icon={BookmarkIcon}
+              curentIconColor="#b2b2b2"
+              activeIconColor="#000"
               imageSize={30}
             />
             <CustomButton
               containerStyles="btn_secondary border-none bg-none after:hidden py-1 px-2"
               activeStyles="border-white "
-              image={"share.svg"}
+              Icon={ShareIcon}
+              curentIconColor="#b2b2b2"
+              activeIconColor="#000"
               imageSize={30}
             />
           </div>

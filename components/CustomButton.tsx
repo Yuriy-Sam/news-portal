@@ -2,12 +2,15 @@
 import Image from "next/legacy/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { memo, useState } from "react";
+import React, { ReactNode, memo, useState } from "react";
+import { IconProps } from "./SVGIcons";
 
 type CustomButtonProps = {
   link?: string;
   text?: string;
-  image?: string | undefined;
+  activeIconColor?: string;
+  curentIconColor?: string;
+  Icon?: React.ComponentType<IconProps>;
   prompt?: string | null;
   type?: "button" | "submit" | "reset";
   containerStyles?: string;
@@ -20,14 +23,16 @@ type CustomButtonProps = {
 const CustomButton = ({
   link,
   text,
-  image,
   type,
   prompt,
   containerStyles,
   handleClick,
   isDisabled,
   imageSize = 28,
+  Icon,
   activeStyles,
+  activeIconColor,
+  curentIconColor,
 }: CustomButtonProps) => {
   const pathname = usePathname();
   const [active, setActive] = useState<boolean>(pathname === link);
@@ -49,7 +54,13 @@ const CustomButton = ({
             pathname === link ? activeStyles || "btn_active" : null
           } `}
         >
-          {image ? (
+          {Icon && (
+            <Icon
+              imageSize={imageSize}
+              color={active ? activeIconColor : curentIconColor}
+            />
+          )}
+          {/* {image ? (
             //  (
             //   <>
             //     <Image
@@ -92,7 +103,7 @@ const CustomButton = ({
                 height={imageSize}
               />
             )
-          ) : null}
+          ) : null} */}
           <p>{text}</p>
           {prompt && <span>{prompt}</span>}
         </Link>
@@ -105,25 +116,13 @@ const CustomButton = ({
           onMouseLeave={() => setActive(false)}
           onClick={handleClick}
         >
-          {image ? (
-            !active ? (
-              <Image
-                src={"/icons/" + image}
-                // src={"/icons/" + active ? "light/" + image : image}
-                alt={image}
-                width={imageSize}
-                height={imageSize}
-              />
-            ) : (
-              <Image
-                src={"/icons/active/" + image}
-                alt={image}
-                width={imageSize}
-                height={imageSize}
-              />
-            )
-          ) : null}
-          <p>{text || ""}</p>
+          {Icon && (
+            <Icon
+              imageSize={imageSize}
+              color={active ? activeIconColor : curentIconColor}
+            />
+          )}
+          {text && <p>{text}</p>}
         </button>
       )}
     </>

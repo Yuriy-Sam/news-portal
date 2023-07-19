@@ -1,0 +1,7 @@
+:root {
+    --primary: {
+        500: theme(colors.slate.900),
+        100: theme(colors.white);
+    } 
+    --secondary: theme(colors.slate.100);
+  }

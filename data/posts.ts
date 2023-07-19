@@ -6,7 +6,7 @@ export const posts = [
       { value: "culture", title: "Culture" },
     ],
     autor: {
-      name: "Anna Hekka",
+      name: "Yuriy Samoilenko",
       image: "/img/autor.png",
     },
     image:
@@ -23,7 +23,7 @@ export const posts = [
     ],
 
     autor: {
-      name: "Anna Hekka",
+      name: "Yuriy Samoilenko",
       image: "/img/autor.png",
     },
     image:
@@ -39,7 +39,7 @@ export const posts = [
     ],
 
     autor: {
-      name: "Anna Hekka",
+      name: "Yuriy Samoilenko",
       image: "/img/autor.png",
     },
     image:
@@ -55,7 +55,7 @@ export const posts = [
     ],
 
     autor: {
-      name: "Anna Hekka",
+      name: "Yuriy Samoilenko",
       image: "/img/autor.png",
     },
     image:
@@ -72,7 +72,7 @@ export const posts = [
     ],
 
     autor: {
-      name: "Anna Hekka",
+      name: "Yuriy Samoilenko",
       image: "/img/autor.png",
     },
     image:
@@ -89,7 +89,7 @@ export const posts = [
     ],
 
     autor: {
-      name: "Anna Hekka",
+      name: "Yuriy Samoilenko",
       image: "/img/autor.png",
     },
     image:
@@ -105,7 +105,7 @@ export const posts = [
     ],
 
     autor: {
-      name: "Anna Hekka",
+      name: "Yuriy Samoilenko",
       image: "/img/autor.png",
     },
     image:
@@ -121,7 +121,7 @@ export const posts = [
     ],
 
     autor: {
-      name: "Anna Hekka",
+      name: "Yuriy Samoilenko",
       image: "/img/autor.png",
     },
     image:
@@ -137,7 +137,7 @@ export const posts = [
     ],
 
     autor: {
-      name: "Anna Hekka",
+      name: "Yuriy Samoilenko",
       image: "/img/autor.png",
     },
     image:
