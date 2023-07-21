@@ -1,5 +1,5 @@
 .title {
-  @apply text-3xl font-bold;
+  @apply text-xl sm:text-3xl font-bold;
 }
 .title_md {
   @apply font-bold leading-5 mb-4;

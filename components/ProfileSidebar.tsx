@@ -9,7 +9,7 @@ const ProfileSidebar = () => {
   console.log("ProfSidebar");
 
   return (
-    <aside className="relative min-w-[350px] lg:min-w-[300px]  h-screen md:hidden  ">
+    <aside className="relative w-0  h-screen hidden md:block lg:min-w-[350px] ">
       <div className=" fixed top-0 right-100% h-screen  border-l-primary-200 border-l-2  py-7 px-7">
         <div className=" relative  w-full flex items-center justify-center pb-7  mb-7 after-line ">
           <CustomButton

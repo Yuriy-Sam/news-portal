@@ -8,7 +8,7 @@ const MainTopics = () => {
   return (
     <section className="py-7 ">
       <h2 className="title">Topic Match for You</h2>
-      <div className="py-5">
+      <div className="py-5 flex wf  flex-nowrap">
         {categories.map((category) => {
           return (
             <CustomButton
@@ -20,9 +20,9 @@ const MainTopics = () => {
           );
         })}
       </div>
-      <div className=" grid grid-cols-3 gap-7 grid-rows-2 xl:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 ">
+      <div className=" grid grid-cols-1 gap-7 grid-rows-2 md:grid-cols-2 sm:grid-cols-2 ">
         {posts.slice(0, 5).map((post, i) => {
-          return <Post key={i} data={post} imageSize={500} />;
+          return <Post key={i} data={post} imageSize={800} />;
         })}
       </div>
     </section>

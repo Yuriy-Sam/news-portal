@@ -10,15 +10,16 @@ type HeaderProps = {
   // handleShowSidebar?: () => void;
 };
 const Header = ({}: HeaderProps) => {
+  const isMobile = window.matchMedia("(max-width: 1024px)").matches;
   console.log("Header");
   return (
     <header className="after-line relative w-full block pb-7">
       <div className="flex justify-between items-center">
-        <div className=" flex items-center justify-center ">
-          <div className="lg:w-[50px] lg:mr-5"></div>
-          <div className="header__search w-[320px] flex items-center justify-between border-2 border-primary-200 p-3 px-5 rounded-full sm:border-none lg:p-0 lg:w-auto">
+        <div className=" flex items-center justify-between w-full lg:w-auto lg:justify-center ">
+          <div className="w-[50px] mr-5 lg:w-0  lg:mr-0"></div>
+          <div className="header__search flex items-center justify-between  border-0 border-primary-200  p-0 rounded-full lg:border-2 lg:py-3 lg:px-5 ">
             <input
-              className="mr-1 w-full h-7 focus:outline-0 py-2 px-1 text-lg lg:mr-0 lg:p-0 lg:w-0"
+              className="mr-0 w-0 h-7 focus:outline-0 p-0  text-lg lg:mr-1 lg:py-2 lg:px-1 lg:w-full"
               type="text"
               placeholder="Search article you want..."
             />
@@ -32,8 +33,8 @@ const Header = ({}: HeaderProps) => {
             <CustomButton
               containerStyles=" px-3 py-0"
               Icon={SearchIcon}
-              curentIconColor="#cccccc"
-              activeIconColor="#000"
+              activeIconColor={isMobile ? "#cccccc" : "#000"}
+              curentIconColor={isMobile ? "#000" : "#cccccc"}
               imageSize={30}
             />
             {/* </Link> */}
