@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import CustomButton from "./CustomButton";
 import Image from "next/legacy/image";
 import { type } from "os";
@@ -43,7 +43,12 @@ type MainPostProp = {
 const MainPost = ({ post }: MainPostProp) => {
   const { image, title, categories, autor } = post;
   const dateNow: Date = new Date();
-  const isMobile = window.matchMedia("(max-width: 640px)").matches;
+  // let isMobile = false;
+  // useEffect(() => {
+
+  //     isMobile = window.matchMedia("(max-width: 640px)").matches;
+
+  // }, []);
 
   // format(new Date(), "'Today is a' eeee")
   //=> "Today is a Monday"
@@ -84,8 +89,8 @@ const MainPost = ({ post }: MainPostProp) => {
               src={autor.image}
               alt={autor.name || ""}
               objectFit="cover"
-              width={isMobile ? 30 : 40}
-              height={isMobile ? 30 : 40}
+              width={40}
+              height={40}
             />
             <div className="lg:flex  justify-center lg:items-center gap-3 ">
               <p className=" text-sm sm:text-lg text-primary-200 font-medium  ">
@@ -104,7 +109,7 @@ const MainPost = ({ post }: MainPostProp) => {
               Icon={BookmarkIcon}
               curentIconColor="#b2b2b2"
               activeIconColor="#000"
-              imageSize={isMobile ? 20 : 30}
+              imageSize={30}
             />
             <CustomButton
               containerStyles="btn_secondary border-none bg-none after:hidden py-1 px-1 sm:px-2"
@@ -112,7 +117,7 @@ const MainPost = ({ post }: MainPostProp) => {
               Icon={ShareIcon}
               curentIconColor="#b2b2b2"
               activeIconColor="#000"
-              imageSize={isMobile ? 20 : 30}
+              imageSize={30}
             />
           </div>
         </div>

@@ -10,7 +10,7 @@ type HeaderProps = {
   // handleShowSidebar?: () => void;
 };
 const Header = ({}: HeaderProps) => {
-  const isMobile = window.matchMedia("(max-width: 1024px)").matches;
+  // const isMobile = window.matchMedia("(max-width: 1024px)").matches;
   console.log("Header");
   return (
     <header className="after-line relative w-full block pb-7">
@@ -33,8 +33,8 @@ const Header = ({}: HeaderProps) => {
             <CustomButton
               containerStyles=" px-3 py-0"
               Icon={SearchIcon}
-              activeIconColor={isMobile ? "#cccccc" : "#000"}
-              curentIconColor={isMobile ? "#000" : "#cccccc"}
+              activeIconColor={"#000"}
+              curentIconColor={"#cccccc"}
               imageSize={30}
             />
             {/* </Link> */}
