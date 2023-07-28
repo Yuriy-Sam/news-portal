@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 import React, { useEffect, useState } from "react";
 import CustomButton from "./CustomButton";
 import Image from "next/legacy/image";
