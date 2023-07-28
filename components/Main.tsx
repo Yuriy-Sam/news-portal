@@ -1,5 +1,5 @@
 // "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CustomButton from "./CustomButton";
 import Image from "next/legacy/image";
 import { type } from "os";
@@ -8,10 +8,67 @@ import { posts } from "@/data/posts";
 import { PostType } from "@/types";
 import { format, formatDistance, formatRelative, subDays } from "date-fns";
 import { BookmarkIcon, ShareIcon } from "./SVGIcons";
+import Swiper from "swiper";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 
 const Main = () => {
-  const image =
-    "https://localnews8.b-cdn.net/2023/07/cnn-L19jb21wb25lbnRzL2ltYWdlL2luc3RhbmNlcy9pbWFnZS04YzdhNjU3NjMzZmIxNGM1ZDBjNmEwODlkMjBlNTMyYQ-L19wYWdlcy9oX2YxMjg3YjZjNGQwODI0M2UzY2JjNjFiNDRmMGIxZGU0-300-1440x810.jpg";
+  const [currentSlide, setCurrentSlide] = useState(1);
+  useEffect(() => {
+    // Initialize the Swiper instance when the component mounts
+    const swiper = new Swiper(".swiper", {
+      // Configure the swiper options here
+      // For example, you can set direction, pagination, etc.
+      modules: [Navigation, Autoplay, Pagination],
+      slidesPerView: 1,
+      spaceBetween: 3,
+      breakpoints: {
+        // when window width is <= 499px
+        350: {
+          slidesPerView: 2,
+          spaceBetween: 3,
+        },
+        767: {
+          slidesPerView: 3,
+          spaceBetween: 10,
+        },
+        1023: {
+          slidesPerView: 2,
+          spaceBetween: 15,
+        },
+        // when window width is <= 999px
+        // xl: { max: "1279px" },
+        // lg: { max: "1023px" },
+        // md: { max: "767px" },
+        // sm: { max: "639px" },
+        1279: {
+          slidesPerView: 3,
+          spaceBetween: 15,
+        },
+      },
+      loop: true,
+      autoplay: { delay: 5000 },
+      speed: 500,
+      // pagination: {
+      //   el: ".swiper-pagination",
+      //   type: "progressbar",
+      // },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+      on: {
+        slideChange: () => {
+          const realIndex = swiper.realIndex;
+          const slidesLength = swiper.slides.length;
+          const adjustedIndex = (realIndex + slidesLength) % slidesLength;
+          setCurrentSlide(adjustedIndex + 1);
+        },
+      },
+    });
+    return () => {
+      swiper.destroy();
+    };
+  }, []);
 
   return (
     <section className="py-7 ">
@@ -25,10 +82,14 @@ const Main = () => {
       <div className=" h-[300px] sm:h-[400px] lg:h-[500px]">
         {/* <div className="grid grid-cols-1 grid-rows-3 mt-7 gap-4"> */}
         {/* <div className="grid grid-cols-[3fr_1fr] grid-rows-3 mt-7 gap-4"> */}
-        <MainPost
-          post={posts[0]}
-          // containerStyles="row-span-3"
-        />
+        {/* <div className="swiper">
+        <div className="swiper-wrapper ">
+        <div key={"asd"} className="swiper-slide p-1 ">
+        <MainPost post={posts[0]} />
+        </div>
+        </div>
+        </div> */}
+        <MainPost post={posts[0]} />
         {/* <MainPost url={url} title="asdjasdk asd asmkdls and asndklasn dl" />
         <MainPost url={url} title="asdjasdk asd asmkdls and asndklasn dl" />
         <MainPost url={url} title="asdjasdk asd asmkdls and asndklasn dl" /> */}
