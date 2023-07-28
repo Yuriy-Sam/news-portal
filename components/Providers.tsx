@@ -3,7 +3,7 @@
 
 import { store } from "@/store";
 import { ThemeProvider } from "next-themes";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Provider } from "react-redux";
 
 interface ProvidersProps {
@@ -11,11 +11,15 @@ interface ProvidersProps {
 }
 
 export function Providers({ children }: ProvidersProps) {
-  return (
-    // <SessionProvider>
-    <ThemeProvider>
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  return isMounted ? (
+    <ThemeProvider attribute="class">
       <Provider store={store}>{children}</Provider>
     </ThemeProvider>
-    // </SessionProvider>
-  );
+  ) : null;
 }

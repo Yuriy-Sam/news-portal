@@ -5,6 +5,8 @@ import Image from "next/legacy/image";
 import Link from "next/link";
 import CustomButton from "./CustomButton";
 import { usePathname } from "next/navigation";
+import { useTheme } from "next-themes";
+
 import {
   CategoryIcon,
   ExitIcon,
@@ -21,6 +23,7 @@ type NavLinkType = {
   link?: string;
   prompt: string;
   Icon: React.ComponentType<IconProps>;
+  handle?: () => void;
 };
 type NavLinkProps = {
   key: string;
@@ -31,38 +34,6 @@ type SidebarProps = {
   show?: boolean;
 };
 
-const navLinksArr: Array<NavLinkType> = [
-  {
-    prompt: "Home",
-    link: "/",
-    Icon: HomeIcon,
-  },
-  {
-    prompt: "All News",
-    link: "#",
-    Icon: TrendsIcon,
-  },
-  {
-    prompt: "Categories",
-    link: "/categories",
-    Icon: CategoryIcon,
-  },
-  {
-    prompt: "Create post",
-    // link: "/create-post",
-    Icon: WriteIcon,
-  },
-  {
-    prompt: "Settings",
-    // link: "/settings",
-    Icon: SettingIcon,
-  },
-  {
-    prompt: "Exit",
-    // link: "/login",
-    Icon: ExitIcon,
-  },
-];
 const NavLink = ({ item, show }: NavLinkProps) => {
   return (
     <CustomButton
@@ -73,12 +44,47 @@ const NavLink = ({ item, show }: NavLinkProps) => {
       containerStyles="btn_primary  w-full items-center  gap-4 justify-start lg:gap-0"
       Icon={item.Icon}
       iconStyles={show ? "w-[30px] h-[30px]" : "w-[25px] h-[25px]"}
+      handleClick={item.handle}
     />
   );
 };
 
 const Sidebar = () => {
+  const navLinksArr: Array<NavLinkType> = [
+    {
+      prompt: "Home",
+      link: "/",
+      Icon: HomeIcon,
+    },
+    {
+      prompt: "All News",
+      link: "#",
+      Icon: TrendsIcon,
+    },
+    {
+      prompt: "Categories",
+      link: "/categories",
+      Icon: CategoryIcon,
+    },
+    {
+      prompt: "Create post",
+      // link: "/create-post",
+      Icon: WriteIcon,
+    },
+    {
+      prompt: "Settings",
+      // link: "/settings",
+      Icon: SettingIcon,
+      // handle: () => (theme == "dark" ? setTheme("light") : setTheme("dark")),
+    },
+    {
+      prompt: "Exit",
+      // link: "/login",
+      Icon: ExitIcon,
+    },
+  ];
   const [authUser, setAuthUser] = useState<AuthUser | null>(null);
+  const { systemTheme, theme, setTheme } = useTheme();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");

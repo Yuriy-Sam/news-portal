@@ -2,7 +2,6 @@
 module.exports = {
   darkMode: "class",
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "node_modules/preline/dist/*.js",
@@ -32,15 +31,6 @@ module.exports = {
       },
       animation: {
         "btn-anim": "btn-anim 5s linear infinite",
-      },
-      gridTemplateColumns: {
-        // 4: "repeat(4, 120px)",
-      },
-      gridTemplateRows: {
-        // Simple 8 row grid
-        // 3: "repeat(3, minmax(300px, 500px) )",
-        // Complex site-specific row configuration
-        // 'layout': '200px minmax(900px, 1fr) 100px',
       },
       screens: {
         // "2xl": { max: "1535px" },

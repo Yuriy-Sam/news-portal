@@ -1,9 +1,10 @@
 // "use client";
 import { Footer, Header, ProfileSidebar, Sidebar } from "@/components";
+import { Providers } from "@/components/Providers";
 import "@/styles/globals.css";
 import type { Metadata } from "next";
 import { Inter, Mulish } from "next/font/google";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 
 // const inter = Inter({ subsets: ["latin"] });
 const mulish = Mulish({
@@ -22,14 +23,16 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  useEffect(() => {
-    import("preline");
-  }, []);
+  // useEffect(() => {
+  //   import("preline");
+  // }, []);
   return (
     <html lang="en">
       <body className={`${mulish.className} flex justify-between `}>
-        <Sidebar />
-        {children}
+        <Providers>
+          <Sidebar />
+          {children}
+        </Providers>
       </body>
     </html>
   );

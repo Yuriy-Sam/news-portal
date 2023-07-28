@@ -76,7 +76,7 @@ const Main = () => {
         <h2 className="title  mb-0">Article of The Day</h2>
         <CustomButton
           text="Load More"
-          containerStyles="btn_primary border-solid rounded-full text-sm p-3 sm:py-4 sm:px-6 "
+          containerStyles="btn_primary dark:btn_primary border-solid rounded-full text-sm p-3 sm:py-4 sm:px-6 "
         />
       </div>
       <div className=" h-[300px] sm:h-[400px] lg:h-[500px]">
