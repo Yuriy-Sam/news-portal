@@ -1,28 +1,57 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CustomButton from "./CustomButton";
 import Post from "./Post";
 import { categories } from "@/data/categories";
 import { posts } from "@/data/posts";
+import Image from "next/image";
+import { AuthUser } from "@/types";
 
 const ProfileSidebar = () => {
-  console.log("ProfSidebar");
+  const [authUser, setAuthUser] = useState<AuthUser | null>(null);
 
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser) as AuthUser;
+      setAuthUser(parsedUser);
+    }
+  }, []);
+
+  console.log("authUser", authUser);
   return (
     <aside className="relative w-0  h-screen hidden md:block lg:min-w-[350px] ">
       <div className=" fixed top-0 right-100% h-screen  border-l-primary-200 border-l-2  py-7 px-7">
-        <div className=" relative  w-full flex items-center justify-center pb-7  mb-7 after-line ">
-          <CustomButton
-            link="/login"
-            containerStyles="btn_primary rounded-full rounded-r-none border-r-0 border-solid"
-            text="Log In"
-          />
-          <CustomButton
-            link="/signup"
-            containerStyles="btn_secondary  rounded-full rounded-l-none border-l-0 after:animate-btn-anim hover:after:animate-none"
-            text="Sign Up"
-          />
-        </div>
+        {authUser ? (
+          <div className="flex  items-center gap-2 sm:gap-3 pb-7    mb-7 after-line  ">
+            <Image
+              className=" rounded-full"
+              src={"/img/profile1.gif"}
+              alt={authUser.firstName}
+              width={60}
+              height={60}
+            />
+            <div className="">
+              <p className=" text-sm sm:text-base text-primary font-bold  ">
+                {authUser.firstName + " " + authUser.lastName}
+              </p>
+              <p className="text-sm text-primary-500 ">{authUser.email}</p>
+            </div>
+          </div>
+        ) : (
+          <div className=" relative  w-full flex items-center justify-center pb-7  mb-7 after-line ">
+            <CustomButton
+              link="/login"
+              containerStyles="btn_primary rounded-full rounded-r-none border-r-0 border-solid"
+              text="Log In"
+            />
+            <CustomButton
+              link="/signup"
+              containerStyles="btn_secondary  rounded-full rounded-l-none border-l-0 after:animate-btn-anim hover:after:animate-none"
+              text="Sign Up"
+            />
+          </div>
+        )}
         <div className=" pb-7  mb-7 after-line ">
           <h3 className="title_md">Continue Reading</h3>
           <Post data={posts[0]} showText={false} imageSize={300} />

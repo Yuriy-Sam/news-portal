@@ -1,6 +1,7 @@
 export type CategoryType = {
   value: string;
   title: string;
+  image?: string;
 };
 type AutorType = {
   name: string;
@@ -15,3 +16,11 @@ export type PostType = {
   autor: AutorType;
   categories?: Array<CategoryType>;
 };
+export interface AuthUser {
+  firstName: string;
+  lastName: string;
+  avatar: string;
+  password: string;
+  email: string;
+  // Add other properties of the user if needed
+}

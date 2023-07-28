@@ -20,8 +20,9 @@ body {
 }
 
 @layer components {
-  @import "./buttons";
   @import "./titles";
+  @import "./buttons";
+  @import "./form";
   /* @import "components/dropdown"; */
   /* @import "components/form"; */
 }

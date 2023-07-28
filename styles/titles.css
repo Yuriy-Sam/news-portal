@@ -1,6 +1,9 @@
 .title {
-  @apply text-xl sm:text-3xl font-bold;
+  @apply text-lg sm:text-3xl font-bold  mb-7;
 }
 .title_md {
   @apply font-bold leading-5 mb-4;
+}
+.subtitle__form {
+  @apply text-base mb-5 text-primary-500;
 }

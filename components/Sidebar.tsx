@@ -12,11 +12,13 @@ import {
   HomeIcon,
   IconProps,
   SettingIcon,
+  TrendsIcon,
   WriteIcon,
 } from "./SVGIcons";
+import { AuthUser } from "@/types";
 
 type NavLinkType = {
-  link: string;
+  link?: string;
   prompt: string;
   Icon: React.ComponentType<IconProps>;
 };
@@ -36,23 +38,28 @@ const navLinksArr: Array<NavLinkType> = [
     Icon: HomeIcon,
   },
   {
+    prompt: "All News",
+    link: "#",
+    Icon: TrendsIcon,
+  },
+  {
     prompt: "Categories",
     link: "/categories",
     Icon: CategoryIcon,
   },
   {
     prompt: "Create post",
-    link: "/create-post",
+    // link: "/create-post",
     Icon: WriteIcon,
   },
   {
     prompt: "Settings",
-    link: "/settings",
+    // link: "/settings",
     Icon: SettingIcon,
   },
   {
     prompt: "Exit",
-    link: "/login",
+    // link: "/login",
     Icon: ExitIcon,
   },
 ];
@@ -61,19 +68,25 @@ const NavLink = ({ item, show }: NavLinkProps) => {
     <CustomButton
       key={item.prompt}
       text={show ? item.prompt : undefined}
-      link={item.link}
-      curentIconColor="#000"
-      activeIconColor="#fff"
+      link={item.link || undefined}
+      prompt={item.prompt}
       containerStyles="btn_primary  w-full items-center  gap-4 justify-start lg:gap-0"
-      activeStyles="btn_active"
       Icon={item.Icon}
-      imageSize={show ? 30 : 25}
+      iconStyles={show ? "w-[30px] h-[30px]" : "w-[25px] h-[25px]"}
     />
   );
 };
 
 const Sidebar = () => {
-  console.log("Sidebar");
+  const [authUser, setAuthUser] = useState<AuthUser | null>(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser) as AuthUser;
+      setAuthUser(parsedUser);
+    }
+  }, []);
 
   const [show, setShow] = useState<boolean>(false);
 
@@ -90,17 +103,17 @@ const Sidebar = () => {
     });
   };
   return (
-    <aside className="  h-screen w-0 lg:w-[160px]  ">
+    <aside className="  h-screen w-0 lg:w-[30px] lg:px-14 px-0 ">
       <CustomButton
-        containerStyles=" btn_primary border-primary p-0 absolute top-0 left-7 mt-7 z-50"
+        containerStyles=" btn_primary border-primary p-0 absolute top-0 left-5 sm:left-7 mt-7 z-50"
         Icon={HamburgerIcon}
-        curentIconColor="#000"
+        currentIconColor="red"
         activeIconColor="#fff"
-        imageSize={50}
+        iconStyles={"w-[50px] h-[50px]"}
         handleClick={() => setShow(!show)}
       />
       <div
-        className={` z-50 fixed transition-all   top-0 border-r-2 bg-white border-primary-200 h-screen px-7 py-10  lg:left-0 lg:px-4 ${
+        className={` z-50 fixed transition-all  top-0 border-r-2 bg-white border-primary-200 h-screen px-7 py-10  lg:left-0 lg:px-5 ${
           show ? "left-0" : "-left-full"
         } `}
       >
@@ -110,7 +123,9 @@ const Sidebar = () => {
             {renderNavLinks(navLinksArr.slice(0, -2))}
           </ul>
           <ul className="flex flex-col items-center gap-3">
-            {renderNavLinks(navLinksArr.slice(-2))}
+            {renderNavLinks(
+              authUser ? navLinksArr.slice(-2) : navLinksArr.slice(-2, -1)
+            )}
           </ul>
         </nav>
       </div>

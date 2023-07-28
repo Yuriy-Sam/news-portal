@@ -17,7 +17,7 @@ const Header = ({}: HeaderProps) => {
       <div className="flex justify-between items-center">
         <div className=" flex items-center justify-between w-full lg:w-auto lg:justify-center ">
           <div className="w-[50px] mr-5 lg:w-0  lg:mr-0"></div>
-          <div className="header__search flex items-center justify-between  border-0 border-primary-200  p-0 rounded-full lg:border-2 lg:py-3 lg:px-5 ">
+          <form className="header__search flex items-center justify-between  border-0 border-primary-200  p-0 rounded-full lg:border-2 lg:py-3 lg:px-5 ">
             <input
               className="mr-0 w-0 h-7 focus:outline-0 p-0  text-lg lg:mr-1 lg:py-2 lg:px-1 lg:w-full"
               type="text"
@@ -31,23 +31,22 @@ const Header = ({}: HeaderProps) => {
               alt="search"
             /> */}
             <CustomButton
-              containerStyles=" px-3 py-0"
+              containerStyles="px-3 lg:py-0 hover:text-primary lg:text-primary-400"
               Icon={SearchIcon}
-              activeIconColor={"#000"}
-              curentIconColor={"#cccccc"}
-              imageSize={30}
+              // type="submit"
+              // activeIconColor="primary-400"
+              // currentIconColor="primary-200"
+              iconStyles={"w-[30px] h-[30px]"}
             />
             {/* </Link> */}
-          </div>
+          </form>
         </div>
 
         <CustomButton
           link="/favoriate"
           containerStyles="btn_primary px-3"
           Icon={BookmarksIcon}
-          curentIconColor="#000"
-          activeIconColor="#fff"
-          imageSize={30}
+          iconStyles={"w-[30px] h-[30px]"}
         />
         {/* <div className="flex justify-between items-center gap-5">
 

@@ -6,8 +6,10 @@ import Sidebar from "./Sidebar";
 import CustomButton from "./CustomButton";
 import Main from "./Main";
 import MainTopics from "./MainTopics";
+import BreakingNews from "./BreakingNews";
 import Post from "./Post";
 import ProfileSidebar from "./ProfileSidebar";
+import CustomModal from "./CustomModal";
 
 export {
   Header,
@@ -20,4 +22,6 @@ export {
   ProfileSidebar,
   Post,
   MainTopics,
+  BreakingNews,
+  CustomModal,
 };

@@ -9,7 +9,7 @@ type CustomButtonProps = {
   link?: string;
   text?: string;
   activeIconColor?: string;
-  curentIconColor?: string;
+  currentIconColor?: string;
   Icon?: React.ComponentType<IconProps>;
   prompt?: string | null;
   type?: "button" | "submit" | "reset";
@@ -17,7 +17,7 @@ type CustomButtonProps = {
   activeStyles?: string;
   handleClick?: () => void;
   isDisabled?: boolean;
-  imageSize?: number;
+  iconStyles?: string;
 };
 
 const CustomButton = ({
@@ -28,11 +28,11 @@ const CustomButton = ({
   containerStyles,
   handleClick,
   isDisabled,
-  imageSize = 28,
+  iconStyles,
   Icon,
   activeStyles,
   activeIconColor,
-  curentIconColor,
+  currentIconColor,
 }: CustomButtonProps) => {
   const pathname = usePathname();
   const [active, setActive] = useState<boolean>(pathname === link);
@@ -50,62 +50,19 @@ const CustomButton = ({
           onMouseEnter={() => handlerActive(true)}
           onMouseLeave={() => handlerActive(false)}
           href={link}
+          title={prompt || ""}
           className={`btn ${containerStyles} ${
             pathname === link ? activeStyles || "btn_active" : null
           } `}
         >
           {Icon && (
             <Icon
-              imageSize={imageSize}
-              color={active ? activeIconColor : curentIconColor}
+              iconStyles={iconStyles}
+              color={active ? activeIconColor : currentIconColor}
             />
           )}
-          {/* {image ? (
-            //  (
-            //   <>
-            //     <Image
-            //       className={"hidden" + active ? `hidden` : ""}
-            //       priority
-            //       src={"/icons/" + image}
-            //       // src={"/icons/" + active ? "light/" + image : image}
-            //       alt={image}
-            //       width={imageSize}
-            //       height={imageSize}
-            //     />
 
-            //     <Image
-            //       className={"hidden" + !active ? `hidden` : ""}
-            //       priority
-            //       src={"/icons/light/" + image}
-            //       alt={image}
-            //       width={imageSize}
-            //       height={imageSize}
-            //     />
-            //   </>
-            // )
-            active ? (
-              <Image
-                className={"hidden" + !active ? `hidden` : ""}
-                priority
-                src={"/icons/active/" + image}
-                alt={image}
-                width={imageSize}
-                height={imageSize}
-              />
-            ) : (
-              <Image
-                // className={"hidden" + active ? `hidden` : ""}
-                priority
-                src={"/icons/" + image}
-                // src={"/icons/" + active ? "light/" + image : image}
-                alt={image}
-                width={imageSize}
-                height={imageSize}
-              />
-            )
-          ) : null} */}
-          <p>{text}</p>
-          {prompt && <span>{prompt}</span>}
+          {text && <p>{text}</p>}
         </Link>
       ) : (
         <button
@@ -118,8 +75,9 @@ const CustomButton = ({
         >
           {Icon && (
             <Icon
-              imageSize={imageSize}
-              color={active ? activeIconColor : curentIconColor}
+              iconStyles={iconStyles}
+              // color={active ? "green-500" : "red-500"}
+              color={active ? activeIconColor : currentIconColor}
             />
           )}
           {text && <p>{text}</p>}

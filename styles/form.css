@@ -1,0 +1,15 @@
+.form__input {
+  @apply p-2 border-solid border-2 border-primary-400 block rounded-md w-full;
+}
+.form__label {
+  @apply mb-1 text-primary-600 font-bold;
+}
+.form__label span {
+  @apply text-red-400 ml-1;
+}
+.form__item {
+  @apply text-left mb-4 h-full w-full flex justify-start flex-col;
+}
+.form__error {
+  @apply text-sm text-red-500;
+}
