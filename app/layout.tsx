@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import { Footer, Header, ProfileSidebar, Sidebar } from "@/components";
 import "@/styles/globals.css";
 import type { Metadata } from "next";
