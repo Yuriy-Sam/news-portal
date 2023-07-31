@@ -5,20 +5,19 @@ import Post from "./Post";
 import { categories } from "@/data/categories";
 import { posts } from "@/data/posts";
 import Image from "next/image";
-import { AuthUser } from "@/types";
+import { AuthUserType } from "@/types";
+import { useStateSelector } from "@/store";
 
 const ProfileSidebar = () => {
-  const [authUser, setAuthUser] = useState<AuthUser | null>(null);
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser) as AuthUser;
-      setAuthUser(parsedUser);
-    }
-  }, []);
-
-  console.log("authUser", authUser);
+  // const [authUser, setAuthUser] = useState<AuthUserType | null>(null);
+  const authUser = useStateSelector((state) => state.user.authUser);
+  // useEffect(() => {
+  //   const storedUser = localStorage.getItem("user");
+  //   if (storedUser) {
+  //     const parsedUser = JSON.parse(storedUser) as AuthUserType;
+  //     setAuthUser(parsedUser);
+  //   }
+  // }, []);
   return (
     <aside className="relative w-0  h-screen hidden md:block lg:min-w-[350px] ">
       <div className=" fixed top-0 right-100% h-screen  border-l-primary-200 border-l-2  py-7 px-7">

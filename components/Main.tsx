@@ -118,7 +118,7 @@ const MainPost = ({ post }: MainPostProp) => {
     addSuffix: true,
   });
 
-  console.log(dateNow);
+  // console.log(dateNow);
   // formatRelative(subDays(new Date(), 3), new Date())
   return (
     <div className=" relative w-full h-full">

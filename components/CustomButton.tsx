@@ -51,6 +51,7 @@ const CustomButton = ({
           onMouseLeave={() => handlerActive(false)}
           href={link}
           title={prompt || ""}
+          onClick={handleClick}
           className={`btn ${containerStyles} ${
             pathname === link ? activeStyles || "btn_active" : null
           } `}

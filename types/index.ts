@@ -1,3 +1,5 @@
+import { Id } from "@reduxjs/toolkit/dist/tsHelpers";
+
 export type CategoryType = {
   value: string;
   title: string;
@@ -16,11 +18,10 @@ export type PostType = {
   autor: AutorType;
   categories?: Array<CategoryType>;
 };
-export interface AuthUser {
+export interface AuthUserType {
   firstName: string;
   lastName: string;
   avatar: string;
   password: string;
   email: string;
-  // Add other properties of the user if needed
 }

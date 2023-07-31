@@ -6,6 +6,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "localnews8.b-cdn.net",
       },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
     ],
   },
   env: {

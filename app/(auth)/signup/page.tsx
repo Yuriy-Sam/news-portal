@@ -1,10 +1,13 @@
 "use client";
+import { uploadPhoto } from "@/actions/uploadImages";
 import { CustomButton } from "@/components";
+import { registerUser, useAppDispatch, useStateSelector } from "@/store";
 import { DropArgument } from "net";
 import Image from "next/image";
 import Link from "next/link";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type FormValues = {
   firstName: string;
@@ -12,7 +15,7 @@ type FormValues = {
   email: string;
   password: string;
   confirmPassword: string;
-  avatar: FileList;
+  avatar: File;
 };
 
 const PageSignUp = () => {
@@ -23,6 +26,7 @@ const PageSignUp = () => {
 
     formState: { errors },
   } = useForm<FormValues>({
+    // mode: "onSubmit",
     mode: "onBlur",
     defaultValues: {
       firstName: "",
@@ -32,21 +36,47 @@ const PageSignUp = () => {
       confirmPassword: "",
     },
   });
-  const [uploadedImg, setUploadedImg] = useState<string>("/");
+  const [uploadedImg, setUploadedImg] = useState<File | null>(null);
+  const [emailIsUnique, setEmailIsUnique] = useState<boolean>(true);
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    localStorage.setItem(
-      "user",
-      JSON.stringify({
-        ...data,
-        avatar: uploadedImg !== "/" ? uploadedImg : undefined,
-      })
-    );
-    console.log({
-      ...data,
-      avatar: uploadedImg !== "/" ? uploadedImg : undefined,
-    });
-  }; // const [uploadedImg, setUploadedImg] = useState("/");
+  const [prevImg, setPrevImg] = useState<string>("/");
+  const errMessage = useStateSelector(
+    (state) => state.user.registerErrorMessage
+  );
+
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  // const success = useSearchParams().get("success");
+  // console.log("searchParams", success);
+  // if(success){
+
+  // }
+  // useEffect(() => {
+  //   console.log("searchParams", success);
+  // }, []);
+
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    setEmailIsUnique(true);
+
+    const formData = new FormData();
+
+    formData.append("firstName", data.firstName);
+    formData.append("lastName", data.lastName);
+    formData.append("email", data.email);
+    formData.append("password", data.password);
+    // if (uploadedImg) {
+    //   formData.append("avatar", uploadedImg);
+    //   // const res = await uploadPhoto(formData);
+    // }
+    const res = await dispatch(registerUser(formData))
+      .unwrap()
+      .catch((err) => {
+        console.error("register", err);
+      });
+    if (res) {
+      router.push("/login?success=true");
+    }
+  };
   const registerOptions = {
     firstName: {
       required: "First Name is required",
@@ -65,6 +95,11 @@ const PageSignUp = () => {
     email: {
       required: "Email is required",
       pattern: { value: /^\S+@\S+$/i, message: "Please Enter a valid email" },
+      validate: () => {
+        if (!emailIsUnique) {
+          return "Email is already in use";
+        }
+      },
     },
     password: {
       required: "Password is required",
@@ -84,9 +119,21 @@ const PageSignUp = () => {
   };
 
   const showProfileImg = (file: File) => {
-    setUploadedImg(URL.createObjectURL(file));
+    setUploadedImg(file);
+    setPrevImg(URL.createObjectURL(file));
   };
 
+  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const file = e.target.files?.[0] as File;
+    if (file) {
+      showProfileImg(file);
+    }
+    // const file = e.target.files?.[0] as File;
+    // if (file) {
+    //   showProfileImg(file);
+    // }
+  };
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
@@ -106,7 +153,9 @@ const PageSignUp = () => {
           className=" text-center w-full py-7 max-w-[450px]"
         >
           <h1 className="title mb-2 ">Create Your Account</h1>
-          <p className="subtitle__form">We&apos;ve been waiting for you.</p>
+          <p className={`subtitle__form ${errMessage ? "text-red-500" : ""}`}>
+            {errMessage || "We've been waiting for you."}
+          </p>
           <div className=" flex justify-between  items-start gap-4">
             <div className="form__item">
               <label className="form__label">
@@ -153,6 +202,7 @@ const PageSignUp = () => {
               {...register("email", registerOptions.email)}
               name="email"
               type="email"
+              onBlur={() => setEmailIsUnique(true)}
               className={`
                 form__input ${errors?.email && "border-red-300"}
               `}
@@ -279,15 +329,15 @@ const PageSignUp = () => {
                 accept="image/*"
                 type="file"
                 className="hidden"
-                onChange={(e) => showProfileImg(e.target.files?.[0] as File)}
+                onChange={(e) => handleUpload(e)}
               />
             </label>
-            {uploadedImg !== "/" && (
-              <div className="  ml-4 h-full relative">
+            {prevImg !== "/" && (
+              <div className="  ml-4 h-full w-auto relative">
                 <Image
                   id="uploaded-img"
-                  className=" object-cover rounded-full"
-                  src={uploadedImg}
+                  className=" object-cover rounded-full min-h-[90px] min-w-[90px]"
+                  src={prevImg}
                   // fill
                   width={100}
                   height={100}
@@ -313,7 +363,7 @@ const PageSignUp = () => {
           </div>
         </form>
       </div>
-      <div className=" relative w-full h-full">
+      <div className=" relative w-full h-full lg:block hidden">
         <Image
           src={"/img/bg-login.jpg"}
           fill

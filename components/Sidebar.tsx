@@ -4,7 +4,7 @@ import "@/styles/sidebar.css";
 import Image from "next/legacy/image";
 import Link from "next/link";
 import CustomButton from "./CustomButton";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 
 import {
@@ -17,7 +17,8 @@ import {
   TrendsIcon,
   WriteIcon,
 } from "./SVGIcons";
-import { AuthUser } from "@/types";
+import { AuthUserType } from "@/types";
+import { useAppDispatch, useStateSelector, userActions } from "@/store";
 
 type NavLinkType = {
   link?: string;
@@ -50,6 +51,13 @@ const NavLink = ({ item, show }: NavLinkProps) => {
 };
 
 const Sidebar = () => {
+  const router = useRouter();
+  const authUser = useStateSelector((state) => state.user.authUser);
+  const dispatch = useAppDispatch();
+  const [show, setShow] = useState<boolean>(false);
+
+  // const { systemTheme, theme, setTheme } = useTheme();
+
   const navLinksArr: Array<NavLinkType> = [
     {
       prompt: "Home",
@@ -75,26 +83,25 @@ const Sidebar = () => {
       prompt: "Settings",
       // link: "/settings",
       Icon: SettingIcon,
-      // handle: () => (theme == "dark" ? setTheme("light") : setTheme("dark")),
     },
     {
       prompt: "Exit",
       // link: "/login",
       Icon: ExitIcon,
+      handle: () => {
+        dispatch(userActions.leaveUser());
+        router.push("/login");
+      },
     },
   ];
-  const [authUser, setAuthUser] = useState<AuthUser | null>(null);
-  const { systemTheme, theme, setTheme } = useTheme();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      const parsedUser = JSON.parse(storedUser) as AuthUser;
-      setAuthUser(parsedUser);
+      const parsedUser = JSON.parse(storedUser) as AuthUserType;
+      // setAuthUser(parsedUser);
     }
   }, []);
-
-  const [show, setShow] = useState<boolean>(false);
 
   useEffect(() => {
     if (show) {
@@ -126,7 +133,9 @@ const Sidebar = () => {
         <div className=" text-xl font-bold uppercase text-center">Scope</div>
         <nav className=" h-full flex flex-col items-center justify-between pt-10 pb-6">
           <ul className="flex flex-col items-center gap-3">
-            {renderNavLinks(navLinksArr.slice(0, -2))}
+            {renderNavLinks(
+              authUser ? navLinksArr.slice(0, -2) : navLinksArr.slice(0, -3)
+            )}
           </ul>
           <ul className="flex flex-col items-center gap-3">
             {renderNavLinks(

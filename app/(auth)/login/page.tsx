@@ -1,8 +1,11 @@
 "use client";
 import { CustomButton, CustomForm } from "@/components";
+import { loginUser, useAppDispatch, useStateSelector } from "@/store";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 
@@ -26,7 +29,30 @@ const PageLogin = () => {
       password: "",
     },
   });
-  const onSubmit: SubmitHandler<FormValues> = (data) => console.log(data); // const [uploadedImg, setUploadedImg] = useState("/");
+  const errMessage = useStateSelector((state) => state.user.loginErrorMessage);
+  const dispatch = useAppDispatch();
+  const success = useSearchParams().get("success");
+  const router = useRouter();
+  // const [fetchErr, setFetchErr] = useState("");
+  console.log("searchParams", success);
+
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    //   const res = await fetch(
+    //     `/api/auth?email=${data.email}&password=${data.password}`
+    //   )
+    //     .then((res) => res.json())
+    //     .then((data) => console.log(data.user));
+    const res = await dispatch(
+      loginUser({ email: data.email, password: data.password })
+    )
+      .unwrap()
+      .catch((err) => {
+        console.error("login ", err);
+      });
+    if (res) {
+      router.push("/");
+    }
+  }; // const [uploadedImg, setUploadedImg] = useState("/");
   const registerOptions = {
     email: {
       required: "Email is required",
@@ -42,13 +68,24 @@ const PageLogin = () => {
   };
 
   return (
-    <section className=" w-full h-full flex justify-between  items-center">
-      <div className=" w-full flex justify-center items-center">
-        <form className=" text-center w-full max-w-[400px]" action="">
-          <h1 className="title mb-2 ">Welcome Back</h1>
-          <p className=" text-md mb-5 text-primary-500 form__subtitle">
-            Please enter your details.
+    <section className=" w-full h-full flex justify-between  items-center ">
+      <div className=" w-full flex justify-center items-center p-6">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className=" text-center w-full max-w-[400px]"
+          action=""
+        >
+          <h1 className={`title mb-2 ${success && "text-green-400"}`}>
+            {success ? "Successful Registration" : "Welcome Back"}
+          </h1>
+          <p
+            className={`text-md mb-5 text-primary-500 form__subtitle ${
+              errMessage ? "text-red-500" : ""
+            }`}
+          >
+            {errMessage || "Please enter your details."}
           </p>
+
           <div className="form__item ">
             <label className="form__label">
               Email<span>*</span>
@@ -125,7 +162,7 @@ const PageLogin = () => {
           </div>
         </form>
       </div>
-      <div className=" ml-4 relative w-full h-full">
+      <div className=" relative w-full h-full  lg:block hidden">
         <Image
           src={"/img/bg-login.jpg"}
           fill
