@@ -4,7 +4,6 @@ import {
   CustomModal,
   Header,
   Main,
-  MainTopics,
 } from "@/components";
 
 export default function CategoriesPage() {
@@ -18,7 +17,7 @@ export default function CategoriesPage() {
         Open modal
       </button>
       <CustomModal />
-      <MainTopics />
+      {/* <MainTopics /> */}
     </>
   );
 }
