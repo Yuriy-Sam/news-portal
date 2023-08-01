@@ -54,7 +54,7 @@ const MainPost = ({ post }: MainPostProp) => {
     <div className=" relative w-full h-full">
       <Link
         href={"/"}
-        className={` shadow-inner w-full h-full justify-between flex flex-col items-center relative rounded-lg overflow-hidden  `}
+        className={`group/link  shadow-inner w-full h-full justify-between flex flex-col items-center relative rounded-lg overflow-hidden  `}
       >
         <div className=" h-full"></div>
         <div className=" w-full box-border p-3 sm:p-6 bg-gradient-to-t from-primary  to-[100%]   ">
@@ -71,7 +71,7 @@ const MainPost = ({ post }: MainPostProp) => {
             })}
           </div>
 
-          <h3 className=" mb-4 text-lg sm:text-3xl text-white font-bold">
+          <h3 className=" mb-4 text-lg sm:text-3xl text-white font-bold group-hover/link:underline">
             {title}
           </h3>
           {/* <div className=" flex justify-between items-center">

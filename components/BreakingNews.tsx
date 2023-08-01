@@ -20,7 +20,7 @@ const BreakingNews = () => {
           );
         })}
       </div> */}
-      <div className=" grid grid-cols-1 gap-7 grid-rows-2 md:grid-cols-2 sm:grid-cols-2 ">
+      <div className=" grid grid-cols-1 gap-5 grid-rows-2 md:grid-cols-2 sm:grid-cols-2 ">
         {posts.slice(0, 6).map((post, i) => {
           return <Post key={i} data={post} imageSize={800} />;
         })}

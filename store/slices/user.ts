@@ -5,7 +5,7 @@ import { AuthUserType } from "@/types";
 import { useHttp } from "@/hooks/httpHook";
 import { IUser } from "@/mongodb/models/UserModel";
 
-interface UserState {
+interface InitialStateProps {
   url: string;
   authUser: AuthUserType | null;
   loginStatus: "init" | "loading" | "error" | "success";
@@ -15,7 +15,7 @@ interface UserState {
   // errMessage: string;
 }
 
-const initialState: UserState = {
+const initialState: InitialStateProps = {
   url: "/api",
   authUser: null,
   loginErrorMessage: "",

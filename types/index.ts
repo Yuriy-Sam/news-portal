@@ -1,6 +1,5 @@
-import { Id } from "@reduxjs/toolkit/dist/tsHelpers";
-
 export type CategoryType = {
+  _id?: string;
   value: string;
   title: string;
   image?: string;

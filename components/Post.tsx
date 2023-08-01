@@ -25,15 +25,12 @@ const Post = ({
   });
 
   return (
-    <div className=" relative h-full w-full">
+    <div className="group  group-hover:transition-all   duration-300  p-1 post-shadow hover:shadow-lg hover:shadow-primary-400 hover:p-0  relative h-full w-full rounded overflow-hidden">
       <Link
-        className={` relative flex justify-between  flex-col w-full post-shadow hover:shadow-md transition-all hover:p-1 hover:shadow-primary-400 rounded  ${containerStyles}`}
+        className={`group/link relative flex justify-between h-full flex-col w-full  rounded ${containerStyles}`}
         href={url}
       >
-        <div
-          className="
-        "
-        >
+        <div className="">
           <Image
             className="  rounded w-full object-cover "
             src={image}
@@ -42,7 +39,7 @@ const Post = ({
             width={imageSize || 500}
             height={(imageSize && imageSize / 2) || 200}
           />
-          <div className="flex flex-col justify-between mt-2 ">
+          <div className="flex flex-col justify-between mt-2 group-hover:px-2 hover:transition-all   duration-300   ">
             <div className="">
               <div className=" flex justify-start items-center gap-2 mb-1">
                 {categories?.map((el) => {
@@ -54,7 +51,9 @@ const Post = ({
                 })}
               </div>
 
-              <h3 className="title_md">{title}</h3>
+              <h3 className="title_md group-hover/link:underline decoration-primary-600">
+                {title}
+              </h3>
               {showText && (
                 <p className=" text-primary-600 text-sm ">
                   {Number(text.length) > 250 && text.slice(0, 120) + "..."}
@@ -65,7 +64,7 @@ const Post = ({
         </div>
         <div className=" h-[60px]"></div>
       </Link>
-      <div className=" absolute bottom-0 left-0 w-full flex justify-between items-center py-2">
+      <div className=" absolute bottom-0 left-0 w-full flex justify-between items-center py-2 px-1 group-hover:px-2 hover:transition-all   duration-300   ">
         <div className="flex text-white  items-center gap-2 ">
           <div className="w-[30px] h-[30px] ">
             <Image
