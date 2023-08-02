@@ -42,9 +42,9 @@ const NavLink = ({ item, show }: NavLinkProps) => {
       text={show ? item.prompt : undefined}
       link={item.link || undefined}
       prompt={item.prompt}
-      containerStyles="btn_primary  w-full items-center  gap-4 justify-start lg:gap-0"
+      containerStyles="btn_primary  min-w-full items-center  gap-4 justify-start lg:gap-0 text-lg"
       Icon={item.Icon}
-      iconStyles={show ? "w-[30px] h-[30px]" : "w-[25px] h-[25px]"}
+      iconStyles={show ? "w-[35px] h-[35px]" : "w-[25px] h-[25px]"}
       handleClick={item.handle}
     />
   );
@@ -126,7 +126,7 @@ const Sidebar = () => {
         handleClick={() => setShow(!show)}
       />
       <div
-        className={` z-50 fixed transition-all  top-0 border-r-2 bg-white border-primary-200 h-screen px-7 py-10  lg:left-0 lg:px-5 ${
+        className={` z-50 fixed transition-all  top-0 border-r-2 bg-white border-primary-200 h-screen px-10 py-10  lg:left-0 lg:px-5 ${
           show ? "left-0" : "-left-full"
         } `}
       >

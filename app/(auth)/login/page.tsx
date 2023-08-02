@@ -56,7 +56,10 @@ const PageLogin = () => {
   const registerOptions = {
     email: {
       required: "Email is required",
-      pattern: { value: /^\S+@\S+$/i, message: "Please Enter a valid email" },
+      pattern: {
+        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        message: "Please Enter a valid email",
+      },
     },
     password: {
       required: "Password is required",

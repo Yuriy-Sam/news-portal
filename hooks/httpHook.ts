@@ -10,6 +10,7 @@ export const useHttp = () => {
         method,
         headers,
         body,
+        // cache: process.env.NODE_ENV !== "production" ? "no-store" : "default",
       };
 
       if (!(body instanceof FormData)) {

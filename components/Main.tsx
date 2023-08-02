@@ -130,14 +130,14 @@ const MainPost = ({ post }: MainPostProp) => {
         <div className="flex text-white  items-center gap-2 sm:gap-3 ">
           <Image
             className=" rounded-full"
-            src={autor.image}
-            alt={autor.name || ""}
+            src={autor.avatar}
+            alt={autor.firstName + " " + autor.lastName || ""}
             width={40}
             height={40}
           />
           <div className="lg:flex  justify-center lg:items-center gap-3 ">
             <p className=" text-sm sm:text-lg text-primary-200 font-medium  ">
-              {autor.name}
+              {autor.firstName + " " + autor.lastName}
             </p>
             <span className=" w-[5px] h-[5px] bg-primary-400 rounded-full hidden lg:block   "></span>
             <p className="text-xs sm:text-base  text-primary-400">

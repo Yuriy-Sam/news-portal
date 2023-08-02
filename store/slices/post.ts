@@ -1,17 +1,17 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { loadTodosFn } from "../services";
 import { getId } from "../utils";
-import { CategoryType } from "@/types";
+import { CategoryType, PostType } from "@/types";
 import { useHttp } from "@/hooks/httpHook";
 import { IUser } from "@/mongodb/models/UserModel";
 
 interface InitialStateProps {
-  categoryItems: Array<CategoryType> | null;
+  postItems: Array<PostType> | null;
   status: "init" | "loading" | "error" | "success";
 }
 
 const initialState: InitialStateProps = {
-  categoryItems: null,
+  postItems: null,
   status: "init",
 };
 
@@ -22,16 +22,13 @@ const initialState: InitialStateProps = {
 //     return await request("/api/auth/", "POST", state);
 //   }
 // );
-export const getCategories = createAsyncThunk(
-  "category/getCategories",
-  async () => {
-    const { request } = useHttp();
-    return await request(`/api/category/`);
-  }
-);
+export const getPosts = createAsyncThunk("post/getPosts", async () => {
+  const { request } = useHttp();
+  return await request(`/api/post/`);
+});
 
 const slice = createSlice({
-  name: "category",
+  name: "post",
   initialState,
   reducers: {
     // createUser(state, action: PayloadAction<AuthUserType>) {
@@ -55,15 +52,15 @@ const slice = createSlice({
   // ERROR! using custom thunks with createAsyncThunk
   extraReducers: (builder) =>
     builder
-      .addCase(getCategories.pending, (state) => {
+      .addCase(getPosts.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(getCategories.fulfilled, (state, action) => {
+      .addCase(getPosts.fulfilled, (state, action) => {
         state.status = "success";
-        console.log("fetch categories: ", action.payload.categories);
-        state.categoryItems = action.payload.categories;
+        console.log("fetch posts: ", action.payload.data);
+        state.postItems = action.payload.data;
       })
-      .addCase(getCategories.rejected, (state, action) => {
+      .addCase(getPosts.rejected, (state) => {
         state.status = "error";
       }),
 });
@@ -73,6 +70,6 @@ const slice = createSlice({
 // });
 
 // ERROR! todo correct export of hole actions, not only one action!
-export const { reducer: categoryReducer, actions: categoryActions } = slice;
+export const { reducer: postReducer, actions: postActions } = slice;
 // export const todoReducer = slice.reducer;
 // export const { addTodo, toggleTodoDone, deleteTodo } = slice.actions;

@@ -69,8 +69,8 @@ const Post = ({
           <div className="w-[30px] h-[30px] ">
             <Image
               className="rounded-full"
-              src={autor.image}
-              alt={autor.name || ""}
+              src={"/img/profile.gif"}
+              alt={autor.firstName + " " + autor.lastName || ""}
               objectFit="cover"
               layout="responsive"
               width={30}
@@ -79,7 +79,7 @@ const Post = ({
           </div>
           <div className="">
             <p className="text-sm text-primary-600 font-medium  ">
-              {autor.name}
+              {autor.firstName + " " + autor.lastName}
             </p>
             {/* <span className=" w-[3px] h-[3px] bg-primary-400 rounded-full"></span> */}
             <p className=" text-xs   text-primary-400">{datePublished}</p>

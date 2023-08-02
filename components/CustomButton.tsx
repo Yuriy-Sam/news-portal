@@ -63,7 +63,7 @@ const CustomButton = ({
             />
           )}
 
-          {text && <p>{text}</p>}
+          {text && <p className=" w-full text-canter">{text}</p>}
         </Link>
       ) : (
         <button

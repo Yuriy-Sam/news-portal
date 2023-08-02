@@ -5,7 +5,7 @@ import Category from "@/mongodb/models/CategoryModel";
 export async function POST(req: NextRequest) {
   try {
     await connectDB();
-    const url = new URL(req.url);
+    const url = req.nextUrl;
 
     const value = url.searchParams.get("value");
     const title = url.searchParams.get("title");
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   try {
     await connectDB();
-    console.log("connect work");
+    // console.log("connect work");
     const categories = await Category.find({});
 
     return NextResponse.json(

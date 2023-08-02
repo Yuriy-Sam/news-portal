@@ -14,13 +14,20 @@ export type PostType = {
   title: string;
   text: string;
   imageSize?: number;
-  autor: AutorType;
+  autor: AuthUserType;
   categories?: Array<CategoryType>;
+  _id?: string;
+  createdAt?: string;
+  updatedAt?: string;
 };
 export interface AuthUserType {
   firstName: string;
   lastName: string;
   avatar: string;
-  password: string;
+  password?: string;
   email: string;
+
+  _id?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }

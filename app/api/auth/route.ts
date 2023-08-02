@@ -120,8 +120,6 @@ export async function POST(req: NextRequest) {
     // Check if the email is already in use
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      console.log("Email is already in use");
-
       return NextResponse.json(
         { error: "Email is already in use" },
         { status: 400 }
@@ -130,7 +128,6 @@ export async function POST(req: NextRequest) {
 
     // Create the new user with the hashed password
     await User.create({ firstName, lastName, email, password: hashedPassword });
-    console.log("User Created");
     return NextResponse.json({ message: "User Created" }, { status: 201 });
   } catch (error) {
     console.error("Error creating user:", error);
@@ -142,7 +139,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
-  const url = new URL(req.url);
+  const url = req.nextUrl;
 
   const email = url.searchParams.get("email");
   const password = url.searchParams.get("password");
