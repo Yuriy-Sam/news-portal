@@ -52,7 +52,7 @@ const Header = ({}: HeaderProps) => {
               iconStyles={"w-[30px] h-[30px]"}
             />
 
-            <div className="flex  items-center gap-2 sm:gap-3 pb-7    mb-7 after-line  ">
+            <div className="flex  items-center gap-2 sm:gap-3  lg:hidden ">
               <Image
                 className=" rounded-full"
                 src={"/img/profile1.gif"}
@@ -69,7 +69,7 @@ const Header = ({}: HeaderProps) => {
             </div>
           </>
         ) : (
-          <div className=" ml-3 relative hidden sm:flex items-center justify-center  ">
+          <div className=" ml-3 relative hidden sm:flex items-center justify-center   lg:hidden">
             <CustomButton
               link="/login"
               containerStyles="btn_primary text-base rounded-full rounded-r-none  px-3 min-w-[100px] border-r-0 border-solid"
