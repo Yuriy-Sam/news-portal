@@ -62,7 +62,7 @@ const ProfileSidebar = () => {
               return (
                 <CustomButton
                   key={category.value}
-                  link={`/categories/` + category.value}
+                  link={`/posts?categories=` + category.value}
                   containerStyles="btn_primary rounded-full border-solid text-sm px-4 py-2 m-1"
                   text={category.title}
                 />

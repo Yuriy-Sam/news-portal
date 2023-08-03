@@ -147,7 +147,7 @@ const MainTopics = () => {
                 return (
                   <div key={category.value} className="swiper-slide ">
                     <Link
-                      href={`/categories/` + category.value}
+                      href={`/posts?categories=` + category.value}
                       className=" flex  justify-center items-center relative border-2 h-[120px] sm:h-[150px] lg:h-[180px]  rounded-xl overflow-hidden"
                     >
                       <Image

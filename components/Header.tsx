@@ -46,7 +46,7 @@ const Header = ({}: HeaderProps) => {
         {authUser ? (
           <>
             <CustomButton
-              link="/favoriate"
+              link="/"
               containerStyles="btn_primary px-3"
               Icon={BookmarksIcon}
               iconStyles={"w-[30px] h-[30px]"}
