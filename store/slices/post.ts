@@ -7,12 +7,16 @@ import { IUser } from "@/mongodb/models/UserModel";
 
 interface InitialStateProps {
   postItems: Array<PostType> | null;
+  singlePost: PostType | null;
   status: "init" | "loading" | "error" | "success";
+  singleStatus: "init" | "loading" | "error" | "success";
 }
 
 const initialState: InitialStateProps = {
   postItems: null,
+  singlePost: null,
   status: "init",
+  singleStatus: "init",
 };
 
 // export const registerUser = createAsyncThunk(
@@ -26,6 +30,13 @@ export const getPosts = createAsyncThunk("post/getPosts", async () => {
   const { request } = useHttp();
   return await request(`/api/post/`);
 });
+export const getSinglePost = createAsyncThunk(
+  "post/getSinglePost",
+  async (id: string) => {
+    const { request } = useHttp();
+    return await request(`/api/post/${id}`);
+  }
+);
 
 const slice = createSlice({
   name: "post",
@@ -62,6 +73,17 @@ const slice = createSlice({
       })
       .addCase(getPosts.rejected, (state) => {
         state.status = "error";
+      })
+      .addCase(getSinglePost.pending, (state) => {
+        state.singleStatus = "loading";
+      })
+      .addCase(getSinglePost.fulfilled, (state, action) => {
+        state.singleStatus = "success";
+        // console.log("fetch post: ", action.payload.post);
+        state.singlePost = action.payload.post;
+      })
+      .addCase(getSinglePost.rejected, (state) => {
+        state.singleStatus = "error";
       }),
 });
 

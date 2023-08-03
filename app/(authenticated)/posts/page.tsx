@@ -1,20 +1,14 @@
 "use client";
-import { categories } from "@/data/categories";
-import React, { useEffect } from "react";
-import CustomButton from "./CustomButton";
+import { CustomButton, Post } from "@/components";
 // import { posts } from "@/data/posts";
-import Post from "./Post";
-import {
-  getPosts,
-  postActions,
-  useAppDispatch,
-  useStateSelector,
-} from "@/store";
+import { getPosts, useAppDispatch, useStateSelector } from "@/store";
+import React, { useEffect, useState } from "react";
 
-const BreakingNews = () => {
+const PagePosts = () => {
   const dispatch = useAppDispatch();
   const posts = useStateSelector((state) => state.post.postItems);
   const status = useStateSelector((state) => state.post.status);
+  const [limit, setLimit] = useState(6);
   useEffect(() => {
     dispatch(getPosts());
   }, []);
@@ -67,22 +61,23 @@ const BreakingNews = () => {
       <h2 className="title">Breaking Posts</h2>
       <div className=" grid grid-cols-1 gap-5 grid-rows-1 md:grid-cols-2 sm:grid-cols-2 ">
         {status === "success"
-          ? posts?.slice(0, 6).map((post, i) => {
+          ? posts?.slice(0, limit).map((post, i) => {
               return <Post key={i} data={post} imageSize={800} />;
             })
           : renderLodingItems(2)}
       </div>
-      {status === "success" && (
-        <div className=" w-full text-center mt-6">
-          <CustomButton
-            link="/posts"
-            text="Load More"
-            containerStyles="btn_primary border-solid rounded-full text-sm p-3 sm:py-3 sm:px-6 "
-          />
-        </div>
-      )}
+      {(status === "success" && posts?.length) ||
+        (0 > limit && (
+          <div className=" w-full text-center mt-6">
+            <CustomButton
+              handleClick={() => setLimit((state) => state + 6)}
+              text="Load More"
+              containerStyles="btn_primary border-solid rounded-full text-sm p-3 sm:py-3 sm:px-6 "
+            />
+          </div>
+        ))}
     </section>
   );
 };
 
-export default BreakingNews;
+export default PagePosts;

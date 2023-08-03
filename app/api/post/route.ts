@@ -79,20 +79,22 @@ export async function GET(req: NextRequest) {
     // Fetch categories for each post
     const postsWithCategories = await Promise.all(
       posts.map(async (post) => {
-        const categories = await Promise.all(
-          post.categoriesValues.map((categoryValue) =>
-            // Fetch the Category details
-            Category.findOne({ value: categoryValue })
-          )
-        );
-
+        // const categories = await Promise.all(
+        //   // post.categoriesValues.map((categoryValue) =>
+        //   //   // Fetch the Category details
+        //   //   Category.findOne({ value: categoryValue })
+        //   // )
+        // );
+        const categories = await Category.findOne({
+          value: post.categoriesValues[0],
+        });
         // Fetch the author details
         const autor = await User.findOne({ _id: post.autorId });
         // Remove autorId and categoriesValues from the post object
         const { autorId, categoriesValues, ...postWithoutDetails } = post._doc;
         return {
           ...post._doc,
-          categories,
+          categories: [categories],
           autor,
         };
       })

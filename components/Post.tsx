@@ -19,7 +19,7 @@ const Post = ({
   containerStyles,
   showText = true,
 }: PostProps) => {
-  const { url, image, title, text, autor, categories } = data;
+  const { _id, url, image, title, text, autor, categories } = data;
   const datePublished = formatDistance(subDays(new Date(), 3), new Date(), {
     addSuffix: true,
   });
@@ -28,7 +28,7 @@ const Post = ({
     <div className="group  group-hover:transition-all   duration-300  p-1 post-shadow hover:shadow-lg hover:shadow-primary-400 hover:p-0  relative h-full w-full rounded overflow-hidden">
       <Link
         className={`group/link relative flex justify-between h-full flex-col w-full  rounded ${containerStyles}`}
-        href={url}
+        href={`/posts/${_id}`}
       >
         <div className="">
           <Image

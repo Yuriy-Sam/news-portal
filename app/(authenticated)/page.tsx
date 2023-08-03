@@ -5,14 +5,19 @@ import {
   Main,
   MainTopics,
 } from "@/components";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 export default function Home() {
   return (
     <>
       {/* <main className=""> */}
       <Main />
-      <MainTopics />
-      <BreakingNews />
+      <ErrorBoundary>
+        <MainTopics />
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <BreakingNews />
+      </ErrorBoundary>
       {/* </main> */}
     </>
   );

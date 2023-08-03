@@ -55,6 +55,9 @@ const Sidebar = () => {
   const authUser = useStateSelector((state) => state.user.authUser);
   const dispatch = useAppDispatch();
   const [show, setShow] = useState<boolean>(false);
+  useEffect(() => {
+    dispatch(userActions.getAuthUser());
+  }, []);
 
   // const { systemTheme, theme, setTheme } = useTheme();
 
@@ -65,8 +68,8 @@ const Sidebar = () => {
       Icon: HomeIcon,
     },
     {
-      prompt: "All News",
-      link: "#",
+      prompt: "All Posts",
+      link: "/posts",
       Icon: TrendsIcon,
     },
     {
@@ -95,13 +98,13 @@ const Sidebar = () => {
     },
   ];
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser) as AuthUserType;
-      // setAuthUser(parsedUser);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedUser = localStorage.getItem("user");
+  //   if (storedUser) {
+  //     const parsedUser = JSON.parse(storedUser) as AuthUserType;
+  //     // setAuthUser(parsedUser);
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (show) {

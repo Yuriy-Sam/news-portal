@@ -92,13 +92,13 @@ const slice = createSlice({
       localStorage.setItem("user", JSON.stringify(action.payload));
       console.log(action.payload);
     },
-    getAuthUser(state, action: PayloadAction<AuthUserType>) {
-      state.authUser = action.payload;
-      localStorage.setItem("user", JSON.stringify(action.payload));
-      console.log(action.payload);
+    getAuthUser(state) {
+      const storedUser = localStorage.getItem("user");
+      state.authUser = JSON.parse(storedUser ?? "null");
     },
     leaveUser(state) {
       state.authUser = null;
+      localStorage.removeItem("user");
       console.log("leave work");
     },
     // deleteUser(state, action: PayloadAction<{ id: number }>) {
@@ -127,6 +127,7 @@ const slice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loginStatus = "success";
         state.authUser = action.payload.user;
+        localStorage.setItem("user", JSON.stringify(action.payload.user));
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loginStatus = "error";

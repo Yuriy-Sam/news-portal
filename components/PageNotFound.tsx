@@ -3,11 +3,13 @@ import React from "react";
 
 const NotFound = () => {
   return (
-    <div>
+    <div className=" w-full px-3">
       <h2>Not Found</h2>
       <p>Could not find requested resource</p>
       <p>
-        <Link href="/">go home</Link>
+        <Link className=" underline" href="/">
+          go home
+        </Link>
       </p>
     </div>
   );
