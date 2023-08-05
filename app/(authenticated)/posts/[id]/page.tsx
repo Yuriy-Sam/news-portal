@@ -17,30 +17,30 @@ import React, { useEffect, useState } from "react";
 import { PostType } from "@/types";
 import { Metadata, ResolvingMetadata } from "next";
 
-type Props = {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent?: ResolvingMetadata
-): Promise<Metadata> {
-  // read route params
-  const id = params.id;
-  // fetch data
-  const post = await fetch(`${__dirname}/api/post/${id}`).then((res) =>
-    res.json()
-  );
+// type Props = {
+//   params: { id: string };
+//   searchParams: { [key: string]: string | string[] | undefined };
+// };
+// export async function generateMetadata(
+//   { params, searchParams }: Props,
+//   parent?: ResolvingMetadata
+// ): Promise<Metadata> {
+//   // read route params
+//   const id = params.id;
+//   // fetch data
+//   const post = await fetch(`${__dirname}/api/post/${id}`).then((res) =>
+//     res.json()
+//   );
 
-  // optionally access and extend (rather than replace) parent metadata
+//   // optionally access and extend (rather than replace) parent metadata
 
-  return {
-    title: post.post.title,
-    openGraph: {
-      images: [post.post.image],
-    },
-  };
-}
+//   return {
+//     title: post.post.title,
+//     openGraph: {
+//       images: [post.post.image],
+//     },
+//   };
+// }
 
 const PagePosts = () => {
   const { id } = useParams();
