@@ -113,14 +113,13 @@ const PagePosts = () => {
     }
     return items;
   };
-  if (status === "loading") {
-    return renderLodingItems(1);
-  }
-  if (status === "success") {
-    const { title, autor, image, text, categories, date } = post as PostType;
 
-    return (
-      <section className="py-7 ">
+  const { title, autor, image, text, categories, date } = post as PostType;
+
+  return (
+    <section className="py-7 ">
+      {status === "loading" && renderLodingItems(1)}
+      {status === "success" && (
         <div className="">
           <h1 className="title ">{title}</h1>
           <div className="  w-full flex justify-between items-center py-2 px-1 group-hover:px-2 hover:transition-all   duration-300   ">
@@ -170,8 +169,8 @@ const PagePosts = () => {
           />
           <p className=" mt-5 text-lg">{text}</p>
         </div>
-      </section>
-    );
-  }
+      )}
+    </section>
+  );
 };
 export default PagePosts;
