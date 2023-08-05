@@ -35,21 +35,6 @@ type SidebarProps = {
   show?: boolean;
 };
 
-const NavLink = ({ item, show }: NavLinkProps) => {
-  return (
-    <CustomButton
-      key={item.prompt}
-      text={show ? item.prompt : undefined}
-      link={item.link || undefined}
-      prompt={item.prompt}
-      containerStyles="btn_primary  min-w-full items-center  gap-4 justify-start lg:gap-0 text-lg"
-      Icon={item.Icon}
-      iconStyles={show ? "w-[35px] h-[35px]" : "w-[25px] h-[25px]"}
-      handleClick={item.handle}
-    />
-  );
-};
-
 const Sidebar = () => {
   const router = useRouter();
   const authUser = useStateSelector((state) => state.user.authUser);
@@ -118,13 +103,25 @@ const Sidebar = () => {
       return <NavLink key={item.prompt} show={show} item={item} />;
     });
   };
+  const NavLink = ({ item, show }: NavLinkProps) => {
+    return (
+      <CustomButton
+        key={item.prompt}
+        text={show ? item.prompt : undefined}
+        link={item.link || undefined}
+        prompt={item.prompt}
+        containerStyles="btn_primary  min-w-full items-center gap-4  justify-start lg:gap-0  "
+        iconStyles={show ? "w-[25px] h-[25px]" : "w-[25px] h-[25px]"}
+        Icon={item.Icon}
+        handleClick={item.handle}
+      />
+    );
+  };
   return (
     <aside className="  h-screen w-0 lg:w-[30px] lg:px-14 px-0 ">
       <CustomButton
         containerStyles=" btn_primary border-primary p-0 absolute top-0 left-5 sm:left-7 mt-7 z-50"
         Icon={HamburgerIcon}
-        currentIconColor="red"
-        activeIconColor="#fff"
         iconStyles={"w-[50px] h-[50px]"}
         handleClick={() => setShow(!show)}
       />
@@ -135,12 +132,12 @@ const Sidebar = () => {
       >
         <div className=" text-xl font-bold uppercase text-center">Scope</div>
         <nav className=" h-full flex flex-col items-center justify-between pt-10 pb-6">
-          <ul className="flex flex-col items-center gap-3">
+          <ul className="flex flex-col items-center  w-full gap-3">
             {renderNavLinks(
               authUser ? navLinksArr.slice(0, -2) : navLinksArr.slice(0, -3)
             )}
           </ul>
-          <ul className="flex flex-col items-center gap-3">
+          <ul className="flex flex-col items-center w-full gap-3">
             {renderNavLinks(
               authUser ? navLinksArr.slice(-2) : navLinksArr.slice(-2, -1)
             )}

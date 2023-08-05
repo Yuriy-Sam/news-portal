@@ -10,11 +10,13 @@ interface InitialStateProps {
   singlePost: PostType | null;
   status: "init" | "loading" | "error" | "success";
   singleStatus: "init" | "loading" | "error" | "success";
+  lastReadingPost: PostType | null;
 }
 
 const initialState: InitialStateProps = {
   postItems: null,
   singlePost: null,
+  lastReadingPost: null,
   status: "init",
   singleStatus: "init",
 };
@@ -26,10 +28,13 @@ const initialState: InitialStateProps = {
 //     return await request("/api/auth/", "POST", state);
 //   }
 // );
-export const getPosts = createAsyncThunk("post/getPosts", async () => {
-  const { request } = useHttp();
-  return await request(`/api/post/`);
-});
+export const getPosts = createAsyncThunk(
+  "post/getPosts",
+  async (searchParam: string) => {
+    const { request } = useHttp();
+    return await request(`/api/post?${searchParam}`);
+  }
+);
 export const getSinglePost = createAsyncThunk(
   "post/getSinglePost",
   async (id: string) => {
@@ -37,16 +42,21 @@ export const getSinglePost = createAsyncThunk(
     return await request(`/api/post/${id}`);
   }
 );
+export const updateViews = createAsyncThunk(
+  "post/updateViews",
+  async (id: string) => {
+    const { request } = useHttp();
+    return await request(`/api/views?id=${id}`);
+  }
+);
 
 const slice = createSlice({
   name: "post",
   initialState,
   reducers: {
-    // createUser(state, action: PayloadAction<AuthUserType>) {
-    //   state.authUser = action.payload;
-    //   localStorage.setItem("user", JSON.stringify(action.payload));
-    //   console.log(action.payload);
-    // },
+    createLastPost(state, action: PayloadAction<PostType>) {
+      state.lastReadingPost = action.payload;
+    },
     // getAuthUser(state, action: PayloadAction<AuthUserType>) {
     //   state.authUser = action.payload;
     //   localStorage.setItem("user", JSON.stringify(action.payload));

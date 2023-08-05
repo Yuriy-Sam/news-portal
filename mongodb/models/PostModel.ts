@@ -9,8 +9,9 @@ export interface IPost extends Document {
   image: string;
   title: string;
   text: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  views: number;
   __v?: number;
   _doc?: any;
 }
@@ -23,6 +24,7 @@ const postSchema = new mongoose.Schema(
     image: { type: String, required: true },
     title: { type: String, required: true },
     text: { type: String, required: true },
+    views: { type: Number, required: true },
   },
   {
     timestamps: true,

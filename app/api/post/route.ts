@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Category from "@/mongodb/models/CategoryModel";
 import User from "@/mongodb/models/UserModel";
 import Post from "@/mongodb/models/PostModel";
+import { formatDistance } from "date-fns";
 
 // export async function POST(req: NextRequest) {
 //   try {
@@ -48,6 +49,7 @@ export async function POST(req: NextRequest) {
     await connectDB();
 
     const url = req.nextUrl;
+
     const data: any = {};
 
     url.searchParams.forEach(async (value, key) => {
@@ -58,7 +60,7 @@ export async function POST(req: NextRequest) {
         data[key] = value;
       }
     });
-    await Post.create({ ...data });
+    await Post.create({ ...data, views: 1 });
 
     return NextResponse.json(
       { data, message: "Post created" },
@@ -74,31 +76,66 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   try {
     await connectDB();
-    const posts = await Post.find();
+    const url = req.nextUrl;
+    const categoriesParam = url.searchParams.get("categories");
 
+    let posts = await Post.find().sort({ createdAt: -1 });
+
+    if (categoriesParam) {
+      posts = posts.filter((el) =>
+        el.categoriesValues.some((cat) => {
+          return categoriesParam.split(",").some((v) => {
+            return cat === v;
+          });
+        })
+      );
+    }
     // Fetch categories for each post
     const postsWithCategories = await Promise.all(
       posts.map(async (post) => {
-        // const categories = await Promise.all(
-        //   // post.categoriesValues.map((categoryValue) =>
-        //   //   // Fetch the Category details
-        //   //   Category.findOne({ value: categoryValue })
-        //   // )
-        // );
-        const categories = await Category.findOne({
-          value: post.categoriesValues[0],
-        });
+        const categories = await Promise.all(
+          post.categoriesValues.map((categoryValue) => {
+            // Fetch the Category details
+            return Category.findOne({ value: categoryValue });
+          })
+        );
+
+        // const categories = await Category.findOne({
+        //   value: post.categoriesValues[0],
+        // });
         // Fetch the author details
         const autor = await User.findOne({ _id: post.autorId });
+        let date = formatDistance(
+          new Date(post.createdAt.toString()),
+          new Date(),
+          {
+            addSuffix: true,
+          }
+        );
+        // console.log(
+        //   "test date: ",
+        //   formatDistance(new Date(post.updatedAt.toString()), new Date(), {
+        //     addSuffix: true,
+        //   })
+        // );
+
         // Remove autorId and categoriesValues from the post object
-        const { autorId, categoriesValues, ...postWithoutDetails } = post._doc;
+        const {
+          autorId,
+          categoriesValues,
+          createdAt,
+          updatedAt,
+          ...postWithoutDetails
+        } = post._doc;
         return {
-          ...post._doc,
-          categories: [categories],
+          ...postWithoutDetails,
+          categories,
           autor,
+          date,
         };
       })
     );
+
     // const cat = await Category.findOne({ value: "politic" });
     return NextResponse.json(
       { data: postsWithCategories, message: "Get categories successful" },

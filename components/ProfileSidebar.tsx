@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import CustomButton from "./CustomButton";
 import Post from "./Post";
 import { categories } from "@/data/categories";
-import { posts } from "@/data/posts";
+// import { posts } from "@/data/posts";
 import Image from "next/image";
 import { AuthUserType } from "@/types";
 import { useStateSelector } from "@/store";
@@ -11,6 +11,8 @@ import { useStateSelector } from "@/store";
 const ProfileSidebar = () => {
   // const [authUser, setAuthUser] = useState<AuthUserType | null>(null);
   const authUser = useStateSelector((state) => state.user.authUser);
+  const post = useStateSelector((state) => state.post.lastReadingPost);
+
   // useEffect(() => {
   //   const storedUser = localStorage.getItem("user");
   //   if (storedUser) {
@@ -26,6 +28,7 @@ const ProfileSidebar = () => {
             <Image
               className=" rounded-full"
               src={"/img/profile1.gif"}
+              priority
               alt={authUser.firstName}
               width={60}
               height={60}
@@ -51,10 +54,12 @@ const ProfileSidebar = () => {
             />
           </div>
         )}
-        <div className=" pb-7  mb-7 after-line ">
-          <h3 className="title_md">Continue Reading</h3>
-          <Post data={posts[0]} showText={false} imageSize={300} />
-        </div>
+        {post && (
+          <div className=" pb-7  mb-7 after-line ">
+            <h3 className="title_md">Continue Reading</h3>
+            <Post data={post} showText={false} imageSize={300} />
+          </div>
+        )}
         <div className=" ">
           <h3 className="title_md">More Interesting Topic</h3>
           <div className="">

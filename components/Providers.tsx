@@ -18,7 +18,7 @@ export function Providers({ children }: ProvidersProps) {
   }, []);
 
   return isMounted ? (
-    <ThemeProvider attribute="class">
+    <ThemeProvider attribute="class" defaultTheme="light">
       <Provider store={store}>{children}</Provider>
     </ThemeProvider>
   ) : null;

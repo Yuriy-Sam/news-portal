@@ -2,15 +2,23 @@
 import { CustomButton, Post } from "@/components";
 // import { posts } from "@/data/posts";
 import { getPosts, useAppDispatch, useStateSelector } from "@/store";
+import { PostType } from "@/types";
+import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const PagePosts = () => {
   const dispatch = useAppDispatch();
   const posts = useStateSelector((state) => state.post.postItems);
   const status = useStateSelector((state) => state.post.status);
+  const params = useSearchParams();
   const [limit, setLimit] = useState(6);
+  const categoryParam = params.get("categories");
+  let customSearchParams = "";
+  if (categoryParam) {
+    customSearchParams += `categories=${categoryParam}&`;
+  }
   useEffect(() => {
-    dispatch(getPosts());
+    dispatch(getPosts(customSearchParams));
   }, []);
   const renderLodingItems = (n: number) => {
     const items = [];
@@ -58,24 +66,23 @@ const PagePosts = () => {
 
   return (
     <section className="py-7 ">
-      <h2 className="title">Breaking Posts</h2>
+      <h2 className="title">New Posts</h2>
       <div className=" grid grid-cols-1 gap-5 grid-rows-1 md:grid-cols-2 sm:grid-cols-2 ">
         {status === "success"
-          ? posts?.slice(0, limit).map((post, i) => {
+          ? posts?.slice(0, limit).map((post: PostType, i: number) => {
               return <Post key={i} data={post} imageSize={800} />;
             })
           : renderLodingItems(2)}
       </div>
-      {(status === "success" && posts?.length) ||
-        (0 > limit && (
-          <div className=" w-full text-center mt-6">
-            <CustomButton
-              handleClick={() => setLimit((state) => state + 6)}
-              text="Load More"
-              containerStyles="btn_primary border-solid rounded-full text-sm p-3 sm:py-3 sm:px-6 "
-            />
-          </div>
-        ))}
+      {status === "success" && posts && posts?.length > limit && (
+        <div className=" w-full text-center mt-6">
+          <CustomButton
+            handleClick={() => setLimit((state) => state + 6)}
+            text="Load More"
+            containerStyles="btn_primary border-solid rounded-full text-sm p-3 sm:py-3 sm:px-6 "
+          />
+        </div>
+      )}
     </section>
   );
 };

@@ -45,9 +45,9 @@ const BreakingNews = () => {
           <div className=" h-2 w-1/4  bg-primary-300 rounded animate-pulse dark:bg-primary-300"></div>
           <div className=" h-2 mt-3 w-full  bg-primary-300 rounded animate-pulse dark:bg-primary-300"></div>
           <div className=" h-2  w-3/4  bg-primary-300 rounded animate-pulse dark:bg-primary-300"></div>
-          <div className=" h-2  mt-3 w-full  bg-primary-300 rounded animate-pulse dark:bg-primary-300"></div>
+          {/* <div className=" h-2  mt-3 w-full  bg-primary-300 rounded animate-pulse dark:bg-primary-300"></div>
           <div className=" h-2 w-full  bg-primary-300 rounded animate-pulse dark:bg-primary-300"></div>
-          <div className=" h-2 w-3/4  bg-primary-300 rounded animate-pulse dark:bg-primary-300"></div>
+          <div className=" h-2 w-3/4  bg-primary-300 rounded animate-pulse dark:bg-primary-300"></div> */}
           <div className="flex w-full items-center mt-8">
             <div className="h-[30px] w-[30px] mr-2 rounded-full bg-primary-300 animate-pulse dark:bg-primary-300"></div>
 
@@ -64,7 +64,7 @@ const BreakingNews = () => {
 
   return (
     <section className="py-7 ">
-      <h2 className="title">Breaking Posts</h2>
+      <h2 className="title">New Posts</h2>
       <div className=" grid grid-cols-1 gap-5 grid-rows-1 md:grid-cols-2 sm:grid-cols-2 ">
         {status === "success"
           ? posts?.slice(0, 6).map((post, i) => {

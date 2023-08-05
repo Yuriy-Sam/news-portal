@@ -20,54 +20,25 @@ import { formatDistance } from "date-fns";
 //   return NextResponse.json({ message: "User Deleted" }, { status: 200 });
 // }
 
-export async function GET(req: NextRequest, { params }: any) {
+export async function GET(req: NextRequest) {
+  console.log("views post work");
   try {
-    const { id } = params;
-    // console.log("post id: ", id);
+    const id = req.nextUrl.searchParams.get("id");
     await connectDB();
-    const post =
-      id === "first"
-        ? await Post.findOne().sort({ createdAt: 1 })
-        : await Post.findOne({ _id: id });
+    const post = await Post.findOneAndUpdate(
+      { _id: id },
+      { $inc: { views: 1 } }
+    );
     if (!post) {
       return NextResponse.json({ error: "Post is not find" }, { status: 401 });
     }
 
-    // Fetch the Category details
-    const categories = await Promise.all(
-      post.categoriesValues.map((categoryValue) =>
-        Category.findOne({ value: categoryValue })
-      )
-    );
-
-    // Fetch the author details
-    const autor = await User.findOne({ _id: post.autorId });
-
-    let date = formatDistance(new Date(post.createdAt.toString()), new Date(), {
-      addSuffix: true,
-    });
-    // Remove autorId and categoriesValues from the post object
-    const {
-      autorId,
-      categoriesValues,
-      createdAt,
-      updatedAt,
-      ...postWithoutDetails
-    } = post._doc;
-
-    const customPost = {
-      ...postWithoutDetails,
-      categories,
-      autor,
-      date,
-    };
-
-    return NextResponse.json(
-      { post: customPost, message: "Post is find" },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: "Views is updated" }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: "Post is not find" }, { status: 401 });
+    return NextResponse.json(
+      { error: "Views is not updated" },
+      { status: 401 }
+    );
   }
 }
 //   // Compare the provided password with the hashed password in the database

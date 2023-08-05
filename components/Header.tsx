@@ -46,7 +46,7 @@ const Header = ({}: HeaderProps) => {
         {authUser ? (
           <>
             <CustomButton
-              link="/"
+              link="/#"
               containerStyles="btn_primary px-3"
               Icon={BookmarksIcon}
               iconStyles={"w-[30px] h-[30px]"}
@@ -56,6 +56,7 @@ const Header = ({}: HeaderProps) => {
               <Image
                 className=" rounded-full"
                 src={"/img/profile1.gif"}
+                priority
                 alt={authUser.firstName}
                 width={60}
                 height={60}

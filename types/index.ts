@@ -16,6 +16,8 @@ export type PostType = {
   imageSize?: number;
   autor: AuthUserType;
   categories?: Array<CategoryType>;
+  views: number;
+  date?: string;
   _id?: string;
   createdAt?: string;
   updatedAt?: string;
