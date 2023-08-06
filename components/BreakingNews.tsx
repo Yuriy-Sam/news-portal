@@ -16,7 +16,7 @@ const BreakingNews = () => {
   const posts = useStateSelector((state) => state.post.postItems);
   const status = useStateSelector((state) => state.post.status);
   useEffect(() => {
-    dispatch(getPosts());
+    dispatch(getPosts(""));
   }, []);
   const renderLodingItems = (n: number) => {
     const items = [];

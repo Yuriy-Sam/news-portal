@@ -20,7 +20,6 @@ const initialState: InitialStateProps = {
   status: "init",
   singleStatus: "init",
 };
-
 // export const registerUser = createAsyncThunk(
 //   "category/registercategory",
 //   async (state: FormData) => {
@@ -28,6 +27,7 @@ const initialState: InitialStateProps = {
 //     return await request("/api/auth/", "POST", state);
 //   }
 // );
+
 export const getPosts = createAsyncThunk(
   "post/getPosts",
   async (searchParam: string) => {
