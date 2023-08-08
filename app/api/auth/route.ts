@@ -128,24 +128,24 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    const avatar: File | null = formData.get("avatar") as unknown as File;
-    let fullAvatarName = ``;
-    if (avatar) {
-      const bytes = await avatar.arrayBuffer();
-      const buffer = Buffer.from(bytes);
+    // const avatar: File | null = formData.get("avatar") as unknown as File;
+    // let fullAvatarName = ``;
+    // if (avatar ) {
+    //   const bytes = await avatar.arrayBuffer();
+    //   const buffer = Buffer.from(bytes);
 
-      const name = uuidv4();
-      const ext = avatar.type.split("/")[1];
-      fullAvatarName = `${name}.${ext}`;
-      // const tempdir = os.tmpdir();
-      const uploadDir = path.join(
-        process.cwd(),
-        `/public/uploads/avatars/${fullAvatarName}`
-      );
-      await writeFile(uploadDir, buffer);
-      createProps = { ...createProps, avatar: fullAvatarName };
-      console.log(`open ${uploadDir} to see the uploaded file`);
-    }
+    //   const name = uuidv4();
+    //   const ext = avatar.type.split("/")[1];
+    //   fullAvatarName = `${name}.${ext}`;
+    //   // const tempdir = os.tmpdir();
+    //   const uploadDir = path.join(
+    //     process.cwd(),
+    //     `/public/uploads/avatars/${fullAvatarName}`
+    //   );
+    //   await writeFile(uploadDir, buffer);
+    //   createProps = { ...createProps, avatar: fullAvatarName };
+    //   console.log(`open ${uploadDir} to see the uploaded file`);
+    // }
     createProps = {
       ...createProps,
       firstName,
