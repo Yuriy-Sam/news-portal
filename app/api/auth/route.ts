@@ -140,7 +140,7 @@ export async function POST(req: NextRequest) {
       // const tempdir = os.tmpdir();
       const uploadDir = path.join(
         process.cwd(),
-        `/public/uploads/avatars/${fullAvatarName}`
+        `public/uploads/avatars/${fullAvatarName}`
       );
       await writeFile(uploadDir, buffer);
       createProps = { ...createProps, avatar: fullAvatarName };
