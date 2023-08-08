@@ -64,10 +64,10 @@ const PageSignUp = () => {
     formData.append("lastName", data.lastName);
     formData.append("email", data.email);
     formData.append("password", data.password);
-    // if (uploadedImg) {
-    //   formData.append("avatar", uploadedImg);
-    //   // const res = await uploadPhoto(formData);
-    // }
+    if (uploadedImg) {
+      formData.append("avatar", uploadedImg);
+      // const res = await uploadPhoto(formData);
+    }
     const res = await dispatch(registerUser(formData))
       .unwrap()
       .catch((err) => {

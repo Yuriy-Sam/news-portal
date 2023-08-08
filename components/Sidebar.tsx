@@ -155,7 +155,9 @@ const Sidebar = () => {
               <div className="flex  items-center gap-2 sm:gap-3  lg:hidden border-2 rounded-lg   p-2 mb-1 ">
                 <Image
                   className=" rounded-full"
-                  src={"/img/profile1.gif"}
+                  src={
+                    `/uploads/avatars/${authUser.avatar}` || "/img/profile1.gif"
+                  }
                   priority
                   alt={authUser.firstName}
                   width={40}

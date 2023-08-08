@@ -1,11 +1,12 @@
 import connectDB from "@/mongodb/connect";
 import path from "path";
-import fs from "fs/promises";
+import { writeFile } from "fs/promises";
 import User, { IUser } from "@/mongodb/models/UserModel";
 import { NextRequest, NextResponse } from "next/server";
 import multer, { FileFilterCallback } from "multer";
 import { Request as ExpressRequest } from "express";
 import bcrypt from "bcryptjs";
+import { v4 as uuidv4 } from "uuid";
 
 // Define the storage settings for multer
 // const storage = multer.diskStorage({
@@ -102,6 +103,7 @@ import bcrypt from "bcryptjs";
 //     return { errMessage: error.message };
 //   }
 // }
+
 export async function POST(req: NextRequest) {
   try {
     await connectDB();
@@ -112,6 +114,7 @@ export async function POST(req: NextRequest) {
     const lastName = formData.get("lastName");
     const email = formData.get("email");
     const password = formData.get("password");
+    let createProps = {};
     // const avatar = formData.get("avatar");
 
     // Convert password to a buffer before hashing
@@ -125,9 +128,34 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+    const avatar: File | null = formData.get("avatar") as unknown as File;
+    let fullAvatarName = ``;
+    if (avatar) {
+      const bytes = await avatar.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+
+      const name = uuidv4();
+      const ext = avatar.type.split("/")[1];
+      fullAvatarName = `${name}.${ext}`;
+      // const tempdir = os.tmpdir();
+      const uploadDir = path.join(
+        process.cwd(),
+        `/public/uploads/avatars/${fullAvatarName}`
+      );
+      await writeFile(uploadDir, buffer);
+      createProps = { ...createProps, avatar: fullAvatarName };
+      console.log(`open ${uploadDir} to see the uploaded file`);
+    }
+    createProps = {
+      ...createProps,
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+    };
 
     // Create the new user with the hashed password
-    await User.create({ firstName, lastName, email, password: hashedPassword });
+    await User.create({ ...createProps });
     return NextResponse.json({ message: "User Created" }, { status: 201 });
   } catch (error) {
     console.error("Error creating user:", error);

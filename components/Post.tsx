@@ -90,7 +90,7 @@ const Post = ({
             <Image
               className="rounded-full block object-cover  "
               priority
-              src={"/img/profile.gif"}
+              src={`/uploads/avatars/${autor.avatar}` || "/img/profile.gif"}
               alt={autor.firstName + " " + autor.lastName || ""}
               // objectFit="cover"
               // layout="responsive"
