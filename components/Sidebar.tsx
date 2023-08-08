@@ -41,7 +41,8 @@ const Sidebar = () => {
   const dispatch = useAppDispatch();
   const [show, setShow] = useState<boolean>(false);
   useEffect(() => {
-    dispatch(userActions.getAuthUser());
+    setShow(false);
+    // dispatch(userActions.getAuthUser());
   }, []);
 
   // const { systemTheme, theme, setTheme } = useTheme();
@@ -51,32 +52,48 @@ const Sidebar = () => {
       prompt: "Home",
       link: "/",
       Icon: HomeIcon,
+      handle: () => {
+        setShow(false);
+      },
     },
     {
       prompt: "All Posts",
       link: "/posts",
       Icon: TrendsIcon,
+      handle: () => {
+        setShow(false);
+      },
     },
     {
       prompt: "Categories",
       link: "/categories",
       Icon: CategoryIcon,
+      handle: () => {
+        setShow(false);
+      },
     },
     {
       prompt: "Create post",
-      // link: "/create-post",
+      link: "/create-post",
       Icon: WriteIcon,
+      handle: () => {
+        setShow(false);
+      },
     },
     {
       prompt: "Settings",
       // link: "/settings",
       Icon: SettingIcon,
+      handle: () => {
+        setShow(false);
+      },
     },
     {
       prompt: "Exit",
       // link: "/login",
       Icon: ExitIcon,
       handle: () => {
+        setShow(false);
         dispatch(userActions.leaveUser());
         router.push("/login");
       },
@@ -118,21 +135,59 @@ const Sidebar = () => {
     );
   };
   return (
-    <aside className="  h-screen w-0 lg:w-[30px] lg:px-14 px-0 ">
+    <aside className="  min-h-screen  w-0 lg:w-[30px] lg:px-14 px-0 ">
       <CustomButton
         containerStyles=" btn_primary border-primary p-0 absolute top-0 left-5 sm:left-7 mt-7 z-50"
         Icon={HamburgerIcon}
         iconStyles={"w-[50px] h-[50px]"}
-        handleClick={() => setShow(!show)}
+        handleClick={() => setShow(true)}
       />
       <div
-        className={` z-50 fixed transition-all  top-0 border-r-2 bg-white border-primary-200 h-screen px-10 py-10  lg:left-0 lg:px-5 ${
+        className={` z-50 fixed transition-all  top-0 border-r-2 bg-white border-primary-200 h-full px-7 py-10  lg:left-0 lg:px-5 ${
           show ? "left-0" : "-left-full"
         } `}
       >
         <div className=" text-xl font-bold uppercase text-center">Scope</div>
-        <nav className=" h-full flex flex-col items-center justify-between pt-10 pb-6">
+
+        <nav className=" h-full flex flex-col items-center justify-between pt-5 pb-6">
           <ul className="flex flex-col items-center  w-full gap-3">
+            {authUser ? (
+              <div className="flex  items-center gap-2 sm:gap-3  lg:hidden border-2 rounded-lg   p-2 mb-1 ">
+                <Image
+                  className=" rounded-full"
+                  src={"/img/profile1.gif"}
+                  priority
+                  alt={authUser.firstName}
+                  width={40}
+                  height={40}
+                />
+                <div className="">
+                  <p className=" text-sm text-primary font-bold  ">
+                    {authUser.firstName + " " + authUser.lastName}
+                  </p>
+                  <p className="text-xs text-primary-500 ">{authUser.email}</p>
+                </div>
+              </div>
+            ) : (
+              <div
+                className={` w-full relative ${
+                  show ? "flex" : "hidden"
+                }  items-center justify-between  `}
+              >
+                <CustomButton
+                  link="/login"
+                  containerStyles="btn_primary border-primary text-sm rounded-full rounded-r-none  px-3 w-full  border-r-0 border-solid"
+                  text="Log In"
+                  handleClick={() => setShow(!show)}
+                />
+                <CustomButton
+                  link="/signup"
+                  containerStyles="btn_secondary  border-primary text-sm  rounded-full rounded-l-none px-3  w-full  border-l-0 after:animate-btn-anim hover:after:animate-none"
+                  text="Sign Up"
+                  handleClick={() => setShow(!show)}
+                />
+              </div>
+            )}
             {renderNavLinks(
               authUser ? navLinksArr.slice(0, -2) : navLinksArr.slice(0, -3)
             )}
@@ -148,7 +203,7 @@ const Sidebar = () => {
         className={`z-40 fixed top-0 left-0 w-full h-full bg-black opacity-50 ${
           show ? "visible" : "invisible"
         } `}
-        onClick={() => setShow(!show)}
+        onClick={() => setShow(false)}
       ></div>
     </aside>
   );

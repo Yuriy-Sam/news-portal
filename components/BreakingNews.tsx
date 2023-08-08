@@ -1,6 +1,6 @@
 "use client";
 import { categories } from "@/data/categories";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CustomButton from "./CustomButton";
 // import { posts } from "@/data/posts";
 import Post from "./Post";
@@ -15,8 +15,14 @@ const BreakingNews = () => {
   const dispatch = useAppDispatch();
   const posts = useStateSelector((state) => state.post.postItems);
   const status = useStateSelector((state) => state.post.status);
+  const [offset, setOffset] = useState(0);
+  const [limit, setLimit] = useState(6);
+  let customSearchParams = "";
+  customSearchParams += `offset=${offset}`;
+  customSearchParams += `&limit=${limit}`;
+
   useEffect(() => {
-    dispatch(getPosts(""));
+    dispatch(getPosts(customSearchParams));
   }, []);
   const renderLodingItems = (n: number) => {
     const items = [];
@@ -67,7 +73,7 @@ const BreakingNews = () => {
       <h2 className="title">New Posts</h2>
       <div className=" grid grid-cols-1 gap-5 grid-rows-1 md:grid-cols-2 sm:grid-cols-2 ">
         {status === "success"
-          ? posts?.slice(0, 6).map((post, i) => {
+          ? posts?.map((post, i) => {
               return <Post key={i} data={post} imageSize={800} />;
             })
           : renderLodingItems(2)}

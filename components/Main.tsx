@@ -18,7 +18,7 @@ const Main = () => {
   const post = useStateSelector((state) => state.post.singlePost);
   const status = useStateSelector((state) => state.post.singleStatus);
   useEffect(() => {
-    dispatch(getSinglePost("first"));
+    dispatch(getSinglePost("bestToday"));
   }, []);
   const renderSkeleton = () => {
     return (
@@ -76,24 +76,7 @@ type MainPostProp = {
   post: PostType;
 };
 const MainPost = ({ post }: MainPostProp) => {
-  const { _id, image, title, categories, autor } = post;
-  const dateNow: Date = new Date();
-  // let isMobile = false;
-  // useEffect(() => {
-
-  //     isMobile = window.matchMedia("(max-width: 640px)").matches;
-
-  // }, []);
-
-  // format(new Date(), "'Today is a' eeee")
-  //=> "Today is a Monday"
-
-  const datePublished = formatDistance(subDays(new Date(), 3), new Date(), {
-    addSuffix: true,
-  });
-
-  // console.log(dateNow);
-  // formatRelative(subDays(new Date(), 3), new Date())
+  const { _id, date, image, title, categories, autor } = post;
   return (
     <div className=" relative w-full h-full">
       <Link
@@ -187,9 +170,7 @@ const MainPost = ({ post }: MainPostProp) => {
               {autor.firstName + " " + autor.lastName}
             </p>
             <span className=" w-[5px] h-[5px] bg-primary-400 rounded-full hidden lg:block   "></span>
-            <p className="text-xs sm:text-base  text-primary-400">
-              {datePublished}
-            </p>
+            <p className="text-xs sm:text-base  text-primary-400">{date}</p>
           </div>
         </div>
         <div className="">

@@ -133,7 +133,7 @@ const PageLogin = () => {
                 {...register("remember")}
                 id="remember"
                 name="remember"
-                // checked={true}
+                checked={true}
                 type="checkbox"
                 value=""
                 className=" accent-primary text-lg font-medium w-4 h-4 "

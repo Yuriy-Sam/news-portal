@@ -25,17 +25,28 @@ export async function GET(req: NextRequest, { params }: any) {
     const { id } = params;
     // console.log("post id: ", id);
     await connectDB();
-    const post =
-      id === "first"
-        ? await Post.findOne().sort({ createdAt: 1 })
-        : await Post.findOne({ _id: id });
+    let post = null;
+
+    switch (id) {
+      case "bestToday":
+        post = await Post.findOne().sort({ views: -1 });
+        break;
+
+      default:
+        post = await Post.findOne({ _id: id });
+        break;
+    }
+    // const post =
+    //   id === "first"
+    //     ? await Post.findOne().sort({ createdAt: 1 })
+    //     : await Post.findOne({ _id: id });
     if (!post) {
       return NextResponse.json({ error: "Post is not find" }, { status: 401 });
     }
 
     // Fetch the Category details
     const categories = await Promise.all(
-      post.categoriesValues.map((categoryValue) =>
+      post.categoriesValues.map((categoryValue: string) =>
         Category.findOne({ value: categoryValue })
       )
     );

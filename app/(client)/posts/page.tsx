@@ -11,14 +11,31 @@ const PagePosts = () => {
   const posts = useStateSelector((state) => state.post.postItems);
   const status = useStateSelector((state) => state.post.status);
   const params = useSearchParams();
+  const [storagePosts, setStoragePosts] = useState<Array<PostType>>([]);
+  const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(6);
+  const handleNewPosts = (n: number) => {
+    setOffset((state) => state + n);
+    setLimit((state) => state + n);
+  };
   const categoryParam = params.get("categories");
   let customSearchParams = "";
+  customSearchParams += `offset=${offset}`;
+  customSearchParams += `&limit=${limit}`;
   if (categoryParam) {
-    customSearchParams += `categories=${categoryParam}&`;
+    customSearchParams += `&categories=${categoryParam}`;
   }
+
   useEffect(() => {
     dispatch(getPosts(customSearchParams));
+  }, [offset, limit]);
+  useEffect(() => {
+    if (posts) {
+      setStoragePosts((state) => [...state, ...posts]);
+    }
+  }, [posts]);
+  useEffect(() => {
+    setStoragePosts([]);
   }, []);
   const renderLodingItems = (n: number) => {
     const items = [];
@@ -68,16 +85,15 @@ const PagePosts = () => {
     <section className="py-7 ">
       <h2 className="title">New Posts</h2>
       <div className=" grid grid-cols-1 gap-5 grid-rows-1 md:grid-cols-2 sm:grid-cols-2 ">
-        {status === "success"
-          ? posts?.slice(0, limit).map((post: PostType, i: number) => {
-              return <Post key={i} data={post} imageSize={800} />;
-            })
-          : renderLodingItems(2)}
+        {storagePosts?.map((post: PostType, i: number) => {
+          return <Post key={i} data={post} imageSize={800} />;
+        })}
+        {status === "loading" && renderLodingItems(2)}
       </div>
-      {status === "success" && posts && posts?.length > limit && (
+      {status === "success" && storagePosts?.length >= limit && (
         <div className=" w-full text-center mt-6">
           <CustomButton
-            handleClick={() => setLimit((state) => state + 6)}
+            handleClick={() => handleNewPosts(6)}
             text="Load More"
             containerStyles="btn_primary border-solid rounded-full text-sm p-3 sm:py-3 sm:px-6 "
           />

@@ -52,7 +52,7 @@ const Header = ({}: HeaderProps) => {
               iconStyles={"w-[30px] h-[30px]"}
             />
 
-            <div className="flex  items-center gap-2 sm:gap-3  lg:hidden ">
+            {/* <div className="flex  items-center gap-2 sm:gap-3  lg:hidden ">
               <Image
                 className=" rounded-full"
                 src={"/img/profile1.gif"}
@@ -67,7 +67,7 @@ const Header = ({}: HeaderProps) => {
                 </p>
                 <p className="text-sm text-primary-500 ">{authUser.email}</p>
               </div>
-            </div>
+            </div> */}
           </>
         ) : (
           <div className=" ml-3 relative hidden sm:flex items-center justify-center   lg:hidden">

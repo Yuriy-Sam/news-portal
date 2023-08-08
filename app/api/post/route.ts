@@ -77,6 +77,8 @@ export async function GET(req: NextRequest) {
   try {
     await connectDB();
     const url = req.nextUrl;
+    const offsetParam = url.searchParams.get("offset");
+    const limitParam = url.searchParams.get("limit");
     const categoriesParam = url.searchParams.get("categories");
 
     let posts = await Post.find().sort({ createdAt: -1 });
@@ -90,6 +92,7 @@ export async function GET(req: NextRequest) {
         })
       );
     }
+    posts = posts.slice(+offsetParam!, +limitParam!);
     // Fetch categories for each post
     const postsWithCategories = await Promise.all(
       posts.map(async (post) => {

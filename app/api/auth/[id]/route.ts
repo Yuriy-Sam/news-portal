@@ -16,6 +16,15 @@ export async function DELETE(req: NextRequest, { params }: any) {
   await User.findByIdAndDelete(id);
   return NextResponse.json({ message: "User Deleted" }, { status: 200 });
 }
+export async function GET(req: NextRequest, { params }: any) {
+  const { id } = params;
+  await connectDB();
+  const user = await User.findById(id);
+  return NextResponse.json(
+    { data: user, message: "User Deleted" },
+    { status: 200 }
+  );
+}
 
 // export async function GET(req: NextRequest, { params }: any) {
 //   const email = params.slug[0];
