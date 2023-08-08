@@ -21,6 +21,9 @@ const nextConfig = {
       "mongodb+srv://yuriyfrontend:avVdnD7r35bnQkMS@cluster0.bgc5jde.mongodb.net/",
     // GOOGLE_ANALYTICS_ID: "",
   },
+  experimental: {
+    appDir: true,
+  },
 };
 
 module.exports = nextConfig;
