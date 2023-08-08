@@ -139,8 +139,8 @@ export async function POST(req: NextRequest) {
       fullAvatarName = `${name}.${ext}`;
       // const tempdir = os.tmpdir();
       const uploadDir = path.join(
-        process.cwd(),
-        `public/uploads/avatars/${fullAvatarName}`
+        // process.cwd(),
+        `/public/uploads/avatars/${fullAvatarName}`
       );
       await writeFile(uploadDir, buffer);
       createProps = { ...createProps, avatar: fullAvatarName };
