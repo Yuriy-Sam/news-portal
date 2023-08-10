@@ -96,17 +96,14 @@ export async function GET(req: NextRequest) {
     // Fetch categories for each post
     const postsWithCategories = await Promise.all(
       posts.map(async (post) => {
+        // Fetch the Category details
         const categories = await Promise.all(
           post.categoriesValues.map((categoryValue) => {
-            // Fetch the Category details
             return Category.findOne({ value: categoryValue });
           })
         );
 
-        // const categories = await Category.findOne({
-        //   value: post.categoriesValues[0],
-        // });
-        // Fetch the author details
+        // Fetch the autor details
         const autor = await User.findOne({ _id: post.autorId });
         let date = formatDistance(
           new Date(post.createdAt.toString()),
