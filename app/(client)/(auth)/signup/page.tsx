@@ -8,6 +8,7 @@ import Link from "next/link";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
+import { SpinnerIcon } from "@/components/SVGIcons";
 
 type FormValues = {
   firstName: string;
@@ -59,7 +60,8 @@ const PageSignUp = () => {
   });
   const [uploadedImg, setUploadedImg] = useState<File | null>(null);
   const [emailIsUnique, setEmailIsUnique] = useState<boolean>(true);
-
+  const [loading, setLoading] = useState<boolean>(false);
+  // setLoading(false);
   const [prevImg, setPrevImg] = useState<string>("/");
   const errMessage = useStateSelector(
     (state) => state.user.registerErrorMessage
@@ -78,6 +80,7 @@ const PageSignUp = () => {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     setEmailIsUnique(true);
+    setLoading(true);
 
     const formData = new FormData();
 
@@ -110,6 +113,7 @@ const PageSignUp = () => {
     if (res) {
       router.push("/login?success=true");
     }
+    setLoading(false);
   };
   const registerOptions = {
     firstName: {
@@ -399,7 +403,10 @@ const PageSignUp = () => {
 
           <CustomButton
             type="submit"
-            text={"Create account"}
+            text={loading ? "Loading..." : "Create account"}
+            isDisabled={loading}
+            Icon={loading ? SpinnerIcon : undefined}
+            iconStyles="w-5 h-5 mr-2"
             containerStyles="btn_secondary bg-primary w-full mb-5"
           />
           <div className="  flex items-center justify-center">
