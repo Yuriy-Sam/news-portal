@@ -17,6 +17,27 @@ type FormValues = {
   confirmPassword: string;
   avatar: File;
 };
+const compressImage = async (file: File, { quality = 1, type = file.type }) => {
+  // Get as image data
+  const imageBitmap = await createImageBitmap(file);
+
+  // Draw to canvas
+  const canvas = document.createElement("canvas");
+  canvas.width = imageBitmap.width;
+  canvas.height = imageBitmap.height;
+  const ctx = canvas.getContext("2d");
+  ctx?.drawImage(imageBitmap, 0, 0);
+
+  // Turn into Blob
+  const blob: any | null = await new Promise((resolve) =>
+    canvas.toBlob(resolve, type, quality)
+  );
+
+  // Turn Blob into File
+  return new File([blob as BlobPart], file.name, {
+    type: blob.type,
+  });
+};
 
 const PageSignUp = () => {
   const {
@@ -65,8 +86,21 @@ const PageSignUp = () => {
     formData.append("email", data.email);
     formData.append("password", data.password);
     if (uploadedImg) {
-      formData.append("avatar", uploadedImg);
-      // const res = await uploadPhoto(formData);
+      // formData.append("file", uploadedImg);
+      formData.append("upload_preset", "avatars_upload");
+      formData.append("file", uploadedImg);
+
+      // console.log("uploadedImg", uploadedImg);
+      // await fetch(
+      //   `https://api.cloudinary.com/v1_1/${process.env.CLOUD_NAME}/image/upload`,
+      //   {
+      //     method: "POST",
+      //     body: formData,
+      //   }
+      // )
+      //   .then((res) => res.json())
+      //   .then((data) => console.log("secrute imag cllloud: ", data))
+      //   .catch((err) => console.log("Error cloouuuud:", err));
     }
     const res = await dispatch(registerUser(formData))
       .unwrap()
@@ -123,11 +157,24 @@ const PageSignUp = () => {
 
   const showProfileImg = (file: File) => {
     setUploadedImg(file);
+    console.log("file ---", file);
+    console.log("file type ---", file.type);
+
+    // if (file) {
+    //   const reader = new FileReader();
+    //   reader.readAsDataURL(file);
+    //   reader.onloadend = async (event) => {
+    //     setUploadedImg(reader.result);
+    //     console.log("render result ", reader.result);
+    //     console.log("render event result ", event.target?.result);
+    //   };
+    // }
     setPrevImg(URL.createObjectURL(file));
   };
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
+    console.log("e.target", e.target.files);
     const file = e.target.files?.[0] as File;
     if (file) {
       showProfileImg(file);
@@ -339,7 +386,7 @@ const PageSignUp = () => {
               <div className="  ml-4 h-full w-auto relative">
                 <Image
                   id="uploaded-img"
-                  className=" object-cover rounded-full min-h-[90px] min-w-[90px]"
+                  className=" object-cover rounded-full min-h-[90px] min-w-[90px] h-[90px] w-[90px]"
                   src={prevImg}
                   // fill
                   width={100}

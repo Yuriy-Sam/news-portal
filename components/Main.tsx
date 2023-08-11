@@ -160,7 +160,7 @@ const MainPost = ({ post }: MainPostProp) => {
           <Image
             className=" rounded-full"
             priority
-            src={`/uploads/avatars/${autor.avatar}` || "/img/profile.gif"}
+            src={autor.avatar || "/img/profile.gif"}
             alt={autor.firstName + " " + autor.lastName || ""}
             width={40}
             height={40}

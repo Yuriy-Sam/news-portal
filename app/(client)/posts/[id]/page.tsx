@@ -126,8 +126,8 @@ const PagePosts = () => {
             <div className="flex text-white  items-center gap-2 ">
               <div className="w-[50px] h-[50px] ">
                 <Image
-                  className="rounded-full block object-cover"
-                  src={"/img/profile.gif"}
+                  className="rounded-full block w-[50px] h-[50px] object-cover"
+                  src={autor.avatar || "/img/profile.gif"}
                   alt={autor.firstName + " " + autor.lastName || ""}
                   // objectFit="cover"
                   // layout="responsive"

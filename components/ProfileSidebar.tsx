@@ -24,10 +24,10 @@ const ProfileSidebar = () => {
     <aside className="relative w-0  h-screen hidden md:block lg:min-w-[350px] ">
       <div className=" fixed top-0 right-100% h-screen  border-l-primary-200 border-l-2  py-7 px-7">
         {authUser ? (
-          <div className="flex  items-center gap-2 sm:gap-3 pb-7    mb-7 after-line  ">
+          <div className="flex   items-center gap-2 sm:gap-3 pb-7    mb-7 after-line  ">
             <Image
-              className=" rounded-full"
-              src={`/uploads/avatars/${authUser.avatar}` || "/img/profile1.gif"}
+              className="w-[50px] h-[50px] object-cover rounded-full"
+              src={authUser.avatar || "/img/profile1.gif"}
               priority
               alt={authUser.firstName}
               width={60}

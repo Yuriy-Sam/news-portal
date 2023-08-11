@@ -152,12 +152,10 @@ const Sidebar = () => {
         <nav className=" h-full flex flex-col items-center justify-between pt-5 pb-6">
           <ul className="flex flex-col items-center  w-full gap-3">
             {authUser ? (
-              <div className="flex  items-center gap-2 sm:gap-3  lg:hidden border-2 rounded-lg   p-2 mb-1 ">
+              <div className="flex items-center gap-2 sm:gap-3  lg:hidden border-2 rounded-lg   p-2 mb-1 ">
                 <Image
                   className=" rounded-full"
-                  src={
-                    `/uploads/avatars/${authUser.avatar}` || "/img/profile1.gif"
-                  }
+                  src={authUser.avatar || "/img/profile1.gif"}
                   priority
                   alt={authUser.firstName}
                   width={40}

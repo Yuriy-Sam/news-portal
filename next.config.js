@@ -10,6 +10,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
     ],
   },
   env: {
@@ -19,6 +23,10 @@ const nextConfig = {
     NEXTAUTH_SECRET: "x5y53RdSbRktZ7mkZtFUZFeMhNFrm+V22cQ6AM6ksk4=",
     MONGODB_URI:
       "mongodb+srv://yuriyfrontend:avVdnD7r35bnQkMS@cluster0.bgc5jde.mongodb.net/",
+    CLOUD_NAME: "dlvlup8dc",
+    CLOUD_API_KEY: "492858671454362",
+    CLOUD_API_SECRET: "Kwj68bzWCPm6MwDb0g1dS3v0-C8",
+
     // GOOGLE_ANALYTICS_ID: "",
   },
   experimental: {

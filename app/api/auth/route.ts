@@ -103,17 +103,17 @@ import { v4 as uuidv4 } from "uuid";
 //     return { errMessage: error.message };
 //   }
 // }
-// import { v2 as cloudinary } from "cloudinary";
+// import cloudinary from "cloudinary";
 
-// cloudinary.config({
-//   cloud_name: "dlvlup8dc",
-//   api_key: "492858671454362",
-//   api_secret: "Kwj68bzWCPm6MwDb0g1dS3v0-C8",
+// cloudinary.v2.config({
+//   cloud_name: process.env.CLOUD_NAME,
+//   api_key: process.env.CLOUD_API_KEY,
+//   api_secret: process.env.CLOUD_API_SECRET,
 // });
 export async function POST(req: NextRequest) {
   try {
     await connectDB();
-    const formData = await req.formData();
+    const formData: any = await req.formData();
 
     // Extract form data fields
     const firstName = formData.get("firstName");
@@ -121,7 +121,22 @@ export async function POST(req: NextRequest) {
     const email = formData.get("email");
     const password = formData.get("password");
     let createProps = {};
-    // const avatar = formData.get("avatar");
+    const avatar = formData.get("file");
+
+    if (avatar) {
+      await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.CLOUD_NAME}/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      )
+        .then((res) => res.json())
+        .then(
+          (data) => (createProps = { ...createProps, avatar: data.secure_url })
+        )
+        .catch((err) => console.log("Error cloouuuud:", err));
+    }
 
     // Convert password to a buffer before hashing
     const hashedPassword = await bcrypt.hash(password as string, 10);
@@ -134,14 +149,6 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    // await fetch("http://localhost:5000/upload_files", {
-    // await fetch("http://localhost:5000/upload", {
-    //   method: "POST",
-    //   body: formData,
-    // })
-    //   .then((responce) => responce.json())
-    //   .then((data) => console.log("Avatar res: ", data))
-    //   .catch((err) => console.log("error avatar get: ", err));
     // const avatar: File | null = formData.get("avatar") as unknown as File;
     // let fullAvatarName = ``;
     // if (avatar ) {
@@ -167,14 +174,6 @@ export async function POST(req: NextRequest) {
       email,
       password: hashedPassword,
     };
-    // await cloudinary.uploader.upload(
-    //   "https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg",
-    //   { public_id: "olympic_flag" },
-    //   function (error, result) {
-    //     console.log("result: ", result);
-    //     console.log("error: ", error);
-    //   }
-    // );
 
     // Create the new user with the hashed password
     await User.create({ ...createProps });
