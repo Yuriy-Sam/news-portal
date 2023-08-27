@@ -76,7 +76,7 @@ type MainPostProp = {
   post: PostType;
 };
 const MainPost = ({ post }: MainPostProp) => {
-  const { _id, date, image, title, categories, autor } = post;
+  const { _id, date, mainImage, title, categories, autor } = post;
   return (
     <div className=" relative w-full h-full">
       <Link
@@ -147,7 +147,7 @@ const MainPost = ({ post }: MainPostProp) => {
             sizes="100vw"
             className="w-full h-auto"
             priority
-            src={image}
+            src={mainImage!}
             alt={title || ""}
             layout="fill"
             objectFit="cover"

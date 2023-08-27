@@ -19,10 +19,8 @@ const Post = ({
   containerStyles,
   showText = true,
 }: PostProps) => {
-  const { _id, url, views, image, title, text, autor, categories, date } = data;
-  const datePublished = formatDistance(subDays(new Date(), 3), new Date(), {
-    addSuffix: true,
-  });
+  const { _id, views, mainImage, title, autor, categories, date } = data;
+
   // const datetest = formatDistance(
   //   new Date("2023-07-1T20:12:26.618+00:00"),
   //   new Date()
@@ -41,7 +39,7 @@ const Post = ({
         <div className="">
           <Image
             className="  rounded w-full object-cover "
-            src={image}
+            src={mainImage}
             alt={title}
             layout="responsive"
             width={imageSize || 500}

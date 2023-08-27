@@ -14,7 +14,7 @@ import {
 import Image from "next/image";
 import { notFound, useParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { PostType } from "@/types";
+import { ContentType, PostType } from "@/types";
 import { Metadata, ResolvingMetadata } from "next";
 
 // type Props = {
@@ -45,7 +45,7 @@ import { Metadata, ResolvingMetadata } from "next";
 const PagePosts = () => {
   const { id } = useParams();
   const dispatch = useAppDispatch();
-  const post = useStateSelector((state) => state.post.singlePost);
+  const post = useStateSelector((state) => state.post.singlePost)!;
   const status = useStateSelector((state) => state.post.singleStatus);
 
   useEffect(() => {
@@ -113,20 +113,56 @@ const PagePosts = () => {
     }
     return items;
   };
+  const renderContentItems = (arr: ContentType[]) => {
+    return arr.map((el, i) => {
+      switch (el.type) {
+        case "image":
+          return (
+            <Image
+              className=" mt-8 max-h-[500px] mb-11 rounded w-full object-cover "
+              src={el.value}
+              alt={el.type + "-" + i}
+              // layout="responsive"
+              priority
+              width={1000}
+              height={500}
+            />
+          );
+        case "subtitle":
+          return (
+            <h2 className="title mt-3 mb-4 sm:text-4xl text-3xl ">
+              {el.value}
+            </h2>
+          );
 
-  const { title, autor, image, text, categories, date } = post as PostType;
+        case "content":
+          return (
+            <div className="title sm:text-2xl  text-xl font-normal mb-5">
+              {el.value}
+            </div>
+          );
 
-  return (
-    <section className="py-7 ">
-      {status === "loading" && renderLodingItems(1)}
-      {status === "success" && (
+        default:
+          break;
+      }
+    });
+  };
+  if (status === "loading") {
+    return <section className="py-7 ">{renderLodingItems(1)}</section>;
+  }
+  if (status === "success") {
+    const { title, autor, mainImage, content, categories, date } =
+      post as PostType;
+
+    return (
+      <section className="py-7 ">
         <div className="">
-          <h1 className="title ">{title}</h1>
+          <h1 className="title text-3xl ">{title}</h1>
           <div className="  w-full flex justify-between items-center py-2 px-1 group-hover:px-2 hover:transition-all   duration-300   ">
             <div className="flex text-white  items-center gap-2 ">
-              <div className="w-[50px] h-[50px] ">
+              <div className="sm:w-[50px] sm:h-[50px] w-[40px] h-[40px] ">
                 <Image
-                  className="rounded-full block w-[50px] h-[50px] object-cover"
+                  className="rounded-full block sm:w-[50px] sm:h-[50px] w-[40px] h-[40px] object-cover"
                   src={autor.avatar || "/img/profile.gif"}
                   alt={autor.firstName + " " + autor.lastName || ""}
                   // objectFit="cover"
@@ -136,7 +172,7 @@ const PagePosts = () => {
                 />
               </div>
               <div className="">
-                <p className="text-lg text-primary-600 font-medium  ">
+                <p className="sm:text-lg text-base text-primary-600 font-medium  ">
                   {autor.firstName + " " + autor.lastName}
                 </p>
                 {/* <span className=" w-[3px] h-[3px] bg-primary-400 rounded-full"></span> */}
@@ -148,29 +184,30 @@ const PagePosts = () => {
                 containerStyles="btn_primary border-none bg-none after:hidden py-1 px-2  text-primary-600"
                 activeStyles="border-white "
                 Icon={BookmarkIcon}
-                iconStyles={"w-[25px] h-[25px]"}
+                iconStyles={"sm:w-[25px] sm:h-[25px] w-[20px] h-[20px]"}
               />
               <CustomButton
                 containerStyles="btn_primary border-none bg-none after:hidden py-1 px-2 text-primary-600"
                 activeStyles="border-white "
                 Icon={ShareIcon}
-                iconStyles={"w-[25px] h-[25px]"}
+                iconStyles={"sm:w-[25px] sm:h-[25px] w-[20px] h-[20px]"}
               />
             </div>
           </div>
           <Image
-            className=" mt-5 max-h-[500px]  rounded w-full object-cover "
-            src={image}
+            className=" mt-8 max-h-[500px] mb-11 rounded w-full object-cover "
+            src={mainImage}
             alt={title}
             // layout="responsive"
             priority
             width={1000}
             height={500}
           />
-          <p className=" mt-5 text-lg">{text}</p>
+          {/* <p className=" mt-5 text-lg">{text}</p> */}
+          {renderContentItems(content)}
         </div>
-      )}
-    </section>
-  );
+      </section>
+    );
+  }
 };
 export default PagePosts;

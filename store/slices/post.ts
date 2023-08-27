@@ -42,6 +42,13 @@ export const getSinglePost = createAsyncThunk(
     return await request(`/api/post/${id}`);
   }
 );
+export const createPost = createAsyncThunk(
+  "post/createPost",
+  async (formData: FormData) => {
+    const { request } = useHttp();
+    return await request(`/api/post`, "POST", formData);
+  }
+);
 export const updateViews = createAsyncThunk(
   "post/updateViews",
   async (id: string) => {

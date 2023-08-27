@@ -8,11 +8,19 @@ type AutorType = {
   name: string;
   image: string;
 };
+
+export type ContentType = {
+  type: "image" | "subtitle" | "content";
+  // image?: string;
+  // subtitle?: string;
+  // content?: string;
+  value: string;
+};
+
 export type PostType = {
-  url: string;
-  image: string;
+  mainImage: string;
   title: string;
-  text: string;
+  content: ContentType[];
   imageSize?: number;
   autor: AuthUserType;
   categories?: Array<CategoryType>;

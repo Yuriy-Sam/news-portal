@@ -48,18 +48,40 @@ export async function POST(req: NextRequest) {
   try {
     await connectDB();
 
-    const url = req.nextUrl;
+    const formData: any = await req.formData();
+    // formData.append("upload_preset", "posts_upload");
+    // console.log("post keys -- ", ...formData.keys());
+    // const title = formData.get("title");
+    // const subtitle = formData.getAll("subtitle");
+    // const mainImageFile = formData.getAll("mainImage");
+    // const content = formData.getAll("content");
 
-    const data: any = {};
-
-    url.searchParams.forEach(async (value, key) => {
-      if (key === "categoriesValues") {
-        const categoriesValues = value.split(",");
-        data.categoriesValues = categoriesValues;
-      } else {
+    // console.log("post entries -- ", ...formData.entries());
+    let data: any = {};
+    let content: any = [];
+    let categories: any = [];
+    for (const pair of formData.entries()) {
+      const [key, value] = pair;
+      if (key === "title" || key === "mainImage" || key === "autorId") {
         data[key] = value;
+      } else if (key === "category") {
+        categories.push(value);
+      } else {
+        content.push({ type: key, value: value });
       }
-    });
+    }
+    data["categoriesValues"] = categories;
+    data["content"] = content;
+    console.log("data post create - ", data);
+
+    // url.searchParams.forEach(async (value, key) => {
+    //   if (key === "categoriesValues") {
+    //     const categoriesValues = value.split(",");
+    //     data.categoriesValues = categoriesValues;
+    //   } else {
+    //     data[key] = value;
+    //   }
+    // });
     await Post.create({ ...data, views: 1 });
 
     return NextResponse.json(
@@ -92,6 +114,7 @@ export async function GET(req: NextRequest) {
         })
       );
     }
+
     posts = posts.slice(+offsetParam!, +limitParam!);
     // Fetch categories for each post
     const postsWithCategories = await Promise.all(

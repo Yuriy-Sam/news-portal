@@ -1,5 +1,5 @@
 "use client";
-import { uploadPhoto } from "@/actions/uploadImages";
+// import { uploadPhoto } from "@/actions/uploadImages";
 import { CustomButton } from "@/components";
 import { registerUser, useAppDispatch, useStateSelector } from "@/store";
 import { DropArgument } from "net";

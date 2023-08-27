@@ -1,14 +1,14 @@
-import { AuthUserType, CategoryType } from "@/types";
+import { AuthUserType, CategoryType, ContentType } from "@/types";
 import mongoose, { Document, Model } from "mongoose";
 // import { IUser } from "./UserModel"
 export interface IPost extends Document {
   _id?: string;
-  url: string;
+  url?: string;
   categoriesValues: string[];
   autorId: string;
-  image: string;
+  mainImage: string;
   title: string;
-  text: string;
+  content: ContentType[];
   createdAt: Date;
   updatedAt: Date;
   views: number;
@@ -18,12 +18,11 @@ export interface IPost extends Document {
 // {
 const postSchema = new mongoose.Schema(
   {
-    url: { type: String, required: true },
     categoriesValues: { type: Array<String>, required: true },
     autorId: { type: String, required: true },
-    image: { type: String, required: true },
+    mainImage: { type: String, required: true },
     title: { type: String, required: true },
-    text: { type: String, required: true },
+    content: { type: Array<ContentType>, required: true },
     views: { type: Number, required: true },
   },
   {
