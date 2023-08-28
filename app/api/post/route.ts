@@ -82,10 +82,10 @@ export async function POST(req: NextRequest) {
     //     data[key] = value;
     //   }
     // });
-    await Post.create({ ...data, views: 1 });
+    const postCreated = await Post.create({ ...data, views: 1 });
 
     return NextResponse.json(
-      { data, message: "Post created" },
+      { data, postCreated, message: "Post created" },
       { status: 200 }
     );
   } catch (error) {

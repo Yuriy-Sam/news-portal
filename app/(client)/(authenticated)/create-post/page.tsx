@@ -1,6 +1,7 @@
 "use client";
 import { uploadImage } from "@/actions/uploadImages";
 import { CustomButton } from "@/components";
+import { SpinnerIcon } from "@/components/SVGIcons";
 import {
   createPost,
   getCategories,
@@ -10,6 +11,8 @@ import {
   useStateSelector,
 } from "@/store";
 import { ErrorMessage } from "@hookform/error-message";
+import { useRouter } from "next/navigation";
+
 import { error } from "console";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -195,10 +198,13 @@ const CreatePostPage = () => {
 
   const [contentArr, setContentArr] = useState<Array<ContentArrType>>([]);
   const [imageArr, setImageArr] = useState<Array<any>>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
   const [activeAddMenu, setActiveAddMenu] = useState<boolean>(false);
   const categories = useStateSelector((state) => state.category.categoryItems);
   const autorId = useStateSelector((state) => state.user.authUser?._id);
+  const router = useRouter();
+
   useEffect(() => {
     if (contentArr.length === 0) {
       addContentSection("title");
@@ -351,9 +357,10 @@ const CreatePostPage = () => {
   };
 
   const onSubmit: SubmitHandler<any> = async (data) => {
+    setLoading(true);
+
     console.log("formmm data --- ", data);
     const formData = new FormData();
-
     const uploadPromises = imageArr.map(async (el) => {
       return uploadImage(el.file, "posts_upload");
     });
@@ -381,7 +388,11 @@ const CreatePostPage = () => {
           : data[el.name!]
       );
     });
-    dispatch(createPost(formData));
+    const res = await dispatch(createPost(formData));
+    if (res.payload.postCreated) {
+      router.push(`/posts/${res.payload.postCreated._id}?success=true`);
+      setLoading(false);
+    }
     // console.log("formDataformData --- ", formData);
   };
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -396,7 +407,7 @@ const CreatePostPage = () => {
     { type: "image", title: "Image" },
   ];
   return (
-    <section className="py-7 ">
+    <section className="py-7  w-full ">
       <form onSubmit={handleSubmit(onSubmit)} action="">
         <div className=" mb-2">
           <select
@@ -512,8 +523,15 @@ const CreatePostPage = () => {
         <div className="flex  justify-center ">
           <CustomButton
             type="submit"
-            containerStyles="btn_secondary px-11 bg-green-400 border-solid text-xl"
-            text="Publish"
+            containerStyles={`btn_secondary px-11 bg-green-400 border-solid text-xl ${
+              loading
+                ? "bg-white text-primary hover:text-primary"
+                : "bg-green-400"
+            }`}
+            text={loading ? "Loading..." : "Publish"}
+            isDisabled={loading}
+            iconStyles="w-5 h-5 mr-2 "
+            Icon={loading ? SpinnerIcon : undefined}
           />
         </div>
       </form>
