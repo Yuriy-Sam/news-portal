@@ -4,6 +4,7 @@ import mongoose, { Document, Model } from "mongoose";
 export interface IPost extends Document {
   _id?: string;
   url?: string;
+  isNotes?: boolean;
   categoriesValues: string[];
   autorId: string;
   mainImage: string;
@@ -24,6 +25,7 @@ const postSchema = new mongoose.Schema(
     title: { type: String, required: true },
     content: { type: Array<ContentType>, required: true },
     views: { type: Number, required: true },
+    isNotes: { type: Boolean },
   },
   {
     timestamps: true,

@@ -6,30 +6,36 @@ import { useHttp } from "@/hooks/httpHook";
 import { IUser } from "@/mongodb/models/UserModel";
 
 interface InitialStateProps {
-  postItems: Array<PostType> | null;
+  newPostItems: Array<PostType> | null | undefined;
+  postItems: Array<PostType> | null | undefined;
+  nodesPostItems: Array<PostType> | null | undefined;
   singlePost: PostType | null;
   status: "init" | "loading" | "error" | "success";
   singleStatus: "init" | "loading" | "error" | "success";
+  notesStatus: "init" | "loading" | "error" | "success";
   lastReadingPost: PostType | null;
 }
 
 const initialState: InitialStateProps = {
+  newPostItems: null,
   postItems: null,
+  nodesPostItems: null,
   singlePost: null,
   lastReadingPost: null,
   status: "init",
   singleStatus: "init",
+  notesStatus: "init",
 };
-// export const registerUser = createAsyncThunk(
-//   "category/registercategory",
-//   async (state: FormData) => {
-//     const { request } = useHttp();
-//     return await request("/api/auth/", "POST", state);
-//   }
-// );
 
 export const getPosts = createAsyncThunk(
   "post/getPosts",
+  async (searchParam: string) => {
+    const { request } = useHttp();
+    return await request(`/api/post?${searchParam}`);
+  }
+);
+export const getNotesPosts = createAsyncThunk(
+  "post/getNotesPosts",
   async (searchParam: string) => {
     const { request } = useHttp();
     return await request(`/api/post?${searchParam}`);
@@ -64,20 +70,26 @@ const slice = createSlice({
     createLastPost(state, action: PayloadAction<PostType>) {
       state.lastReadingPost = action.payload;
     },
-    // getAuthUser(state, action: PayloadAction<AuthUserType>) {
-    //   state.authUser = action.payload;
-    //   localStorage.setItem("user", JSON.stringify(action.payload));
-    //   console.log(action.payload);
-    // },
-    // leaveUser(state) {
-    //   state.authUser = null;
-    //   console.log("leave work");
-    // },
-    // deleteUser(state, action: PayloadAction<{ id: number }>) {
-    // },
+    updateNotes(state, action: PayloadAction<{ id: String }>) {
+      // state.status = "init";
+      state.postItems = state.postItems?.map((el) => {
+        if (el._id === action.payload.id) {
+          if (state.singlePost && state.singlePost._id === el._id) {
+            state.singlePost = { ...el, isNotes: !el.isNotes };
+          }
+          if (state.lastReadingPost && state.lastReadingPost._id === el._id) {
+            state.lastReadingPost = {
+              ...state.lastReadingPost,
+              isNotes: !state.lastReadingPost?.isNotes,
+            };
+          }
+          return { ...el, isNotes: !el.isNotes };
+        }
+        return el;
+      });
+    },
   },
 
-  // ERROR! using custom thunks with createAsyncThunk
   extraReducers: (builder) =>
     builder
       .addCase(getPosts.pending, (state) => {
@@ -85,10 +97,20 @@ const slice = createSlice({
       })
       .addCase(getPosts.fulfilled, (state, action) => {
         state.status = "success";
-        console.log("fetch posts: ", action.payload.data);
         state.postItems = action.payload.data;
+        state.newPostItems = action.payload.data;
       })
       .addCase(getPosts.rejected, (state) => {
+        state.status = "error";
+      })
+      .addCase(getNotesPosts.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getNotesPosts.fulfilled, (state, action) => {
+        state.status = "success";
+        state.nodesPostItems = action.payload.data;
+      })
+      .addCase(getNotesPosts.rejected, (state) => {
         state.status = "error";
       })
       .addCase(getSinglePost.pending, (state) => {
@@ -96,7 +118,6 @@ const slice = createSlice({
       })
       .addCase(getSinglePost.fulfilled, (state, action) => {
         state.singleStatus = "success";
-        // console.log("fetch post: ", action.payload.post);
         state.singlePost = action.payload.post;
       })
       .addCase(getSinglePost.rejected, (state) => {
@@ -104,11 +125,6 @@ const slice = createSlice({
       }),
 });
 
-// export const loadTodosThunk = createAsyncThunk("todo/get", () => {
-//   return loadTodosFn();
-// });
-
-// ERROR! todo correct export of hole actions, not only one action!
 export const { reducer: postReducer, actions: postActions } = slice;
 // export const todoReducer = slice.reducer;
 // export const { addTodo, toggleTodoDone, deleteTodo } = slice.actions;

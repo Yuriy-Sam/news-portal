@@ -1,5 +1,7 @@
 "use client";
 import {
+  getAuthUser,
+  getNotes,
   getUserById,
   useAppDispatch,
   useStateSelector,
@@ -13,14 +15,10 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   const dispatch = useAppDispatch();
-  const storedUser = localStorage.getItem("user");
-  const user = useStateSelector((state) => state.user.authUser);
-  console.log("storedUser", storedUser);
+
   useEffect(() => {
-    if (storedUser && !user) {
-      dispatch(getUserById(JSON.parse(storedUser)));
-    }
-    import("preline");
+    dispatch(getAuthUser());
+    dispatch(getNotes());
   }, []);
   return <>{children}</>;
 }

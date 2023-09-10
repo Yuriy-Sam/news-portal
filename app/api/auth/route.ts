@@ -7,6 +7,7 @@ import multer, { FileFilterCallback } from "multer";
 import { Request as ExpressRequest } from "express";
 import bcrypt from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
+import { cookies } from "next/headers";
 
 // Define the storage settings for multer
 // const storage = multer.diskStorage({
@@ -174,9 +175,12 @@ export async function POST(req: NextRequest) {
       email,
       password: hashedPassword,
     };
-
     // Create the new user with the hashed password
     await User.create({ ...createProps });
+    // if (userId) {
+    //   cookies().set("user", userId);
+    // }
+
     return NextResponse.json({ message: "User Created" }, { status: 201 });
   } catch (error) {
     console.error("Error creating user:", error);
@@ -213,13 +217,18 @@ export async function GET(req: NextRequest) {
   if (!isPasswordValid) {
     return NextResponse.json({ error: "Invalid password" }, { status: 401 });
   }
-
-  // Password is valid, you can create a session or JWT token for authentication
-  // For this example, I'll just return a success response
+  if (user._id) {
+    cookies().set("user", user._id);
+  }
   return NextResponse.json(
     { user, message: "Login successful" },
     { status: 200 }
   );
+}
+
+export async function DELETE(req: NextRequest, { params }: any) {
+  cookies().delete("user");
+  return NextResponse.json({ message: "User Deleted" }, { status: 200 });
 }
 
 // export async function GET() {

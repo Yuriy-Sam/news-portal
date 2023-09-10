@@ -4,6 +4,7 @@ import {
   userReducer,
   categoryReducer,
   postReducer,
+  notesReducer,
 } from "./slices";
 
 export const store = configureStore({
@@ -12,6 +13,7 @@ export const store = configureStore({
     user: userReducer,
     category: categoryReducer,
     post: postReducer,
+    notes: notesReducer,
   },
   devTools: process.env.NODE_ENV !== "production",
 });

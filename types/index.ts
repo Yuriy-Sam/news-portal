@@ -29,6 +29,7 @@ export type PostType = {
   _id?: string;
   createdAt?: string;
   updatedAt?: string;
+  isNotes?: boolean;
 };
 export interface AuthUserType {
   firstName: string;
@@ -36,7 +37,7 @@ export interface AuthUserType {
   avatar: string;
   password?: string;
   email: string;
-
+  notes: Array<string>;
   _id?: string;
   createdAt?: string;
   updatedAt?: string;

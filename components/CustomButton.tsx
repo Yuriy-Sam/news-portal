@@ -18,6 +18,7 @@ type CustomButtonProps = {
   handleClick?: () => void;
   isDisabled?: boolean;
   iconStyles?: string;
+  fillColor?: string;
 };
 
 const CustomButton = ({
@@ -30,6 +31,7 @@ const CustomButton = ({
   isDisabled,
   iconStyles,
   Icon,
+  fillColor,
   activeStyles,
   activeIconColor,
   currentIconColor,
@@ -60,6 +62,7 @@ const CustomButton = ({
             <Icon
               iconStyles={iconStyles}
               color={active ? activeIconColor : currentIconColor}
+              fillcolor={fillColor}
             />
           )}
 
@@ -78,6 +81,7 @@ const CustomButton = ({
             <Icon
               iconStyles={iconStyles}
               // color={active ? "green-500" : "red-500"}
+              fillcolor={fillColor}
               color={active ? activeIconColor : currentIconColor}
             />
           )}

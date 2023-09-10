@@ -4,6 +4,7 @@ import Category from "@/mongodb/models/CategoryModel";
 import User from "@/mongodb/models/UserModel";
 import Post from "@/mongodb/models/PostModel";
 import { formatDistance } from "date-fns";
+import { cookies } from "next/headers";
 
 // export async function POST(req: NextRequest) {
 //   try {
@@ -49,14 +50,6 @@ export async function POST(req: NextRequest) {
     await connectDB();
 
     const formData: any = await req.formData();
-    // formData.append("upload_preset", "posts_upload");
-    // console.log("post keys -- ", ...formData.keys());
-    // const title = formData.get("title");
-    // const subtitle = formData.getAll("subtitle");
-    // const mainImageFile = formData.getAll("mainImage");
-    // const content = formData.getAll("content");
-
-    // console.log("post entries -- ", ...formData.entries());
     let data: any = {};
     let content: any = [];
     let categories: any = [];
@@ -72,7 +65,6 @@ export async function POST(req: NextRequest) {
     }
     data["categoriesValues"] = categories;
     data["content"] = content;
-    console.log("data post create - ", data);
 
     // url.searchParams.forEach(async (value, key) => {
     //   if (key === "categoriesValues") {
@@ -102,9 +94,10 @@ export async function GET(req: NextRequest) {
     const offsetParam = url.searchParams.get("offset");
     const limitParam = url.searchParams.get("limit");
     const categoriesParam = url.searchParams.get("categories");
-
+    const notesParam = url.searchParams.get("notes");
     let posts = await Post.find().sort({ createdAt: -1 });
-
+    const userId = cookies().get("user")?.value;
+    const authUser = await User.findOne({ _id: userId });
     if (categoriesParam) {
       posts = posts.filter((el) =>
         el.categoriesValues.some((cat) => {
@@ -113,6 +106,13 @@ export async function GET(req: NextRequest) {
           });
         })
       );
+    }
+    if (notesParam) {
+      posts = posts.filter((el) => {
+        return authUser?.notes.some((note) => {
+          return note === el._id.toString();
+        });
+      });
     }
 
     posts = posts.slice(+offsetParam!, +limitParam!);
@@ -135,14 +135,13 @@ export async function GET(req: NextRequest) {
             addSuffix: true,
           }
         );
-        // console.log(
-        //   "test date: ",
-        //   formatDistance(new Date(post.updatedAt.toString()), new Date(), {
-        //     addSuffix: true,
-        //   })
-        // );
 
-        // Remove autorId and categoriesValues from the post object
+        let isNotes = false;
+        if (authUser && authUser.notes.length > 0) {
+          isNotes = authUser.notes.some((note) => {
+            return note === post._id.toString();
+          });
+        }
         const {
           autorId,
           categoriesValues,
@@ -155,11 +154,10 @@ export async function GET(req: NextRequest) {
           categories,
           autor,
           date,
+          isNotes,
         };
       })
     );
-
-    // const cat = await Category.findOne({ value: "politic" });
     return NextResponse.json(
       { data: postsWithCategories, message: "Get categories successful" },
       { status: 200 }
@@ -171,103 +169,3 @@ export async function GET(req: NextRequest) {
     );
   }
 }
-// export async function GET(req: NextRequest) {
-//   try {
-//     await connectDB();
-
-//     const posts = await Post.find({});
-//     // posts.map((el) => {
-
-//     //   console.log("eeadas: ", el.categoriesValues);
-//     //   if (el.categoriesValues) {
-//     //     const cat = await Category.findOne({ value: el.categoriesValues. });
-//     //     return cat;
-//     //     el.categoriesValues.map(async (item) => {
-
-//     //     });
-//     //     const categoryPromises = el.categoriesValues.map(async (item) => {
-//     //       const cat = await Category.findOne({ value: item });
-//     //       return cat ? { ...cat.toObject() } : null;
-//     //     });
-
-//     //     const categories = await Promise.all(categoryPromises);
-//     //     data.categories = categories.filter((cat) => cat !== null);
-//     //   }
-
-//     //   // el.categoriesValues.map(async (item) => {
-//     //   //   const cat = await Category.findOne({ value: item });
-//     //   //   return cat;
-//     //   // });
-//     //   // el.autorIdconst = User.findOne({ _id: el.autorIdconst });
-//     //   //     data.autor = user ? { ...user.toObject() } : null;
-//     // });
-//     // console.log("newPosts", newPosts);
-//     // posts.categoriesValues
-
-//     // url.searchParams.forEach(async (value, key) => {
-//     //   if (key === "categoriesValues") {
-//     //     const categoriesValues = value.split(",");
-//     // const categoryPromises = categoriesValues.map(async (item) => {
-//     //   const cat = await Category.findOne({ value: item });
-//     //   return cat ? { ...cat.toObject() } : null;
-//     // });
-
-//     // const categories = await Promise.all(categoryPromises);
-//     // data.categories = categories.filter((cat) => cat !== null);
-//     //   } else if (key === "autorId") {
-//     //     const user = await User.findOne({ _id: value });
-//     //     data.autor = user ? { ...user.toObject() } : null;
-//     //   } else {
-//     //     data[key] = value; // Set the data[key] for other keys
-//     //   }
-//     // });
-//     // const catt = await Category.findOne({ value: "politic" });
-
-//     return NextResponse.json(
-//       { posts, message: "Get categories successful" },
-//       { status: 200 }
-//     );
-//   } catch (error) {
-//     return NextResponse.json(
-//       { error: "Internal Server Error" },
-//       { status: 500 }
-//     );
-//   }
-// }
-// export async function GET(req: NextRequest) {
-//   try {
-//     await connectDB();
-
-//     const url = new URL(req.url);
-//     const data: any = {};
-
-//     url.searchParams.forEach(async (value, key) => {
-//       if (key === "categoriesValues") {
-//         const categoriesValues = value.split(",");
-//         const categoryPromises = categoriesValues.map(async (item) => {
-//           const cat = await Category.findOne({ value: item });
-//           return cat ? { ...cat.toObject() } : null;
-//         });
-
-//         const categories = await Promise.all(categoryPromises);
-//         data.categories = categories.filter((cat) => cat !== null);
-//       } else if (key === "autorId") {
-//         const user = await User.findOne({ _id: value });
-//         data.autor = user ? { ...user.toObject() } : null;
-//       } else {
-//         data[key] = value; // Set the data[key] for other keys
-//       }
-//     });
-//     const catt = await Category.findOne({ value: "politic" });
-
-//     return NextResponse.json(
-//       { data, message: "Get categories successful" },
-//       { status: 200 }
-//     );
-//   } catch (error) {
-//     return NextResponse.json(
-//       { error: "Internal Server Error" },
-//       { status: 500 }
-//     );
-//   }
-// }

@@ -2,9 +2,10 @@ import connectDB from "@/mongodb/connect";
 import User from "@/mongodb/models/UserModel";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import Post from "@/mongodb/models/PostModel";
+import Post, { IPost } from "@/mongodb/models/PostModel";
 import Category from "@/mongodb/models/CategoryModel";
 import { formatDistance } from "date-fns";
+import { cookies } from "next/headers";
 
 // export async function PUT(req: NextRequest, { params }: any) {
 //   const { id } = params;
@@ -23,9 +24,8 @@ import { formatDistance } from "date-fns";
 export async function GET(req: NextRequest, { params }: any) {
   try {
     const { id } = params;
-    // console.log("post id: ", id);
     await connectDB();
-    let post = null;
+    let post: IPost | null = null;
 
     switch (id) {
       case "bestToday":
@@ -36,6 +36,7 @@ export async function GET(req: NextRequest, { params }: any) {
         post = await Post.findOne({ _id: id });
         break;
     }
+
     // const post =
     //   id === "first"
     //     ? await Post.findOne().sort({ createdAt: 1 })
@@ -44,6 +45,16 @@ export async function GET(req: NextRequest, { params }: any) {
       return NextResponse.json({ error: "Post is not find" }, { status: 401 });
     }
 
+    const userId = cookies().get("user")?.value;
+
+    const authUser = await User.findOne({ _id: userId });
+
+    let isNotes = false;
+    if (authUser && authUser.notes.length > 0) {
+      isNotes = authUser.notes.some((note) => {
+        return note === post?._id?.toString();
+      });
+    }
     // Fetch the Category details
     const categories = await Promise.all(
       post.categoriesValues.map((categoryValue: string) =>
@@ -71,6 +82,7 @@ export async function GET(req: NextRequest, { params }: any) {
       categories,
       autor,
       date,
+      isNotes,
     };
 
     return NextResponse.json(

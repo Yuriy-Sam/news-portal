@@ -1,5 +1,5 @@
 "use client";
-import { CustomButton, CustomForm } from "@/components";
+import { CustomButton } from "@/components";
 import { loginUser, useAppDispatch, useStateSelector } from "@/store";
 import Image from "next/image";
 import Link from "next/link";
@@ -34,7 +34,6 @@ const PageLogin = () => {
   const success = useSearchParams().get("success");
   const router = useRouter();
   // const [fetchErr, setFetchErr] = useState("");
-  console.log("searchParams", success);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     //   const res = await fetch(

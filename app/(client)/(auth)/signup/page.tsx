@@ -161,8 +161,6 @@ const PageSignUp = () => {
 
   const showProfileImg = (file: File) => {
     setUploadedImg(file);
-    console.log("file ---", file);
-    console.log("file type ---", file.type);
 
     // if (file) {
     //   const reader = new FileReader();
@@ -178,7 +176,6 @@ const PageSignUp = () => {
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    console.log("e.target", e.target.files);
     const file = e.target.files?.[0] as File;
     if (file) {
       showProfileImg(file);

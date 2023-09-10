@@ -24,7 +24,6 @@ const MainTopics = () => {
   const dispatch = useAppDispatch();
   const categories = useStateSelector((state) => state.category.categoryItems);
   const status = useStateSelector((state) => state.category.status);
-  // console.log(" devTools: process.env.NODE_ENV", process.env.NODE_ENV);
   useEffect(() => {
     // if (status === "success") {
     const fetchCategoriesAndInitSwiper = async () => {
@@ -69,7 +68,6 @@ const MainTopics = () => {
           },
         },
       });
-      console.log("swiperRef.current", swiperRef.current);
       // if (swiperRef.current) {
       swiperRef.current.update(); // Update the Swiper after fetching categories
       // }

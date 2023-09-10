@@ -30,7 +30,7 @@ const slice = createSlice({
         {
           id: getId(),
           title: action.payload.title,
-          done: false,
+          done: false, 
         },
       ]; */
       state.items.push({

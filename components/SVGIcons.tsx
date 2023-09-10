@@ -6,6 +6,7 @@ export type IconProps = {
   props?: SVGProps<SVGSVGElement>;
   color?: string;
   iconStyles?: string;
+  fillcolor?: string;
 };
 export const HomeIcon: React.FC<IconProps> = ({
   color,
@@ -164,11 +165,12 @@ export const ExitIcon: React.FC<IconProps> = ({
 export const BookmarkIcon: React.FC<IconProps> = ({
   color,
   iconStyles,
+  fillcolor = "none",
   ...props
 }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    fill="none"
+    fill={fillcolor}
     viewBox="0 -0.5 25 25"
     className={iconStyles}
     {...props}
@@ -187,6 +189,7 @@ export const BookmarkIcon: React.FC<IconProps> = ({
 export const BookmarksIcon: React.FC<IconProps> = ({
   color,
   iconStyles,
+  fillcolor = "none",
   ...props
 }) => (
   <svg
@@ -198,7 +201,7 @@ export const BookmarksIcon: React.FC<IconProps> = ({
     <path
       d="M128 80V64a48.14 48.14 0 0 1 48-48h224a48.14 48.14 0 0 1 48 48v368l-80-64"
       style={{
-        fill: "none",
+        fill: `${fillcolor}`,
         stroke: `stroke-${color}`,
         strokeLinejoin: "round",
         strokeWidth: 32,
@@ -208,7 +211,7 @@ export const BookmarksIcon: React.FC<IconProps> = ({
     <path
       d="M320 96H112a48.14 48.14 0 0 0-48 48v352l152-128 152 128V144a48.14 48.14 0 0 0-48-48Z"
       style={{
-        fill: "none",
+        fill: `${fillcolor}`,
         stroke: `stroke-${color}`,
         strokeLinejoin: "round",
         strokeWidth: 32,

@@ -1,18 +1,26 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "@/styles/header.module.css";
 import Image from "next/legacy/image";
 import Link from "next/link";
 import CustomButton from "./CustomButton";
 import { BookmarksIcon, SearchIcon } from "./SVGIcons";
-import { useStateSelector } from "@/store";
+import { createNotes, useAppDispatch, useStateSelector } from "@/store";
 
 type HeaderProps = {
   // handleShowSidebar?: () => void;
 };
 const Header = ({}: HeaderProps) => {
+  // const dispatch = useAppDispatch();
   const authUser = useStateSelector((state) => state.user.authUser);
+  const notes = useStateSelector((state) => state.notes.notesItems);
 
+  const [notesCount, setnNotesCount] = useState(notes.length || 0);
+  useEffect(() => {
+    if (notes) {
+      setnNotesCount(notes.length);
+    }
+  }, [notes]);
   return (
     <header className="after-line relative w-full block pb-7">
       <div className="flex justify-between items-center">
@@ -45,12 +53,19 @@ const Header = ({}: HeaderProps) => {
 
         {authUser ? (
           <>
-            <CustomButton
-              link="/#"
-              containerStyles="btn_primary px-3"
-              Icon={BookmarksIcon}
-              iconStyles={"w-[30px] h-[30px]"}
-            />
+            <div className=" relative ">
+              <CustomButton
+                link="/notes"
+                containerStyles="btn_primary px-3"
+                Icon={BookmarksIcon}
+                iconStyles={"w-[30px] h-[30px]"}
+              />
+              {notes.length > 0 && (
+                <span className="absolute top-1 right-1 bg-primary-300  border-2 border-primary  text-primary font-bold text-xs h-[25px] w-[25px] flex justify-center items-center rounded-full">
+                  {notes.length}
+                </span>
+              )}
+            </div>
 
             {/* <div className="flex  items-center gap-2 sm:gap-3  lg:hidden ">
               <Image

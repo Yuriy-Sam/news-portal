@@ -5,16 +5,11 @@ import { SpinnerIcon } from "@/components/SVGIcons";
 import {
   createPost,
   getCategories,
-  postActions,
-  postReducer,
   useAppDispatch,
   useStateSelector,
 } from "@/store";
 import { ErrorMessage } from "@hookform/error-message";
 import { useRouter } from "next/navigation";
-
-import { error } from "console";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import CustomTextarea from "@/components/CustomTextarea";
@@ -204,7 +199,6 @@ const CreatePostPage = () => {
   const onSubmit: SubmitHandler<any> = async (data) => {
     setLoading(true);
 
-    console.log("formmm data --- ", data);
     const formData = new FormData();
     const uploadPromises = imageArr.map(async (el) => {
       return uploadImage(el.file, "posts_upload");
@@ -238,7 +232,6 @@ const CreatePostPage = () => {
       router.push(`/posts/${res.payload.postCreated._id}?success=true`);
       setLoading(false);
     }
-    // console.log("formDataformData --- ", formData);
   };
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {

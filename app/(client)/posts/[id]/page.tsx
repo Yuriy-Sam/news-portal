@@ -16,6 +16,7 @@ import { notFound, useParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { ContentType, PostType } from "@/types";
 import { Metadata, ResolvingMetadata } from "next";
+import CustomNotesButton from "@/components/CustomNotesButton";
 
 // type Props = {
 //   params: { id: string };
@@ -61,16 +62,6 @@ const PagePosts = () => {
   if (status === "error") {
     notFound();
   }
-  // useEffect(() => {
-  //   if (post) {
-  //     router.events.on("routeChangeStart", () => onLeaveHandle());
-
-  //     return () => {
-  //       console.log("unmounting component...");
-  //       router.events.off("routeChangeStart", () => onLeaveHandle());
-  //     };
-  //   }
-  // }, [post]);
   const renderLodingItems = (n: number) => {
     const items = [];
     for (let i = 1; i <= n; i++) {
@@ -119,6 +110,7 @@ const PagePosts = () => {
         case "image":
           return (
             <Image
+              key={el.type + "-" + i}
               className=" mt-8 max-h-[500px] mb-11 rounded w-full object-cover "
               src={el.value}
               alt={el.type + "-" + i}
@@ -130,14 +122,20 @@ const PagePosts = () => {
           );
         case "subtitle":
           return (
-            <h2 className="title mt-3 mb-4 sm:text-4xl text-3xl ">
+            <h2
+              key={el.type + "-" + i}
+              className="title mt-3 mb-4 sm:text-4xl text-3xl "
+            >
               {el.value}
             </h2>
           );
 
         case "content":
           return (
-            <div className="title sm:text-2xl  text-xl font-normal mb-5">
+            <div
+              key={el.type + "-" + i}
+              className="title sm:text-2xl  text-xl font-normal mb-5"
+            >
               {el.value}
             </div>
           );
@@ -151,7 +149,7 @@ const PagePosts = () => {
     return <section className="py-7 ">{renderLodingItems(1)}</section>;
   }
   if (status === "success") {
-    const { title, autor, mainImage, content, categories, date } =
+    const { _id, title, autor, mainImage, content, categories, date, isNotes } =
       post as PostType;
 
     return (
@@ -180,12 +178,21 @@ const PagePosts = () => {
               </div>
             </div>
             <div className="">
-              <CustomButton
+              {/* <CustomButton
                 containerStyles="btn_primary border-none bg-none after:hidden py-1 px-2  text-primary-600"
                 activeStyles="border-white "
                 Icon={BookmarkIcon}
                 iconStyles={"sm:w-[25px] sm:h-[25px] w-[20px] h-[20px]"}
+              /> */}
+              <CustomNotesButton
+                isNotes={isNotes!}
+                id={_id}
+                containerStyles="btn_primary border-none bg-none after:hidden py-1 px-2  text-primary-600"
+                activeContainerStyles="hover:text-primary text-primary "
+                // activeStyles="border-white "
+                iconStyles={"sm:w-[25px] sm:h-[25px] w-[20px] h-[20px]"}
               />
+
               <CustomButton
                 containerStyles="btn_primary border-none bg-none after:hidden py-1 px-2 text-primary-600"
                 activeStyles="border-white "

@@ -16,13 +16,15 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const storedUser = localStorage.getItem("user");
+  const isAuthUser = useStateSelector((state) => state.user.isAuthUser);
+  const status = useStateSelector((state) => state.user.userStatus);
+
   useEffect(() => {
-    if (!storedUser) {
+    if (status === "error" && !isAuthUser) {
       return router.push("/login");
     }
-  }, []);
-  if (storedUser) {
+  }, [isAuthUser, status]);
+  if (status === "success" && isAuthUser) {
     return (
       <>
         <main className="w-full mx-5 sm:mx-10  max-w-[1100px] py-7 block overflow-hidden">

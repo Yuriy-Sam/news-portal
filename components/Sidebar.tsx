@@ -18,7 +18,12 @@ import {
   WriteIcon,
 } from "./SVGIcons";
 import { AuthUserType } from "@/types";
-import { useAppDispatch, useStateSelector, userActions } from "@/store";
+import {
+  leaveUser,
+  useAppDispatch,
+  useStateSelector,
+  userActions,
+} from "@/store";
 
 type NavLinkType = {
   link?: string;
@@ -94,7 +99,7 @@ const Sidebar = () => {
       Icon: ExitIcon,
       handle: () => {
         setShow(false);
-        dispatch(userActions.leaveUser());
+        dispatch(leaveUser());
         router.push("/login");
       },
     },

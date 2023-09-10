@@ -1,11 +1,25 @@
-// "use client";
+"use client";
 import Image from "next/legacy/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import CustomButton from "./CustomButton";
 import { PostType } from "@/types";
 import { format, formatDistance, formatRelative, subDays } from "date-fns";
-import { BookmarkIcon, CommentIcon, EyeIcon, ShareIcon } from "./SVGIcons";
+import {
+  BookmarkIcon,
+  BookmarksIcon,
+  CommentIcon,
+  EyeIcon,
+  ShareIcon,
+} from "./SVGIcons";
+import {
+  createNotes,
+  postActions,
+  removeNotes,
+  useAppDispatch,
+  useStateSelector,
+} from "@/store";
+import CustomNotesButton from "./CustomNotesButton";
 
 type PostProps = {
   data: PostType;
@@ -19,17 +33,31 @@ const Post = ({
   containerStyles,
   showText = true,
 }: PostProps) => {
-  const { _id, views, mainImage, title, autor, categories, date } = data;
+  const { _id, views, mainImage, title, autor, categories, date, isNotes } =
+    data;
+  const [isInNotes, setIsInNotes] = useState<boolean>(isNotes || false);
+  // const [notesLoading, setNotesLoading] = useState<boolean>(isNotes || false);
 
+  const dispatch = useAppDispatch();
+  const notesStatus = useStateSelector((state) => state.post.notesStatus);
+  const isAuthUser = useStateSelector((state) => state.user.isAuthUser);
+  const handleNotes = async () => {
+    let res = null;
+    if (isInNotes) {
+      res = await dispatch(removeNotes(_id!.toString()));
+    } else {
+      res = await dispatch(createNotes(_id!.toString()));
+    }
+    if (res.meta.requestStatus === "fulfilled") {
+      setIsInNotes((state) => !state);
+    }
+
+    // dispatch(postActions.toggleNotes({ isInNotes, id: _id!.toString() }));
+  };
   // const datetest = formatDistance(
   //   new Date("2023-07-1T20:12:26.618+00:00"),
   //   new Date()
   // );
-  // console.log(
-  //   "test date: ",
-  //   formatDistance(new Date("2023-07-1T20:12:26.618+00:00"), new Date())
-  // );
-
   return (
     <div className="group  group-hover:transition-all   duration-300  p-1 post-shadow hover:shadow-lg hover:shadow-primary-400 hover:p-0  relative h-full w-full rounded overflow-hidden">
       <Link
@@ -105,12 +133,27 @@ const Post = ({
           </div>
         </div>
         <div className="">
-          <CustomButton
-            containerStyles="btn_primary border-none bg-none after:hidden py-1 px-2  text-primary-600"
-            activeStyles="border-white "
-            Icon={BookmarkIcon}
+          <CustomNotesButton
+            isNotes={isNotes!}
+            id={_id}
+            containerStyles={`btn_primary border-none bg-none after:hidden py-1 px-2  text-primary-600`}
+            activeContainerStyles="hover:text-primary"
+            activeStyles="border-primary-600 "
             iconStyles={"w-[20px] h-[20px]"}
           />
+          {/* {isAuthUser && (
+            <CustomButton
+              containerStyles={`btn_primary border-none bg-none after:hidden py-1 px-2 ${
+                isInNotes ? "hover:text-primary" : null
+              }  text-primary-600`}
+              fillColor={isInNotes ? "yellow" : "none"}
+              activeStyles="border-primary-600 "
+              isDisabled={notesStatus === "loading"}
+              Icon={isInNotes ? BookmarksIcon : BookmarkIcon}
+              iconStyles={"w-[20px] h-[20px]"}
+              handleClick={() => handleNotes()}
+            />
+          )} */}
           <CustomButton
             containerStyles="btn_primary border-none bg-none after:hidden py-1 px-2 text-primary-600"
             activeStyles="border-white "

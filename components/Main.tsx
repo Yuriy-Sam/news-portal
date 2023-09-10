@@ -7,11 +7,17 @@ import Link from "next/link";
 import { posts } from "@/data/posts";
 import { PostType } from "@/types";
 import { format, formatDistance, formatRelative, subDays } from "date-fns";
-import { BookmarkIcon, ShareIcon } from "./SVGIcons";
+import { BookmarkIcon, BookmarksIcon, ShareIcon } from "./SVGIcons";
 import Swiper from "swiper";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
-import { getSinglePost, useAppDispatch, useStateSelector } from "@/store";
+import {
+  getSinglePost,
+  postActions,
+  useAppDispatch,
+  useStateSelector,
+} from "@/store";
 import { useParams } from "next/navigation";
+import CustomNotesButton from "./CustomNotesButton";
 
 const Main = () => {
   const dispatch = useAppDispatch();
@@ -60,6 +66,7 @@ const Main = () => {
       <div className="flex justify-between  mb-7  items-center">
         <h2 className="title  mb-0">Article of The Day</h2>
         <CustomButton
+          link="/posts"
           text="Load More"
           containerStyles="btn_primary dark:btn_primary border-solid rounded-full text-sm p-3 sm:py-4 sm:px-6 "
         />
@@ -76,7 +83,14 @@ type MainPostProp = {
   post: PostType;
 };
 const MainPost = ({ post }: MainPostProp) => {
-  const { _id, date, mainImage, title, categories, autor } = post;
+  const { _id, date, mainImage, title, categories, autor, isNotes } = post;
+  // const handleNotes = () => {
+  //   dispatch(postActions.toggleNotes({ isInNotes, id: _id!.toString() }));
+  //   if (notesStatus === "success") {
+  //     setIsInNotes((state) => !state);
+  //   }
+  // };
+
   return (
     <div className=" relative w-full h-full">
       <Link
@@ -174,12 +188,27 @@ const MainPost = ({ post }: MainPostProp) => {
           </div>
         </div>
         <div className="">
-          <CustomButton
-            containerStyles="btn_secondary border-none bg-none after:hidden py-1 px-1 sm:px-2 mr-1"
-            activeStyles="border-white "
-            Icon={BookmarkIcon}
-            currentIconColor="#b2b2b2"
-            activeIconColor="#000"
+          {/* {isAuthUser && (
+            <CustomButton
+              containerStyles={`btn_secondary border-none bg-none after:hidden py-1 px-1 sm:px-2 mr-1  ${
+                isInNotes ? "hover:text-primary" : null
+              }`}
+              activeStyles="border-white "
+              Icon={isInNotes ? BookmarksIcon : BookmarkIcon}
+              fillColor={isInNotes ? "yellow" : "none"}
+              isDisabled={notesStatus === "loading"}
+              currentIconColor={isInNotes ? "#000" : "#b2b2b2"}
+              activeIconColor="#000"
+              handleClick={() => handleNotes()}
+              iconStyles={"w-[20px] h-[20px] sm:w-[30px] sm:h-[30px]"}
+            />
+          )} */}
+          <CustomNotesButton
+            isNotes={isNotes!}
+            id={_id}
+            containerStyles={`btn_secondary border-none bg-none after:hidden py-1 px-1 sm:px-2 mr-1 text-primary-400`}
+            activeContainerStyles="hover:text-primary text-primary "
+            // activeStyles="border-primary-600 "
             iconStyles={"w-[20px] h-[20px] sm:w-[30px] sm:h-[30px]"}
           />
           <CustomButton

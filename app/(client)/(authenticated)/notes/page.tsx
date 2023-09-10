@@ -1,18 +1,14 @@
 "use client";
+
 import { CustomButton, Post } from "@/components";
-// import { posts } from "@/data/posts";
-import { getPosts, useAppDispatch, useStateSelector } from "@/store";
+import { getNotesPosts, useAppDispatch, useStateSelector } from "@/store";
 import { PostType } from "@/types";
-import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-const PagePosts = () => {
+const NotesPage = () => {
   const dispatch = useAppDispatch();
-  const posts = useStateSelector((state) => state.post.postItems);
-  const newPosts = useStateSelector((state) => state.post.newPostItems);
-  const authUser = useStateSelector((state) => state.user.authUser);
   const status = useStateSelector((state) => state.post.status);
-  const params = useSearchParams();
+  const nodesPostItems = useStateSelector((state) => state.post.nodesPostItems);
   const [storagePosts, setStoragePosts] = useState<Array<PostType>>([]);
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(6);
@@ -20,25 +16,20 @@ const PagePosts = () => {
     setOffset((state) => state + n);
     setLimit((state) => state + n);
   };
-  const categoryParam = params.get("categories");
   let customSearchParams = "";
   customSearchParams += `offset=${offset}`;
   customSearchParams += `&limit=${limit}`;
-  if (categoryParam) {
-    customSearchParams += `&categories=${categoryParam}`;
-  }
+  customSearchParams += `&notes=true`;
 
   useEffect(() => {
-    dispatch(getPosts(customSearchParams));
-  }, [offset, limit]);
-  useEffect(() => {
-    if (newPosts) {
-      setStoragePosts((state) => [...state, ...newPosts]);
+    if (nodesPostItems) {
+      setStoragePosts(nodesPostItems);
     }
-  }, [newPosts]);
+  }, [nodesPostItems]);
+
   useEffect(() => {
-    setStoragePosts([]);
-  }, []);
+    dispatch(getNotesPosts(customSearchParams));
+  }, [offset, limit]);
   const renderLodingItems = (n: number) => {
     const items = [];
     for (let i = 1; i <= n; i++) {
@@ -85,7 +76,7 @@ const PagePosts = () => {
 
   return (
     <section className="py-7 ">
-      <h2 className="title">New Posts</h2>
+      <h2 className="title">Notes</h2>
       <div className=" grid grid-cols-1 gap-5 grid-rows-1 md:grid-cols-2 sm:grid-cols-2 ">
         {storagePosts?.map((post: PostType, i: number) => {
           return <Post key={i} data={post} imageSize={800} />;
@@ -105,4 +96,4 @@ const PagePosts = () => {
   );
 };
 
-export default PagePosts;
+export default NotesPage;

@@ -50,7 +50,7 @@ export default function CategoriesPage() {
   return (
     <>
       <section className="py-7 ">
-        <h2 className="title">New Posts</h2>
+        <h2 className="title">Categories</h2>
         <div className=" grid grid-cols-1 gap-5 grid-rows-[200px] auto-rows-[200px] md:grid-cols-2 sm:grid-cols-2 ">
           {status === "loading" && renderLodingItems(2)}
           {status === "success" &&

@@ -21,7 +21,6 @@ const CustomImageBlock = ({
         let newArr = [];
         newArr = state.filter((el: any) => el.name !== name);
         newArr.push({ name: name, file: uploadImg });
-        console.log("setImageArr state", newArr);
         return newArr;
       });
     }

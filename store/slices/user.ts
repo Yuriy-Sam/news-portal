@@ -10,8 +10,10 @@ interface InitialStateProps {
   authUser: AuthUserType | null;
   loginStatus: "init" | "loading" | "error" | "success";
   registerStatus: "init" | "loading" | "error" | "success";
+  userStatus: "init" | "loading" | "error" | "success";
   loginErrorMessage: string;
   registerErrorMessage: string;
+  isAuthUser: boolean;
   // errMessage: string;
 }
 
@@ -21,7 +23,9 @@ const initialState: InitialStateProps = {
   loginErrorMessage: "",
   registerErrorMessage: "",
   loginStatus: "init",
+  userStatus: "init",
   registerStatus: "init",
+  isAuthUser: false,
   // errMessage: "",
 };
 
@@ -43,13 +47,33 @@ export const registerUser = createAsyncThunk(
     return await request("/api/auth/", "POST", state);
   }
 );
+export const leaveUser = createAsyncThunk("user/leaveUser", async () => {
+  const { request } = useHttp();
+  return await request("/api/auth/", "DELETE");
+});
+// export const createNotes = createAsyncThunk(
+//   "user/createNotes",
+//   async (state: any) => {
+//     const { request } = useHttp();
+//     const { userId, postId } = state;
+//     return await request(
+//       `/api/notes?userId=${userId}&postId=${postId}`,
+//       "POST"
+//     );
+//   }
+// );
+
 export const getUserById = createAsyncThunk(
   "user/getUserById",
   async (id: string) => {
     const { request } = useHttp();
-    return await request(`/api/auth/${id}`);
+    return await request(`/api/auth/user/${id}`);
   }
 );
+export const getAuthUser = createAsyncThunk("user/getAuthUser", async () => {
+  const { request } = useHttp();
+  return await request(`/api/user/`);
+});
 export const loginUser = createAsyncThunk(
   "user/loginUser",
   async (state: any) => {
@@ -66,20 +90,12 @@ const slice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    // createUser(state, action: PayloadAction<AuthUserType>) {
-    //   state.authUser = action.payload;
-
-    //   localStorage.setItem("user", JSON.stringify(action.payload));
-    //   console.log(action.payload);
-    // },
+    createUser(state, action: PayloadAction<AuthUserType>) {
+      state.authUser = action.payload;
+    },
     getAuthUserId(state) {
       const storedUser = localStorage.getItem("user");
       return JSON.parse(storedUser || "");
-    },
-    leaveUser(state) {
-      state.authUser = null;
-      localStorage.removeItem("user");
-      console.log("leave work");
     },
     // deleteUser(state, action: PayloadAction<{ id: number }>) {
     // },
@@ -88,6 +104,7 @@ const slice = createSlice({
   // ERROR! using custom thunks with createAsyncThunk
   extraReducers: (builder) =>
     builder
+      //-----REGISTER-------------------------------------------------------------
       .addCase(registerUser.pending, (state) => {
         state.registerStatus = "loading";
         state.registerErrorMessage = "";
@@ -97,9 +114,10 @@ const slice = createSlice({
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.registerStatus = "error";
-        console.log("action", action);
         state.registerErrorMessage = action.error?.message || "";
       })
+
+      //-----LOGIN-------------------------------------------------------------
       .addCase(loginUser.pending, (state) => {
         state.loginStatus = "loading";
         state.loginErrorMessage = "";
@@ -107,29 +125,52 @@ const slice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loginStatus = "success";
         state.authUser = action.payload.user;
+        state.isAuthUser = true;
         localStorage.setItem("user", JSON.stringify(action.payload.user._id));
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loginStatus = "error";
         state.loginErrorMessage = action.error?.message || "";
       })
+
+      //-----GET ONE USER-------------------------------------------------------------
       .addCase(getUserById.fulfilled, (state, action) => {
         console.log("getUserById success");
-        console.log("getUserById user", action.payload.data);
         state.authUser = action.payload.data;
       })
       .addCase(getUserById.rejected, (state, action) => {
-        console.log("getUserById error");
+        console.error("getUserById error");
 
         localStorage.removeItem("user");
+      })
+      .addCase(getAuthUser.pending, (state) => {
+        state.userStatus = "loading";
+      })
+      .addCase(getAuthUser.fulfilled, (state, action) => {
+        console.log("getUserById success");
+        state.authUser = action.payload.data;
+        state.isAuthUser = true;
+        state.userStatus = "success";
+      })
+      .addCase(getAuthUser.rejected, (state, action) => {
+        console.error("getUserById error");
+        localStorage.removeItem("user");
+        state.authUser = null;
+        state.isAuthUser = false;
+
+        state.userStatus = "error";
+      })
+
+      //-----LEAVE USER-------------------------------------------------------------
+      .addCase(leaveUser.fulfilled, (state) => {
+        console.log("leaveUser success");
+        state.authUser = null;
+        state.isAuthUser = false;
+
+        localStorage.removeItem("user");
+      })
+      .addCase(leaveUser.rejected, () => {
+        console.error("leaveUser error");
       }),
 });
-
-// export const loadTodosThunk = createAsyncThunk("todo/get", () => {
-//   return loadTodosFn();
-// });
-
-// ERROR! todo correct export of hole actions, not only one action!
 export const { reducer: userReducer, actions: userActions } = slice;
-// export const todoReducer = slice.reducer;
-// export const { addTodo, toggleTodoDone, deleteTodo } = slice.actions;

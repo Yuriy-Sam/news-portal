@@ -33,24 +33,7 @@ export const getCategories = createAsyncThunk(
 const slice = createSlice({
   name: "category",
   initialState,
-  reducers: {
-    // createUser(state, action: PayloadAction<AuthUserType>) {
-    //   state.authUser = action.payload;
-    //   localStorage.setItem("user", JSON.stringify(action.payload));
-    //   console.log(action.payload);
-    // },
-    // getAuthUser(state, action: PayloadAction<AuthUserType>) {
-    //   state.authUser = action.payload;
-    //   localStorage.setItem("user", JSON.stringify(action.payload));
-    //   console.log(action.payload);
-    // },
-    // leaveUser(state) {
-    //   state.authUser = null;
-    //   console.log("leave work");
-    // },
-    // deleteUser(state, action: PayloadAction<{ id: number }>) {
-    // },
-  },
+  reducers: {},
 
   // ERROR! using custom thunks with createAsyncThunk
   extraReducers: (builder) =>
@@ -60,7 +43,6 @@ const slice = createSlice({
       })
       .addCase(getCategories.fulfilled, (state, action) => {
         state.status = "success";
-        console.log("fetch categories: ", action.payload.categories);
         state.categoryItems = action.payload.categories;
       })
       .addCase(getCategories.rejected, (state, action) => {
