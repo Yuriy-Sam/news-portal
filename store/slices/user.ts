@@ -166,6 +166,7 @@ const slice = createSlice({
         console.log("leaveUser success");
         state.authUser = null;
         state.isAuthUser = false;
+        state.userStatus = "error";
 
         localStorage.removeItem("user");
       })
