@@ -20,7 +20,7 @@ import Image from "next/image";
 import { notFound, useParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { ContentType, PostType } from "@/types";
-import { Metadata, ResolvingMetadata } from "next";
+// import { Metadata, ResolvingMetadata } from "next";
 import CustomNotesButton from "@/components/CustomNotesButton";
 
 // type Props = {
@@ -47,30 +47,30 @@ import CustomNotesButton from "@/components/CustomNotesButton";
 //     },
 //   };
 // }
-type Props = {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  // read route params
-  const id = params.id;
+// type Props = {
+//   params: { id: string };
+//   searchParams: { [key: string]: string | string[] | undefined };
+// };
+// export async function generateMetadata(
+//   { params, searchParams }: Props,
+//   parent: ResolvingMetadata
+// ): Promise<Metadata> {
+//   // read route params
+//   const id = params.id;
 
-  // fetch data
-  const product = await fetch(`/api/post/${id}`).then((res) => res.json());
+//   // fetch data
+//   const product = await fetch(`/api/post/${id}`).then((res) => res.json());
 
-  // optionally access and extend (rather than replace) parent metadata
-  const previousImages = (await parent).openGraph?.images || [];
+//   // optionally access and extend (rather than replace) parent metadata
+//   // const previousImages = (await parent).openGraph?.images || [];
 
-  return {
-    title: product.title,
-    openGraph: {
-      images: [product.mainImage, ...previousImages],
-    },
-  };
-}
+//   return {
+//     title: product.title,
+//     openGraph: {
+//       images: [product.mainImage],
+//     },
+//   };
+// }
 const PagePosts = () => {
   const { id } = useParams();
   const dispatch = useAppDispatch();
