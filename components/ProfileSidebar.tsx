@@ -13,13 +13,9 @@ const ProfileSidebar = () => {
   const authUser = useStateSelector((state) => state.user.authUser);
   const post = useStateSelector((state) => state.post.lastReadingPost);
 
-  // useEffect(() => {
-  //   const storedUser = localStorage.getItem("user");
-  //   if (storedUser) {
-  //     const parsedUser = JSON.parse(storedUser) as AuthUserType;
-  //     setAuthUser(parsedUser);
-  //   }
-  // }, []);
+  useEffect(() => {
+    console.log("lastReadingPost --", post);
+  }, [post]);
   return (
     <aside className="relative w-0  h-screen hidden md:block lg:min-w-[350px] ">
       <div className=" fixed top-0 right-100% h-screen  border-l-primary-200 border-l-2  py-7 px-7">

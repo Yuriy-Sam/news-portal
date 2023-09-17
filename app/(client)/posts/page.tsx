@@ -1,5 +1,6 @@
 "use client";
 import { CustomButton, Post } from "@/components";
+import FIltersMenu from "@/components/FIltersMenu";
 // import { posts } from "@/data/posts";
 import { getPosts, useAppDispatch, useStateSelector } from "@/store";
 import { PostType } from "@/types";
@@ -14,31 +15,51 @@ const PagePosts = () => {
   const status = useStateSelector((state) => state.post.status);
   const params = useSearchParams();
   const [storagePosts, setStoragePosts] = useState<Array<PostType>>([]);
+  const [categoryParams, setCategoryParams] = useState<string>("");
+  const [sortParams, setSortParams] = useState<string>("");
+  const [searchParams, setSearchParams] = useState<string>("");
   const [offset, setOffset] = useState(0);
   const [limit, setLimit] = useState(6);
   const handleNewPosts = (n: number) => {
     setOffset((state) => state + n);
     setLimit((state) => state + n);
   };
-  const categoryParam = params.get("categories");
+  const paramsCategories = params.get("categories") || "";
+  const paramsSearch = params.get("searchtext") || "";
+  const paramsSort = params.get("sort") || "";
+  // const formData = new FormData();
+  // formData.append("offset", offset.toString());
+  // formData.append("limit", limit.toString());
+  // formData.append("categories", categoryParams);
+  // formData.append("sort", sortParams);
+  // formData.append("search", searchParams);
   let customSearchParams = "";
   customSearchParams += `offset=${offset}`;
   customSearchParams += `&limit=${limit}`;
-  if (categoryParam) {
-    customSearchParams += `&categories=${categoryParam}`;
-  }
+  // if (paramsCategories) {
+  customSearchParams += paramsCategories && `&categories=${paramsCategories}`;
+  customSearchParams += paramsSort && `&sort=${paramsSort}`;
+  customSearchParams += paramsSearch && `&searchtext=${paramsSearch}`;
+  // }
 
   useEffect(() => {
     dispatch(getPosts(customSearchParams));
-  }, [offset, limit]);
+  }, [offset, limit, paramsCategories, paramsSearch, paramsSort]);
   useEffect(() => {
     if (newPosts) {
       setStoragePosts((state) => [...state, ...newPosts]);
     }
   }, [newPosts]);
+  // useEffect(() => {
+  //   setStoragePosts([]);
+  //   dispatch(getPosts(customSearchParams));
+  // }, []);
   useEffect(() => {
     setStoragePosts([]);
-  }, []);
+    // setCategoryParams(paramsCategories ? paramsCategories : "");
+    // setSearchParams(paramsSearch ? paramsSearch : "");
+    // setSortParams(paramsSort ? paramsSort : "");
+  }, [paramsCategories, paramsSearch, paramsSort]);
   const renderLodingItems = (n: number) => {
     const items = [];
     for (let i = 1; i <= n; i++) {
@@ -85,7 +106,8 @@ const PagePosts = () => {
 
   return (
     <section className="py-7 ">
-      <h2 className="title">New Posts</h2>
+      <h2 className="title mb-5">All Posts</h2>
+      <FIltersMenu clearStorage={() => setStoragePosts([])} />
       <div className=" grid grid-cols-1 gap-5 grid-rows-1 md:grid-cols-2 sm:grid-cols-2 ">
         {storagePosts?.map((post: PostType, i: number) => {
           return <Post key={i} data={post} imageSize={800} />;

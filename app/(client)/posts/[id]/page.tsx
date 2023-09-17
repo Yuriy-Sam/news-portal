@@ -1,6 +1,11 @@
 "use client";
 import { CustomButton, Post } from "@/components";
-import { BookmarkIcon, ShareIcon } from "@/components/SVGIcons";
+import {
+  BookmarkIcon,
+  CommentIcon,
+  EyeIcon,
+  ShareIcon,
+} from "@/components/SVGIcons";
 import { posts } from "@/data/posts";
 import {
   getPosts,
@@ -42,7 +47,30 @@ import CustomNotesButton from "@/components/CustomNotesButton";
 //     },
 //   };
 // }
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // read route params
+  const id = params.id;
 
+  // fetch data
+  const product = await fetch(`/api/post/${id}`).then((res) => res.json());
+
+  // optionally access and extend (rather than replace) parent metadata
+  const previousImages = (await parent).openGraph?.images || [];
+
+  return {
+    title: product.title,
+    openGraph: {
+      images: [product.mainImage, ...previousImages],
+    },
+  };
+}
 const PagePosts = () => {
   const { id } = useParams();
   const dispatch = useAppDispatch();
@@ -149,12 +177,47 @@ const PagePosts = () => {
     return <section className="py-7 ">{renderLodingItems(1)}</section>;
   }
   if (status === "success") {
-    const { _id, title, autor, mainImage, content, categories, date, isNotes } =
-      post as PostType;
+    const {
+      _id,
+      title,
+      autor,
+      mainImage,
+      content,
+      categories,
+      date,
+      isNotes,
+      views,
+    } = post as PostType;
 
     return (
       <section className="py-7 ">
         <div className="">
+          <div className=" flex justify-between  items-center">
+            {categories?.map((el) => {
+              return (
+                <p
+                  key={el.value}
+                  className="text-lg py-2 font-semibold    text-primary-500"
+                >
+                  {el.title}
+                </p>
+              );
+            })}
+            <div className=" flex justify-start items-center">
+              <p className="text-primary-500 text-md  font-medium   mr-[3px]">
+                {views}
+              </p>
+              <EyeIcon color="primary-500" iconStyles="w-[20px] h-[20px]" />
+              <p className="text-primary-500 text-md  font-medium ml-2 mr-[1px]">
+                0
+              </p>
+
+              <CommentIcon
+                color="primary-500"
+                iconStyles="w-[20px] h-[20px] text-primary-500"
+              />
+            </div>
+          </div>
           <h1 className="title text-3xl ">{title}</h1>
           <div className="  w-full flex justify-between items-center py-2 px-1 group-hover:px-2 hover:transition-all   duration-300   ">
             <div className="flex text-white  items-center gap-2 ">

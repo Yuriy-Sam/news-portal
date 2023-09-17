@@ -31,7 +31,7 @@ const postSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
+postSchema.index({ title: "text", "content.value": "text" });
 const Post: Model<IPost> =
   mongoose.models.Post || mongoose.model<IPost>("Post", postSchema);
 

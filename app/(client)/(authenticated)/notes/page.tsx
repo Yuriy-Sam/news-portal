@@ -19,7 +19,7 @@ const NotesPage = () => {
   let customSearchParams = "";
   customSearchParams += `offset=${offset}`;
   customSearchParams += `&limit=${limit}`;
-  customSearchParams += `&notes=true`;
+  customSearchParams += `&isnotes=true`;
 
   useEffect(() => {
     if (nodesPostItems) {

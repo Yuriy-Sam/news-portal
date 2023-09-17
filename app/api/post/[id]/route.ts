@@ -93,6 +93,7 @@ export async function GET(req: NextRequest, { params }: any) {
     return NextResponse.json({ error: "Post is not find" }, { status: 401 });
   }
 }
+
 //   // Compare the provided password with the hashed password in the database
 //   const isPasswordValid = await bcrypt.compare(password, user.password);
 

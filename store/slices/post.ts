@@ -29,9 +29,9 @@ const initialState: InitialStateProps = {
 
 export const getPosts = createAsyncThunk(
   "post/getPosts",
-  async (searchParam: string) => {
+  async (searchParams: string) => {
     const { request } = useHttp();
-    return await request(`/api/post?${searchParam}`);
+    return await request(`/api/post?${searchParams}`);
   }
 );
 export const getNotesPosts = createAsyncThunk(
@@ -72,19 +72,27 @@ const slice = createSlice({
     },
     updateNotes(state, action: PayloadAction<{ id: String }>) {
       // state.status = "init";
+      console.log("updateNotes - state.postItems ", state.postItems);
+      if (
+        state.lastReadingPost &&
+        state.lastReadingPost._id === action.payload.id
+      ) {
+        state.lastReadingPost = {
+          ...state.lastReadingPost,
+          isNotes: !state.lastReadingPost?.isNotes,
+        };
+      }
+      if (state.singlePost && state.singlePost._id === action.payload.id) {
+        state.singlePost = {
+          ...state.singlePost,
+          isNotes: !state.singlePost.isNotes,
+        };
+      }
       state.postItems = state.postItems?.map((el) => {
         if (el._id === action.payload.id) {
-          if (state.singlePost && state.singlePost._id === el._id) {
-            state.singlePost = { ...el, isNotes: !el.isNotes };
-          }
-          if (state.lastReadingPost && state.lastReadingPost._id === el._id) {
-            state.lastReadingPost = {
-              ...state.lastReadingPost,
-              isNotes: !state.lastReadingPost?.isNotes,
-            };
-          }
           return { ...el, isNotes: !el.isNotes };
         }
+
         return el;
       });
     },

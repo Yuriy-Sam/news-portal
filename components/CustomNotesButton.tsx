@@ -42,8 +42,8 @@ const CustomNotesButton = ({
       res = await dispatch(createNotes(id.toString()));
     }
     if (res.meta.requestStatus === "fulfilled") {
+      dispatch(postActions.updateNotes({ id }));
       setIsInNotes((state) => !state);
-      await dispatch(postActions.updateNotes({ id }));
     }
   };
   return (

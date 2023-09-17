@@ -123,12 +123,17 @@ const slice = createSlice({
         state.loginErrorMessage = "";
       })
       .addCase(loginUser.fulfilled, (state, action) => {
+        console.log("getAuthUser success");
         state.loginStatus = "success";
         state.authUser = action.payload.user;
         state.isAuthUser = true;
+        state.userStatus = "success";
+
         localStorage.setItem("user", JSON.stringify(action.payload.user._id));
       })
       .addCase(loginUser.rejected, (state, action) => {
+        state.isAuthUser = false;
+
         state.loginStatus = "error";
         state.loginErrorMessage = action.error?.message || "";
       })
@@ -147,7 +152,7 @@ const slice = createSlice({
         state.userStatus = "loading";
       })
       .addCase(getAuthUser.fulfilled, (state, action) => {
-        console.log("getUserById success");
+        console.log("getAuthUser success");
         state.authUser = action.payload.data;
         state.isAuthUser = true;
         state.userStatus = "success";
@@ -157,11 +162,13 @@ const slice = createSlice({
         localStorage.removeItem("user");
         state.authUser = null;
         state.isAuthUser = false;
-
         state.userStatus = "error";
       })
 
       //-----LEAVE USER-------------------------------------------------------------
+      .addCase(leaveUser.pending, (state) => {
+        state.userStatus = "loading";
+      })
       .addCase(leaveUser.fulfilled, (state) => {
         console.log("leaveUser success");
         state.authUser = null;

@@ -66,7 +66,7 @@ const CustomButton = ({
             />
           )}
 
-          {text && <p className="">{text}</p>}
+          {text && <p className="whitespace-nowrap">{text}</p>}
         </Link>
       ) : (
         <button
@@ -85,7 +85,7 @@ const CustomButton = ({
               color={active ? activeIconColor : currentIconColor}
             />
           )}
-          {text && <p>{text}</p>}
+          {text && <p className="whitespace-nowrap">{text}</p>}
         </button>
       )}
     </>

@@ -1,21 +1,31 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import styles from "@/styles/header.module.css";
 import Image from "next/legacy/image";
 import Link from "next/link";
 import CustomButton from "./CustomButton";
 import { BookmarksIcon, SearchIcon } from "./SVGIcons";
 import { createNotes, useAppDispatch, useStateSelector } from "@/store";
+import { usePathname, useRouter } from "next/navigation";
 
 type HeaderProps = {
   // handleShowSidebar?: () => void;
 };
 const Header = ({}: HeaderProps) => {
   // const dispatch = useAppDispatch();
+  const pathname = usePathname();
+  const router = useRouter();
   const authUser = useStateSelector((state) => state.user.authUser);
   const notes = useStateSelector((state) => state.notes.notesItems);
 
   const [notesCount, setnNotesCount] = useState(notes.length || 0);
+  console.log("pathname --", pathname);
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const searchParam = formData.get("searchParam");
+    router.push(`/posts?${searchParam && `searchtext=${searchParam}`}`);
+  };
   useEffect(() => {
     if (notes) {
       setnNotesCount(notes.length);
@@ -26,29 +36,37 @@ const Header = ({}: HeaderProps) => {
       <div className="flex justify-between items-center">
         <div className=" flex items-center justify-between w-full lg:w-auto lg:justify-center ">
           <div className="w-[50px] mr-5 lg:w-0  lg:mr-0"></div>
-          <form className="header__search flex items-center justify-between  border-0 border-primary-200  p-0 rounded-full lg:border-2 lg:py-2 lg:px-5 ">
-            <input
-              className="mr-0 w-0 h-7 focus:outline-0 p-0 max-w-[170px]  text-base lg:mr-1 lg:py-3 lg:px-1 lg:w-auto"
-              type="text"
-              placeholder="Search article you want..."
-            />
-            {/* <Link className=" flex items-center justify-center" href={"/"}> */}
-            {/* <Image
+          {pathname !== "/posts" ? (
+            <form
+              onSubmit={(e) => handleSubmit(e)}
+              className="header__search flex items-center justify-between  border-0 border-primary-200  p-0 rounded-full lg:border-2 lg:py-2 lg:px-5 "
+            >
+              <input
+                name="searchParam"
+                className="mr-0 w-0 h-7 focus:outline-0 p-0 max-w-[170px]  text-base lg:mr-1 lg:py-3 lg:px-1 lg:w-auto"
+                type="text"
+                placeholder="Search article you want..."
+              />
+              {/* <Link className=" flex items-center justify-center" href={"/"}> */}
+              {/* <Image
               width={30}
               height={30}
               src={"/icons/search.svg"}
               alt="search"
             /> */}
-            <CustomButton
-              containerStyles="px-2 lg:py-0 hover:text-primary lg:text-primary-400"
-              Icon={SearchIcon}
-              // type="submit"
-              // activeIconColor="primary-400"
-              // currentIconColor="primary-200"
-              iconStyles={"w-[25px] h-[25px]"}
-            />
-            {/* </Link> */}
-          </form>
+              <CustomButton
+                containerStyles="px-2 lg:py-0 hover:text-primary lg:text-primary-400"
+                Icon={SearchIcon}
+                type="submit"
+                // activeIconColor="primary-400"
+                // currentIconColor="primary-200"
+                iconStyles={"w-[25px] h-[25px]"}
+              />
+              {/* </Link> */}
+            </form>
+          ) : (
+            <div className=""></div>
+          )}
         </div>
 
         {authUser ? (

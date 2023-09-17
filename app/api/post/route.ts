@@ -94,19 +94,90 @@ export async function GET(req: NextRequest) {
     const offsetParam = url.searchParams.get("offset");
     const limitParam = url.searchParams.get("limit");
     const categoriesParam = url.searchParams.get("categories");
-    const notesParam = url.searchParams.get("notes");
-    let posts = await Post.find().sort({ createdAt: -1 });
+    const notesParam = url.searchParams.get("isnotes");
+    const searchTextParam = url.searchParams.get("searchtext");
+    const sortParam = url.searchParams.get("sort");
+
+    // const findProps = []
+    // searchParam && findProps.push({ $text: { $search : searchParam! } })
+    // searchParam && findProps.push({ $text: { $search : searchParam! } })
+    // { $text: { $search: searchTextParam! } }
+    // let posts = await Post.find().sort({
+    //   createdAt: -1,
+    // });
+    let sortProps = {};
+    switch (sortParam) {
+      case "newest":
+        sortProps = { createdAt: -1 };
+        break;
+      case "oldest":
+        sortProps = { createdAt: 1 };
+        break;
+      case "popular":
+        sortProps = { views: -1 };
+        break;
+      case "titleaz":
+        sortProps = { title: 1 };
+        break;
+      case "titleza":
+        sortProps = { title: -1 };
+        break;
+
+      default:
+        sortProps = { createdAt: -1 };
+
+        break;
+    }
+
+    console.log("categoriesParam --", categoriesParam);
+    console.log("searchTextParam --", searchTextParam);
+    console.log("sortParam --", sortParam);
     const userId = cookies().get("user")?.value;
     const authUser = await User.findOne({ _id: userId });
-    if (categoriesParam) {
-      posts = posts.filter((el) =>
-        el.categoriesValues.some((cat) => {
-          return categoriesParam.split(",").some((v) => {
-            return cat === v;
-          });
-        })
-      );
+    let posts: any[] = [];
+
+    if (
+      searchTextParam &&
+      categoriesParam &&
+      categoriesParam?.split(",").length > 0
+    ) {
+      posts = await Post.find({
+        $text: { $search: searchTextParam! },
+        categoriesValues: {
+          $in: categoriesParam?.split(",")!,
+        },
+      }).sort(sortProps);
+    } else if (categoriesParam && categoriesParam?.split(",").length > 0) {
+      posts = await Post.find({
+        categoriesValues: {
+          $in: categoriesParam?.split(",")!,
+        },
+      }).sort(sortProps);
+    } else if (searchTextParam) {
+      posts = await Post.find({
+        $text: { $search: searchTextParam! },
+      }).sort(sortProps);
+    } else {
+      posts = await Post.find().sort(sortProps);
     }
+
+    // posts = await Post.find({
+    //   $text: { $search: searchTextParam! },
+    //   categoriesValues: {
+    //     $in: categoriesParam?.split(",")!,
+    //   },
+    // }).sort(sortProps);
+    // }
+    // let posts = await Post.find().sort({ createdAt: -1 });
+    // if (categoriesParam) {
+    //   posts = posts.filter((el) =>
+    //     el.categoriesValues.some((cat) => {
+    //       return categoriesParam.split(",").some((v) => {
+    //         return cat === v;
+    //       });
+    //     })
+    //   );
+    // }
     if (notesParam) {
       posts = posts.filter((el) => {
         return authUser?.notes.some((note) => {
@@ -114,14 +185,15 @@ export async function GET(req: NextRequest) {
         });
       });
     }
-
-    posts = posts.slice(+offsetParam!, +limitParam!);
+    if (offsetParam && limitParam) {
+      posts = posts.slice(+offsetParam!, +limitParam!);
+    }
     // Fetch categories for each post
     const postsWithCategories = await Promise.all(
       posts.map(async (post) => {
         // Fetch the Category details
         const categories = await Promise.all(
-          post.categoriesValues.map((categoryValue) => {
+          post.categoriesValues.map((categoryValue: string) => {
             return Category.findOne({ value: categoryValue });
           })
         );
@@ -162,9 +234,13 @@ export async function GET(req: NextRequest) {
       { data: postsWithCategories, message: "Get categories successful" },
       { status: 200 }
     );
+    // return NextResponse.json(
+    //   { data: postsWithCategories, message: "Get categories successful" },
+    //   { status: 200 }
+    // );
   } catch (error) {
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: `Internal Server Error: ${error}` },
       { status: 500 }
     );
   }

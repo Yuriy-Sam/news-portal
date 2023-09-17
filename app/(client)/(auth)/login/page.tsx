@@ -1,6 +1,6 @@
 "use client";
 import { CustomButton } from "@/components";
-import { loginUser, useAppDispatch, useStateSelector } from "@/store";
+import { getNotes, loginUser, useAppDispatch, useStateSelector } from "@/store";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -41,15 +41,17 @@ const PageLogin = () => {
     //   )
     //     .then((res) => res.json())
     //     .then((data) => console.log(data.user));
+    // console.log("loginUser form");
     const res = await dispatch(
       loginUser({ email: data.email, password: data.password })
-    )
-      .unwrap()
-      .catch((err) => {
-        console.error("login ", err);
-      });
+    );
+    // .unwrap()
+    // .catch((err) => {
+    //   console.error("login ", err);
+    // });
     if (res) {
-      router.push("/");
+      await dispatch(getNotes());
+      // router.push("/");
     }
   }; // const [uploadedImg, setUploadedImg] = useState("/");
   const registerOptions = {

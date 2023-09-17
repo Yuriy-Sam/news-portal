@@ -411,3 +411,31 @@ export const SpinnerIcon: React.FC<IconProps> = ({
     />
   </svg>
 );
+export const SortIcon: React.FC<IconProps> = ({
+  color,
+  iconStyles,
+  ...props
+}) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 2.5 19 19"
+    className={iconStyles}
+    {...props}
+  >
+    <path
+      stroke={`stroke-${color}`}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1}
+      d="M11.19 7.85a1.834 1.834 0 1 0-3.054-2.032A1.834 1.834 0 0 0 11.19 7.85ZM11.19 18.165a1.834 1.834 0 1 0-3.054-2.032 1.834 1.834 0 0 0 3.054 2.032v0ZM13.81 13.007a1.834 1.834 0 1 1 3.054-2.032 1.834 1.834 0 0 1-3.054 2.032v0Z"
+      clipRule="evenodd"
+      className={`stroke-current text-${color}`}
+    />
+    <path
+      fill={`fill-${color}`}
+      className={`fill-current fill-${color}`}
+      d="M11.5 6.076a.75.75 0 0 0 0 1.5v-1.5Zm8 1.5a.75.75 0 0 0 0-1.5v1.5Zm-11.673 0a.75.75 0 0 0 0-1.5v1.5ZM5.5 6.076a.75.75 0 1 0 0 1.5v-1.5Zm6 10.316a.75.75 0 0 0 0 1.5v-1.5Zm8 1.5a.75.75 0 0 0 0-1.5v1.5Zm-11.673 0a.75.75 0 0 0 0-1.5v1.5Zm-2.327-1.5a.75.75 0 0 0 0 1.5v-1.5Zm8-3.658a.75.75 0 0 0 0-1.5v1.5Zm-8-1.5a.75.75 0 0 0 0 1.5v-1.5Zm11.673 0a.75.75 0 0 0 0 1.5v-1.5Zm2.327 1.5a.75.75 0 0 0 0-1.5v1.5Zm-8-5.158h8v-1.5h-8v1.5Zm-3.673-1.5H5.5v1.5h2.327v-1.5ZM11.5 17.892h8v-1.5h-8v1.5Zm-3.673-1.5H5.5v1.5h2.327v-1.5Zm5.673-5.158h-8v1.5h8v-1.5Zm3.673 1.5H19.5v-1.5h-2.327v1.5Z"
+    />
+  </svg>
+);

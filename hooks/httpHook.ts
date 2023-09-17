@@ -19,7 +19,9 @@ export const useHttp = () => {
 
       const response = await fetch(url, requestOptions);
       response;
+      console.log("response --", url, response.status);
       const data = await response.json();
+
       if (!response.ok) {
         if (data.error) {
           throw new Error(`${data.error}`);

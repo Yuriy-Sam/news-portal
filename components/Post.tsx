@@ -35,25 +35,25 @@ const Post = ({
 }: PostProps) => {
   const { _id, views, mainImage, title, autor, categories, date, isNotes } =
     data;
-  const [isInNotes, setIsInNotes] = useState<boolean>(isNotes || false);
+  // const [isInNotes, setIsInNotes] = useState<boolean>(isNotes || false);
   // const [notesLoading, setNotesLoading] = useState<boolean>(isNotes || false);
 
-  const dispatch = useAppDispatch();
-  const notesStatus = useStateSelector((state) => state.post.notesStatus);
-  const isAuthUser = useStateSelector((state) => state.user.isAuthUser);
-  const handleNotes = async () => {
-    let res = null;
-    if (isInNotes) {
-      res = await dispatch(removeNotes(_id!.toString()));
-    } else {
-      res = await dispatch(createNotes(_id!.toString()));
-    }
-    if (res.meta.requestStatus === "fulfilled") {
-      setIsInNotes((state) => !state);
-    }
+  // const dispatch = useAppDispatch();
+  // const notesStatus = useStateSelector((state) => state.post.notesStatus);
+  // const isAuthUser = useStateSelector((state) => state.user.isAuthUser);
+  // const handleNotes = async () => {
+  //   let res = null;
+  //   if (isInNotes) {
+  //     res = await dispatch(removeNotes(_id!.toString()));
+  //   } else {
+  //     res = await dispatch(createNotes(_id!.toString()));
+  //   }
+  //   if (res.meta.requestStatus === "fulfilled") {
+  //     setIsInNotes((state) => !state);
+  //   }
 
-    // dispatch(postActions.toggleNotes({ isInNotes, id: _id!.toString() }));
-  };
+  //   // dispatch(postActions.toggleNotes({ isInNotes, id: _id!.toString() }));
+  // };
   // const datetest = formatDistance(
   //   new Date("2023-07-1T20:12:26.618+00:00"),
   //   new Date()
