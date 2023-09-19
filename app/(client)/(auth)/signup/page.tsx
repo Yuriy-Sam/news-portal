@@ -8,7 +8,7 @@ import Link from "next/link";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
-import { SpinnerIcon } from "@/components/SVGIcons";
+import { EyeIcon, SpinnerIcon } from "@/components/SVGIcons";
 
 type FormValues = {
   firstName: string;
@@ -63,6 +63,7 @@ const PageSignUp = () => {
   const [loading, setLoading] = useState<boolean>(false);
   // setLoading(false);
   const [prevImg, setPrevImg] = useState<string>("/");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const errMessage = useStateSelector(
     (state) => state.user.registerErrorMessage
   );
@@ -268,17 +269,41 @@ const PageSignUp = () => {
             <label className="form__label">
               Password<span>*</span>
             </label>
-
-            <input
-              {...register("password", registerOptions.password)}
-              name="password"
-              type="password"
+            <div
               className={`
-                form__input ${errors?.password && "border-red-300"}
+                form__input p-0 overflow-hidden flex justify-between items-center ${
+                  errors?.password && "border-red-300"
+                }
               `}
-              autoComplete="on"
-              placeholder="Enter your password"
-            />
+            >
+              <input
+                {...register("password", registerOptions.password)}
+                name="password"
+                type={showPassword ? "text" : "password"}
+                className={`
+                p-2 outline-none w-full mr-2 ${
+                  errors?.password && "border-red-300"
+                }
+              `}
+                autoComplete="on"
+                placeholder="Enter your password"
+              />
+              <div className=" relative">
+                <CustomButton
+                  Icon={EyeIcon}
+                  iconStyles="w-[20px] text-primary-600 "
+                  containerStyles="p-2"
+                  handleClick={() => setShowPassword((prev) => !prev)}
+                />
+                <span
+                  className={`absolute  w-[3px] h-6 bg-primary-600 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-r-[2px] border-white rounded-full -rotate-45  ${
+                    showPassword ? "invisible" : "visible"
+                  }`}
+                ></span>
+              </div>
+
+              {/* <EyeIcon iconStyles="w-[20px] " color="primary-600" /> */}
+            </div>
             {errors.password && (
               <p className="form__error">{errors.password.message}</p>
             )}
@@ -287,17 +312,42 @@ const PageSignUp = () => {
             <label className="form__label">
               Confirm Password<span>*</span>
             </label>
-
-            <input
-              {...register("confirmPassword", registerOptions.confirmPassword)}
-              name="confirmPassword"
-              type="password"
+            <div
               className={`
-                form__input ${errors?.confirmPassword && "border-red-300"}
+                form__input p-0 overflow-hidden flex justify-between items-center ${
+                  errors?.confirmPassword && "border-red-300"
+                }
               `}
-              autoComplete="on"
-              placeholder="Enter your password again"
-            />
+            >
+              <input
+                {...register(
+                  "confirmPassword",
+                  registerOptions.confirmPassword
+                )}
+                name="confirmPassword"
+                type={showPassword ? "text" : "password"}
+                className={`
+              p-2 outline-none w-full mr-2 ${
+                errors?.password && "border-red-300"
+              }
+            `}
+                autoComplete="on"
+                placeholder="Enter your password again"
+              />
+              <div className=" relative">
+                <CustomButton
+                  Icon={EyeIcon}
+                  iconStyles="w-[20px] text-primary-600 "
+                  containerStyles="p-2"
+                  handleClick={() => setShowPassword((prev) => !prev)}
+                />
+                <span
+                  className={`absolute  w-[3px] h-6 bg-primary-600 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-r-[2px] border-white rounded-full -rotate-45  ${
+                    showPassword ? "invisible" : "visible"
+                  }`}
+                ></span>
+              </div>
+            </div>
             {errors.confirmPassword && (
               <p className="form__error">{errors.confirmPassword.message}</p>
             )}
@@ -394,6 +444,15 @@ const PageSignUp = () => {
                   height={100}
                   alt="your image"
                 />
+                <span
+                  onClick={() => {
+                    setPrevImg("/");
+                    setUploadedImg(null);
+                  }}
+                  className=" absolute cursor-pointer -top-1 -right-1 w-5 h-5 flex items-center justify-center rounded-full text-xs font-bold text-white bg-red-400 p-3 "
+                >
+                  X
+                </span>
               </div>
             )}
           </div>

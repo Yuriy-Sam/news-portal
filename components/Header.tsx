@@ -32,10 +32,16 @@ const Header = ({}: HeaderProps) => {
     }
   }, [notes]);
   return (
-    <header className="after-line relative w-full block pb-7">
+    <header
+      className={`  after-line relative w-full block pb-5 lg:pb-7  ${
+        pathname === "/posts" ? "lg:hidden" : "block"
+      }`}
+    >
       <div className="flex justify-between items-center">
         <div className=" flex items-center justify-between w-full lg:w-auto lg:justify-center ">
-          <div className="w-[50px] mr-5 lg:w-0  lg:mr-0"></div>
+          <div
+            className={`w-[50px] h-[40px] mr-5 lg:w-0 lg:h-0 lg:mr-0 `}
+          ></div>
           {pathname !== "/posts" ? (
             <form
               onSubmit={(e) => handleSubmit(e)}

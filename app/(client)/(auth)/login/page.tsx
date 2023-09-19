@@ -1,5 +1,6 @@
 "use client";
 import { CustomButton } from "@/components";
+import { EyeIcon } from "@/components/SVGIcons";
 import { getNotes, loginUser, useAppDispatch, useStateSelector } from "@/store";
 import Image from "next/image";
 import Link from "next/link";
@@ -33,6 +34,8 @@ const PageLogin = () => {
   const dispatch = useAppDispatch();
   const success = useSearchParams().get("success");
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
   // const [fetchErr, setFetchErr] = useState("");
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
@@ -112,22 +115,42 @@ const PageLogin = () => {
             <label className="form__label">
               Password<span>*</span>
             </label>
-
-            <input
-              {...register("password", registerOptions.password)}
-              name="password"
-              type="password"
+            <div
               className={`
-                form__input ${errors?.password && "border-red-300"}
+                form__input p-0 overflow-hidden flex justify-between items-center ${
+                  errors?.password && "border-red-300"
+                }
               `}
-              autoComplete="on"
-              placeholder="Enter your password"
-            />
+            >
+              <input
+                {...register("password", registerOptions.password)}
+                name="password"
+                type={showPassword ? "text" : "password"}
+                className={`
+            p-2 outline-none w-full mr-2 ${errors?.password && "border-red-300"}
+              `}
+                autoComplete="on"
+                placeholder="Enter your password"
+              />
+
+              <div className=" relative">
+                <CustomButton
+                  Icon={EyeIcon}
+                  iconStyles="w-[20px] text-primary-600 "
+                  containerStyles="p-2"
+                  handleClick={() => setShowPassword((prev) => !prev)}
+                />
+                <span
+                  className={`absolute  w-[3px] h-6 bg-primary-600 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-r-[2px] border-white rounded-full -rotate-45  ${
+                    showPassword ? "invisible" : "visible"
+                  }`}
+                ></span>
+              </div>
+            </div>
             {errors.password && (
               <p className="form__error">{errors.password.message}</p>
             )}
           </div>
-
           <div className=" flex justify-between items-center mb-5">
             <div className="flex items-center mr-4">
               <input
