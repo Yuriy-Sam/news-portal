@@ -10,11 +10,16 @@ interface CustomModalProps {
 const CustomModal = ({ title, content, buttons, show }: CustomModalProps) => {
   const [isShow, setIsShow] = useState<boolean>(show || false);
   useEffect(() => {
+    const body = document.body;
     if (isShow) {
-      const body = document.body;
       body.style.overflow = "hidden";
+    } else {
+      body.style.overflow = "auto";
     }
   }, [isShow]);
+  useEffect(() => {
+    setIsShow(show!);
+  }, [show]);
   return (
     <div
       aria-labelledby="modal-title"
@@ -98,12 +103,14 @@ const CustomModal = ({ title, content, buttons, show }: CustomModalProps) => {
               text="Log In"
               type="button"
               containerStyles="btn_primary  border-solid border-primary-400  rounded after:-left-16  w-full "
-              link="/#"
+              link="/login"
+              handleClick={() => setIsShow(false)}
             />
             <CustomButton
               text="Sign Up"
               containerStyles="btn_secondary  border-primary rounded after:-left-16  w-full  hover:border-primary-400 bg-primary "
-              link="/#"
+              link="/signup"
+              handleClick={() => setIsShow(false)}
             />
           </div>
         </div>

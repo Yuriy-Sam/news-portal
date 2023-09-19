@@ -9,7 +9,7 @@ export default function AuthLayout({
 }) {
   return (
     <>
-      <main className="w-full mx-5 sm:mx-10  max-w-[1100px] py-7 block overflow-hidden">
+      <main className="w-full mx-5 sm:mx-10  max-w-[1100px] py-7 block ">
         <Header />
         {children}
       </main>

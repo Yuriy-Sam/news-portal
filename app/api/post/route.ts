@@ -129,9 +129,9 @@ export async function GET(req: NextRequest) {
         break;
     }
 
-    console.log("categoriesParam --", categoriesParam);
-    console.log("searchTextParam --", searchTextParam);
-    console.log("sortParam --", sortParam);
+    // console.log("categoriesParam --", categoriesParam);
+    // console.log("searchTextParam --", searchTextParam);
+    // console.log("sortParam --", sortParam);
     const userId = cookies().get("user")?.value;
     const authUser = await User.findOne({ _id: userId });
     let posts: any[] = [];

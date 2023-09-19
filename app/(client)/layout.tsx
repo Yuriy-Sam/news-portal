@@ -8,6 +8,7 @@ import {
   useStateSelector,
   userActions,
 } from "@/store";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function AuthLayout({
@@ -15,26 +16,39 @@ export default function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // const [showModal, setShowModal] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  // const isAuthUser = useStateSelector((state) => state.user.isAuthUser);
-  // useEffect(() => {
-  //   if (!isAuthUser) {
-  //     const timeout = setTimeout(() => {
-  //       console.log("setTimeout");
-  //       setShowModal(true);
-  //       console.log("showModal", showModal);
-  //     }, 5000);
-  //     return () => clearTimeout(timeout);
-  //   }
-  // }, [isAuthUser]);
+  const pathname = usePathname();
+
+  const isAuthUser = useStateSelector((state) => state.user.isAuthUser);
+  // const userStatus = useStateSelector((state) => state.user.userStatus);
   useEffect(() => {
-    dispatch(getAuthUser());
-    dispatch(getNotes());
+    if (!isAuthUser && pathname !== "login" && pathname !== "singup") {
+      console.log("setTimeout");
+      const timeout = setTimeout(() => {
+        setShowModal(true);
+        console.log("showModal", showModal);
+      }, 10000);
+      return () => clearTimeout(timeout);
+    }
+  }, [isAuthUser]);
+  const firstRender = async () => {
+    await dispatch(getAuthUser());
+    await dispatch(getNotes());
+    // if (userStatus === "error" && !isAuthUser) {
+    //   const timeout = setTimeout(() => {
+    //     setShowModal(true);
+    //     console.log("showModal", showModal);
+    //   }, 5000);
+    //   return () => clearTimeout(timeout);
+    // }
+  };
+  useEffect(() => {
+    firstRender();
   }, []);
   return (
     <>
-      {/* <CustomModal show={showModal} /> */}
+      <CustomModal show={showModal} />
       {children}
     </>
   );

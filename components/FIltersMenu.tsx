@@ -49,7 +49,7 @@ const CustomSelect = ({
     });
   };
   return (
-    <div className="relative w-auto  ">
+    <div className="relative w-full  ">
       <CustomButton
         text={selected}
         containerStyles="hover:text-primary  min-w-full text-primary-600 border-primary-200 border-solid rounded-full text-xs xl:text-base border-2 py-2 px-2 md:py-2 md:px-3"
