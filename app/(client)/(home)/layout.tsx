@@ -2,7 +2,6 @@
 
 import { Header, ProfileSidebar } from "@/components";
 import { useEffect } from "react";
-
 export default function AuthLayout({
   children,
 }: {

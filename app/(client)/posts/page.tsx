@@ -106,7 +106,7 @@ const PagePosts = () => {
 
   return (
     <section className="py-7 ">
-      <h2 className="title mb-5">All Posts</h2>
+      <h2 className="title mb-5">All Articles</h2>
       <FIltersMenu clearStorage={() => setStoragePosts([])} />
       <div className=" grid grid-cols-1 gap-5 grid-rows-1 md:grid-cols-2 sm:grid-cols-2 ">
         {storagePosts?.map((post: PostType, i: number) => {

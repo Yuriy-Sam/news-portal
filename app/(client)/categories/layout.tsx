@@ -1,7 +1,8 @@
-"use client";
-
 import { Header, ProfileSidebar } from "@/components";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Categories - Scope",
+};
 export default function AuthLayout({
   children,
 }: {

@@ -1,7 +1,9 @@
-"use client";
-
 import { Header, ProfileSidebar } from "@/components";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Trend Articles - Scope",
+  description: "Here is The Best Articles!",
+};
 export default function AuthLayout({
   children,
 }: {
