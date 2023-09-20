@@ -6,6 +6,7 @@ import {
   MainTopics,
 } from "@/components";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import { Suspense } from "react";
 
 export default function Home() {
   return (

@@ -2,7 +2,7 @@ import { AuthUserType, CategoryType, ContentType } from "@/types";
 import mongoose, { Document, Model } from "mongoose";
 // import { IUser } from "./UserModel"
 export interface IPost extends Document {
-  _id?: string;
+  _id: string;
   url?: string;
   isNotes?: boolean;
   categoriesValues: string[];

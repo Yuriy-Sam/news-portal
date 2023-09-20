@@ -16,6 +16,7 @@ const mulish = Mulish({
 });
 
 export const metadata: Metadata = {
+  openGraph: { images: ["./img/scope_main_img.jpg"] },
   title: "Best Portal for You - Scope",
   description:
     "Scope is your reliable source of up-to-date news. We provide unique functionality to make your stay on our site as comfortable and informative as possible.",
