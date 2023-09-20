@@ -2,17 +2,14 @@ import { Header, ProfileSidebar } from "@/components";
 import { Metadata, ResolvingMetadata } from "next";
 type Props = {
   params: { id: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
 };
 
 export async function generateMetadata(
-  { params, searchParams }: Props,
+  { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   // read route params
   const id = params.id;
-  console.log("params.id", params);
-  console.log("searchParams", searchParams);
 
   // fetch data
   const product = await fetch(
@@ -34,11 +31,9 @@ export async function generateMetadata(
 function AuthLayout({
   children,
   params,
-  searchParams,
 }: {
   children: React.ReactNode;
   params: { id: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   return <>{children}</>;
 }
